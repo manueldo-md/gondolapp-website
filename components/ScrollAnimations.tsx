@@ -12,10 +12,14 @@ export default function ScrollAnimations() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
     );
 
-    document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+    const elements = document.querySelectorAll(".fade-up");
+
+    // Add class and observe simultaneously so elements already in viewport fire immediately
+    document.body.classList.add("animations-ready");
+    elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
   }, []);

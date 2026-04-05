@@ -141,12 +141,19 @@ body {
 .pulse { animation: pulse-ring 2.5s infinite; }
 
 /* ── FADE-UP ANIMATION ── */
+/* Default: visible (SSR / no-JS fallback) */
 .fade-up {
-  opacity: 0;
-  transform: translateY(28px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.fade-up.visible { opacity: 1; transform: translateY(0); }
+/* Only hide when JS has initialized animations */
+body.animations-ready .fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+}
+body.animations-ready .fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ── FAQ ACCORDION ── */
 .faq-answer {
