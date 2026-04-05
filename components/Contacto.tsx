@@ -8,7 +8,6 @@ export default function Contacto() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
-
     const form = e.currentTarget;
     const data = {
       nombre: (form.elements.namedItem("nombre") as HTMLInputElement).value,
@@ -18,7 +17,6 @@ export default function Contacto() {
       whatsapp: (form.elements.namedItem("whatsapp") as HTMLInputElement).value,
       mensaje: (form.elements.namedItem("mensaje") as HTMLTextAreaElement).value,
     };
-
     try {
       const res = await fetch("/api/demo", {
         method: "POST",
@@ -34,91 +32,94 @@ export default function Contacto() {
   }
 
   return (
-    <section id="contacto" className="py-16 md:py-24 bg-bosque px-4">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-white fade-in">
-          El canal tradicional no va a medirse solo.
-        </h2>
-        <p className="mt-6 text-white/80 text-lg fade-in" style={{ transitionDelay: "150ms" }}>
-          Ya hay distribuidoras del interior operando con datos reales.
-          <br />
-          Ya hay marcas auditando sus gondolas sin mandar a nadie.
-          <br />
-          Tu competencia se va a enterar antes que vos?
-        </p>
-      </div>
+    <section
+      id="contacto"
+      style={{
+        padding: "6rem 1.5rem",
+        background: "linear-gradient(135deg, #0c1f14, #143d24, #1a5c2e)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div className="hero-grid" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
+      <div className="max-w-2xl mx-auto relative" style={{ zIndex: 2 }}>
+        <div className="text-center fade-up" style={{ marginBottom: "2.5rem" }}>
+          <div className="pill pill-light" style={{ marginBottom: "1rem" }}>Acceso anticipado</div>
+          <h2
+            style={{
+              fontSize: "clamp(2rem, 4vw, 2.5rem)",
+              fontWeight: 800,
+              color: "#fff",
+              lineHeight: 1.15,
+              marginBottom: "1rem",
+              fontFamily: "var(--font-syne)",
+            }}
+          >
+            Sumate a la lista de espera
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1rem", lineHeight: 1.7 }}>
+            Estamos construyendo. Los primeros en sumarse van a tener acceso preferencial, input directo en el producto y condiciones especiales.
+          </p>
+        </div>
 
-      <div className="mx-auto max-w-md mt-10 fade-in" style={{ transitionDelay: "300ms" }}>
-        <div className="bg-white rounded-2xl p-8">
-          <h3 className="font-[family-name:var(--font-syne)] font-bold text-lg text-gray-900 text-center">
-            Quiero ver Gondolapp en accion
-          </h3>
-
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-            <input
-              name="nombre"
-              type="text"
-              required
-              placeholder="Nombre completo *"
-              className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-bosque focus:ring-1 focus:ring-bosque outline-none"
-            />
-            <input
-              name="empresa"
-              type="text"
-              required
-              placeholder="Empresa *"
-              className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-bosque focus:ring-1 focus:ring-bosque outline-none"
-            />
-            <select
-              name="rol"
-              required
-              defaultValue=""
-              className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-bosque focus:ring-1 focus:ring-bosque outline-none text-gray-500"
-            >
-              <option value="" disabled>Rol *</option>
-              <option value="marca">Soy marca</option>
-              <option value="distribuidora">Soy distribuidora</option>
+        {status === "success" ? (
+          <div
+            className="fade-up"
+            style={{
+              background: "rgba(61,184,154,0.12)",
+              border: "1px solid var(--teal)",
+              borderRadius: 16,
+              padding: "2rem",
+              textAlign: "center",
+              color: "var(--teal-light)",
+            }}
+          >
+            <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>✓</div>
+            <h3 style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: "0.25rem" }}>¡Estás en la lista!</h3>
+            <p style={{ fontSize: "0.93rem", opacity: 0.8 }}>Te vamos a contactar cuando estemos listos. Gracias por sumarte.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="fade-up" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <input name="nombre" type="text" required placeholder="Tu nombre *" className="form-input-dark" />
+            <input name="empresa" type="text" required placeholder="Empresa *" className="form-input-dark" />
+            <select name="rol" required defaultValue="" className="form-select-dark">
+              <option value="" disabled>¿Cuál es tu perfil? *</option>
+              <option value="distribuidora">Distribuidora</option>
+              <option value="marca">Marca / CPG</option>
+              <option value="agencia">Agencia de Trade Marketing</option>
+              <option value="vendedor">Vendedor / Repositor</option>
+              <option value="inversor">Inversor</option>
               <option value="otro">Otro</option>
             </select>
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="Email *"
-              className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-bosque focus:ring-1 focus:ring-bosque outline-none"
-            />
-            <input
-              name="whatsapp"
-              type="tel"
-              placeholder="WhatsApp (opcional)"
-              className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-bosque focus:ring-1 focus:ring-bosque outline-none"
-            />
+            <input name="email" type="email" required placeholder="tu@email.com *" className="form-input-dark" />
+            <input name="whatsapp" type="tel" placeholder="WhatsApp (opcional)" className="form-input-dark" />
             <textarea
               name="mensaje"
               rows={3}
-              placeholder="Contanos brevemente tu operacion"
-              className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-bosque focus:ring-1 focus:ring-bosque outline-none resize-none"
+              placeholder="Contanos brevemente tu operación (opcional)"
+              className="form-input-dark"
+              style={{ resize: "none" }}
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="w-full rounded-lg bg-bosque py-3.5 text-white font-medium hover:bg-pradera transition-colors disabled:opacity-50"
+              className="btn-primary pulse"
+              style={{ width: "100%", justifyContent: "center", marginTop: "0.5rem", opacity: status === "loading" ? 0.7 : 1 }}
             >
-              {status === "loading" ? "Enviando..." : "Enviar → Nos contactamos en 24hs"}
+              {status === "loading" ? "Enviando..." : "Quiero acceso anticipado"}
+              {status !== "loading" && (
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              )}
             </button>
-
-            {status === "success" && (
-              <p className="text-center text-sm text-green-600 font-medium">
-                Gracias! Te contactamos en menos de 24hs.
-              </p>
-            )}
             {status === "error" && (
-              <p className="text-center text-sm text-red-600 font-medium">
-                Algo salio mal. Escribinos a hola@gondolapp.com
+              <p style={{ textAlign: "center", color: "#fca5a5", fontSize: "0.88rem" }}>
+                Algo salió mal. Escribinos a hola@gondolapp.com
               </p>
             )}
           </form>
-        </div>
+        )}
       </div>
     </section>
   );

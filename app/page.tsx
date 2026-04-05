@@ -1,13 +1,14 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Problema from "@/components/Problema";
+import Solucion from "@/components/Solucion";
 import Ecosistema from "@/components/Ecosistema";
 import ParaMarcas from "@/components/ParaMarcas";
 import ParaDistribuidoras from "@/components/ParaDistribuidoras";
 import ParaGondoleros from "@/components/ParaGondoleros";
-import ElMapa from "@/components/ElMapa";
-import ComoArranca from "@/components/ComoArranca";
 import Numeros from "@/components/Numeros";
+import Comparativa from "@/components/Comparativa";
+import ComoArranca from "@/components/ComoArranca";
 import FAQ from "@/components/FAQ";
 import Contacto from "@/components/Contacto";
 import Footer from "@/components/Footer";
@@ -21,13 +22,14 @@ export default function Home() {
       <main>
         <Hero />
         <Problema />
+        <Solucion />
         <Ecosistema />
         <ParaMarcas />
         <ParaDistribuidoras />
         <ParaGondoleros />
-        <ElMapa />
-        <ComoArranca />
         <Numeros />
+        <Comparativa />
+        <ComoArranca />
         <FAQ />
         <Contacto />
       </main>

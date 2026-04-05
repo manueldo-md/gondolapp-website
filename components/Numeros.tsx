@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 
 const metrics = [
-  { value: 133, label: "Puntos de venta relevados", prefix: "" },
-  { value: 16, label: "Ciudades de Entre Rios", prefix: "" },
-  { value: 500, label: "Fotos verificadas", prefix: "+" },
-  { value: 48, label: "Horas desde el arranque hasta los primeros datos", prefix: "", suffix: "hs" },
+  { value: 133, prefix: "", suffix: "", label: "Puntos de venta relevados" },
+  { value: 16, prefix: "", suffix: "", label: "Ciudades de Entre Ríos" },
+  { value: 500, prefix: "+", suffix: "", label: "Fotos verificadas por IA" },
+  { value: 48, prefix: "", suffix: "hs", label: "Desde el arranque hasta los primeros datos" },
 ];
 
 function Counter({ value, prefix = "", suffix = "" }: { value: number; prefix?: string; suffix?: string }) {
@@ -17,34 +17,29 @@ function Counter({ value, prefix = "", suffix = "" }: { value: number; prefix?: 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
           const duration = 1500;
           const start = performance.now();
-
           const animate = (now: number) => {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
+            const progress = Math.min((now - start) / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
             setCount(Math.round(eased * value));
             if (progress < 1) requestAnimationFrame(animate);
           };
-
           requestAnimationFrame(animate);
         }
       },
       { threshold: 0.5 }
     );
-
     observer.observe(el);
     return () => observer.disconnect();
   }, [value]);
 
   return (
-    <div ref={ref} className="font-[family-name:var(--font-syne)] text-5xl md:text-7xl font-bold text-bosque">
+    <div ref={ref} style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900, color: "var(--green-dark)", lineHeight: 1, fontFamily: "var(--font-syne)" }}>
       {prefix}{count}{suffix}
     </div>
   );
@@ -52,17 +47,28 @@ function Counter({ value, prefix = "", suffix = "" }: { value: number; prefix?: 
 
 export default function Numeros() {
   return (
-    <section id="numeros" className="py-16 md:py-24 px-4">
-      <div className="mx-auto max-w-7xl text-center">
-        <h2 className="font-[family-name:var(--font-syne)] text-3xl md:text-4xl font-bold text-gray-900 fade-in">
-          No es un PowerPoint. Es lo que ya paso.
-        </h2>
+    <section id="numeros" style={{ padding: "6rem 1.5rem" }}>
+      <div className="max-w-6xl mx-auto text-center">
+        <div className="fade-up" style={{ marginBottom: "3.5rem" }}>
+          <div className="pill" style={{ marginBottom: "1rem" }}>Piloto en Entre Ríos</div>
+          <h2
+            style={{
+              fontSize: "clamp(2rem, 4vw, 2.6rem)",
+              fontWeight: 800,
+              color: "var(--green-dark)",
+              lineHeight: 1.15,
+              fontFamily: "var(--font-syne)",
+            }}
+          >
+            No es un PowerPoint. Es lo que ya pasó.
+          </h2>
+        </div>
 
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {metrics.map((m, i) => (
-            <div key={i} className="fade-in" style={{ transitionDelay: `${i * 150}ms` }}>
-              <Counter value={m.value} prefix={m.prefix} suffix={"suffix" in m ? (m as { suffix?: string }).suffix : ""} />
-              <p className="mt-2 text-gray-500 text-sm">{m.label}</p>
+            <div key={i} className="fade-up" style={{ transitionDelay: `${i * 150}ms` }}>
+              <Counter value={m.value} prefix={m.prefix} suffix={m.suffix} />
+              <p style={{ color: "#6b7280", fontSize: "0.9rem", marginTop: 8, lineHeight: 1.4 }}>{m.label}</p>
             </div>
           ))}
         </div>
