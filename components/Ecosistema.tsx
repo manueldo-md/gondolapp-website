@@ -153,8 +153,7 @@ export default function Ecosistema() {
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
         <div className="blur-in" style={{ textAlign: "center", marginBottom: "4rem" }}>
-          <span className="badge" style={{ marginBottom: "1rem", display: "inline-flex" }}>Una campaña real</span>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", fontWeight: 800, letterSpacing: "-0.025em", color: "var(--text)", lineHeight: 1.15 }}>
+          <h2 className="section-title">
             De la necesidad de una marca<br />al dato en góndola, en 5 pasos
           </h2>
           <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 500, margin: "0.75rem auto 0" }}>

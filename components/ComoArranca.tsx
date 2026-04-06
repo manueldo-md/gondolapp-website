@@ -10,8 +10,7 @@ export default function ComoArranca() {
     <section id="como-arranca" style={{ padding:"5rem 1.5rem" }}>
       <div style={{ maxWidth:1100, margin:"0 auto", textAlign:"center" }}>
         <div className="blur-in" style={{ marginBottom:"3rem" }}>
-          <span className="badge" style={{ marginBottom:"1rem", display:"inline-flex" }}>Onboarding</span>
-          <h2 style={{ fontFamily:"var(--font-heading)", fontSize:"clamp(1.75rem,3.5vw,2.5rem)", fontWeight:800, letterSpacing:"-0.02em", color:"var(--text)", lineHeight:1.2 }}>
+          <h2 className="section-title">
             En 48hs podés estar operando
           </h2>
         </div>

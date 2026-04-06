@@ -32,11 +32,7 @@ export default function Contacto() {
 
       <div style={{ maxWidth:560, margin:"0 auto", position:"relative", zIndex:2 }}>
         <div className="blur-in" style={{ textAlign:"center", marginBottom:"2.5rem" }}>
-          <span className="badge badge-dark" style={{ marginBottom:"1rem", display:"inline-flex" }}>
-            <span className="glow-dot" />
-            Acceso anticipado
-          </span>
-          <h2 style={{ fontFamily:"var(--font-heading)", fontSize:"clamp(2rem,4vw,2.75rem)", fontWeight:800, letterSpacing:"-0.03em", color:"#fff", lineHeight:1.1, marginBottom:"1rem" }}>
+          <h2 className="section-title section-title-light" style={{ marginBottom:"1rem" }}>
             Sumate a la lista de espera
           </h2>
           <p style={{ color:"rgba(255,255,255,0.55)", fontSize:"1rem", lineHeight:1.7 }}>

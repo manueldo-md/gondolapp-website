@@ -47,16 +47,16 @@ export default function Hero() {
               fontFamily: "var(--font-heading)",
               fontSize: "clamp(2.8rem, 6vw, 5rem)",
               fontWeight: 800,
-              lineHeight: 1.06,
+              lineHeight: 1.1,
               letterSpacing: "-0.03em",
               color: "var(--slate-900)",
               marginBottom: "1.25rem",
               transitionDelay: "80ms",
             }}
           >
-            Inteligencia de mercado
+            Inteligencia de mercado para
             <br />
-            para <CycleText />
+            <CycleText />
           </h1>
 
           <p

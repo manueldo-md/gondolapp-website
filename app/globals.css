@@ -66,16 +66,30 @@ h1, h2, h3, h4 {
   background: var(--g-50);
   color: var(--g-700);
   border: 1px solid rgba(22,163,74,0.25);
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
 }
 .badge-dark {
   background: rgba(255,255,255,0.08);
   color: rgba(255,255,255,0.75);
   border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ── SECTION TITLES ── */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1.1;
+}
+.section-title-light {
+  color: #fff;
 }
 
 /* ── GRADIENT TEXT ── */
@@ -175,16 +189,32 @@ h1, h2, h3, h4 {
   animation: shimmer 2.5s ease-in-out infinite;
 }
 
-/* ── CYCLING TEXT ── */
-.cycle-enter { animation: cycleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.cycle-exit  { animation: cycleOut 0.3s ease forwards; }
-@keyframes cycleIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ── BUBBLE TEXT ── */
+.bubble-container {
+  display: inline-flex;
+  gap: 0.25em;
+  vertical-align: baseline;
 }
-@keyframes cycleOut {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-12px); }
+.bubble-word {
+  display: inline-block;
+  animation-duration: 3.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.bubble-float-0 {
+  animation-name: bubbleFloat0;
+}
+.bubble-float-1 {
+  animation-name: bubbleFloat1;
+  animation-delay: -1.75s;
+}
+@keyframes bubbleFloat0 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes bubbleFloat1 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
 }
 
 /* ── BLUR-IN SCROLL ANIMATION ── */
@@ -200,6 +230,42 @@ body.animations-ready .blur-in.visible {
   opacity: 1;
   transform: translateY(0);
   filter: blur(0);
+}
+
+/* ── FAQ TABS ── */
+.faq-tabs {
+  display: inline-flex;
+  background: var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.faq-tab {
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.faq-tab:hover {
+  color: var(--text);
+}
+.faq-tab.active {
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.faq-list-enter {
+  animation: faqFadeIn 0.3s ease forwards;
+}
+@keyframes faqFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ── FAQ ── */

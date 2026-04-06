@@ -4,8 +4,7 @@ export default function Solucion() {
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
         <div className="blur-in" style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-          <span className="badge" style={{ marginBottom: "1rem", display: "inline-flex" }}>Cómo lo resolvemos</span>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", fontWeight: 800, letterSpacing: "-0.025em", color: "var(--text)", lineHeight: 1.15 }}>
+          <h2 className="section-title">
             De la foto de góndola<br />al dashboard en minutos
           </h2>
           <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 500, margin: "0.75rem auto 0" }}>

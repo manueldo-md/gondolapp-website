@@ -33,15 +33,7 @@ export default function Problema() {
     <section id="problema" style={{ padding: "5rem 1.5rem" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div className="blur-in" style={{ marginBottom: "3rem", textAlign: "center" }}>
-          <span className="badge" style={{ marginBottom: "1rem", display: "inline-flex" }}>El problema</span>
-          <h2 style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
-            fontWeight: 800,
-            color: "var(--text)",
-            letterSpacing: "-0.02em",
-            lineHeight: 1.2,
-          }}>
+          <h2 className="section-title">
             $40 de cada $100 se venden en un mercado que nadie ve
           </h2>
           <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 540, margin: "0.75rem auto 0" }}>

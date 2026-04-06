@@ -11,8 +11,7 @@ export default function Comparativa() {
     <section id="comparativa" style={{ padding:"5rem 1.5rem", background:"var(--bg-subtle)" }}>
       <div style={{ maxWidth:900, margin:"0 auto" }}>
         <div className="blur-in" style={{ textAlign:"center", marginBottom:"3rem" }}>
-          <span className="badge" style={{ marginBottom:"1rem", display:"inline-flex" }}>El diferencial</span>
-          <h2 style={{ fontFamily:"var(--font-heading)", fontSize:"clamp(1.75rem,3.5vw,2.5rem)", fontWeight:800, letterSpacing:"-0.02em", color:"var(--text)", lineHeight:1.2 }}>
+          <h2 className="section-title">
             No somos uno más
           </h2>
         </div>
