@@ -2,6 +2,7 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Problema from "@/components/Problema";
 import Solucion from "@/components/Solucion";
+import AppMovil from "@/components/AppMovil";
 import Ecosistema from "@/components/Ecosistema";
 import ParaMarcas from "@/components/ParaMarcas";
 import ParaDistribuidoras from "@/components/ParaDistribuidoras";
@@ -22,6 +23,7 @@ export default function Home() {
         <Hero />
         <Problema />
         <Solucion />
+        <AppMovil />
         <Ecosistema />
         <ParaMarcas />
         <ParaDistribuidoras />
