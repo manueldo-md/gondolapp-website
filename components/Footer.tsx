@@ -2,7 +2,7 @@
 import Image from "next/image";
 
 const cols = [
-  { title:"Producto", links:[["Para marcas","#marcas"],["Para distribuidoras","#distribuidoras"],["Para gondoleros","#gondoleros"],["Cómo funciona","#solucion"]] },
+  { title:"Producto", links:[["Para marcas","#marcas"],["Para distribuidoras","#distribuidoras"],["Cómo funciona","#solucion"],["Caso real","#ecosistema"]] },
   { title:"Empresa", links:[["El problema","#problema"],["Piloto","#numeros"],["Diferencial","#comparativa"],["FAQ","#faq"]] },
 ];
 

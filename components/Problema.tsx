@@ -42,8 +42,11 @@ export default function Problema() {
             letterSpacing: "-0.02em",
             lineHeight: 1.2,
           }}>
-            Un mercado enorme, completamente ciego
+            $40 de cada $100 se venden en un mercado que nadie ve
           </h2>
+          <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 540, margin: "0.75rem auto 0" }}>
+            El canal tradicional mueve el 40% del consumo masivo argentino. Distribuidoras y marcas operan con datos de hace semanas, cuando los tienen.
+          </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>

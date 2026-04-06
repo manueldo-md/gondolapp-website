@@ -43,7 +43,7 @@ export default function ParaDistribuidoras() {
         <div>
           <span className="badge blur-in" style={{ marginBottom:"1rem", display:"inline-flex" }}>Para distribuidoras</span>
           <h2 className="blur-in" style={{ fontFamily:"var(--font-heading)", fontSize:"clamp(1.6rem,3vw,2.25rem)", fontWeight:800, letterSpacing:"-0.02em", color:"var(--text)", lineHeight:1.2, marginBottom:"1.5rem", transitionDelay:"80ms" }}>
-            Datos que convierten conversaciones en contratos
+            La distribuidora que llega con datos gana el contrato
           </h2>
           <p className="blur-in" style={{ color:"var(--text-muted)", lineHeight:1.7, marginBottom:"1.5rem", fontSize:"0.95rem", transitionDelay:"160ms" }}>
             Las distribuidoras que tienen datos negocian mejor. Las que no, pierden representaciones.

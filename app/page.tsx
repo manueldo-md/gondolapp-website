@@ -5,7 +5,6 @@ import Solucion from "@/components/Solucion";
 import Ecosistema from "@/components/Ecosistema";
 import ParaMarcas from "@/components/ParaMarcas";
 import ParaDistribuidoras from "@/components/ParaDistribuidoras";
-import ParaGondoleros from "@/components/ParaGondoleros";
 import Numeros from "@/components/Numeros";
 import Comparativa from "@/components/Comparativa";
 import ComoArranca from "@/components/ComoArranca";
@@ -26,7 +25,6 @@ export default function Home() {
         <Ecosistema />
         <ParaMarcas />
         <ParaDistribuidoras />
-        <ParaGondoleros />
         <Numeros />
         <Comparativa />
         <ComoArranca />

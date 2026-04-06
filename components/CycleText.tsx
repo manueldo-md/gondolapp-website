@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-const words = ["marcas", "distribuidoras", "gondoleros"];
+const words = ["marcas", "distribuidoras"];
 
 export default function CycleText() {
   const [index, setIndex] = useState(0);

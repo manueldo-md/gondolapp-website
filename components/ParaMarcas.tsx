@@ -16,9 +16,9 @@ export default function ParaMarcas() {
     <section id="marcas" style={{ padding: "5rem 1.5rem" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
         <div>
-          <span className="badge blur-in" style={{ marginBottom: "1rem", display: "inline-flex" }}>Para marcas</span>
+          <span className="badge blur-in" style={{ marginBottom: "1rem", display: "inline-flex" }}>Para marcas CPG</span>
           <h2 className="blur-in" style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3vw, 2.25rem)", fontWeight: 800, letterSpacing: "-0.02em", color: "var(--text)", lineHeight: 1.2, marginBottom: "1.5rem", transitionDelay: "80ms" }}>
-            ¿Sabés lo que pasa con tus productos en la góndola?
+            Tu presupuesto de trade marketing merece datos reales
           </h2>
           <div className="blur-in" style={{ marginBottom: "1.5rem", transitionDelay: "160ms" }}>
             {preguntas.map((p, i) => (
