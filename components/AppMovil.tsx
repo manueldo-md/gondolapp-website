@@ -11,8 +11,8 @@ const allScreens = [
 // Row 2 reversed order for visual variety
 const row2 = [...allScreens].reverse();
 
-const PHONE_W  = 155;   // px outer width
-const PHONE_GAP = 14;  // px between phones
+const PHONE_W  = 220;   // px outer width
+const PHONE_GAP = 20;  // px between phones
 
 function PhoneFrame({ src, alt }: { src: string; alt: string }) {
   return (
@@ -102,14 +102,9 @@ export default function AppMovil() {
         </p>
       </div>
 
-      {/* Row 1 — scrolls left */}
-      <div className="blur-in" style={{ marginBottom: PHONE_GAP }}>
+      {/* Single marquee row — scrolls left */}
+      <div className="blur-in">
         <MarqueeRow screens={allScreens} direction="left" />
-      </div>
-
-      {/* Row 2 — scrolls right */}
-      <div className="blur-in" style={{ transitionDelay: "120ms" }}>
-        <MarqueeRow screens={row2} direction="right" />
       </div>
 
       {/* Bottom stats */}
