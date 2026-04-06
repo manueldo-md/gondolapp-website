@@ -1,108 +1,118 @@
+import CycleText from "./CycleText";
+
 const stats = [
   { num: "200K+", label: "Puntos de venta sin datos" },
-  { num: "40%", label: "Del consumo masivo es canal tradicional" },
+  { num: "40%", label: "Del consumo masivo en canal tradicional" },
   { num: "0", label: "Plataformas que lo mapean hoy" },
 ];
 
 export default function Hero() {
   return (
     <>
-      {/* Dark hero */}
-      <section
-        id="inicio"
-        style={{
-          background: "linear-gradient(135deg, #0c1f14 0%, #143d24 40%, #1a5c2e 70%, #1d6b42 100%)",
-          position: "relative",
-          overflow: "hidden",
-          paddingTop: 100,
-          paddingBottom: "5rem",
-        }}
-      >
-        {/* Grid pattern */}
-        <div
-          className="hero-grid"
-          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-        />
-        {/* Radial glow */}
+      {/* Hero */}
+      <section id="inicio" style={{
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: 120,
+        paddingBottom: "6rem",
+        textAlign: "center",
+        background: "var(--bg)",
+      }}>
+        {/* Radial gradient orb */}
         <div style={{
-          position: "absolute", top: "-50%", right: "-20%",
-          width: "80%", height: "200%",
-          background: "radial-gradient(ellipse, rgba(78,205,196,0.07) 0%, transparent 70%)",
-          pointerEvents: "none",
+          position: "absolute", inset: 0, pointerEvents: "none",
+          background: "var(--grad-hero)",
+        }} />
+        {/* Grid lines */}
+        <div style={{
+          position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.4,
+          backgroundImage: "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
         }} />
 
-        <div className="max-w-6xl mx-auto px-6 relative" style={{ zIndex: 2 }}>
-          <div style={{ maxWidth: 700 }}>
-            <div className="pill pill-light fade-up" style={{ marginBottom: "1.5rem" }}>
-              Pre-lanzamiento — Argentina 2026
-            </div>
-            <h1
-              className="fade-up"
-              style={{
-                fontSize: "clamp(2.5rem, 5vw, 3.75rem)",
-                fontWeight: 900,
-                lineHeight: 1.08,
-                marginBottom: "1.5rem",
-                color: "#fff",
-                fontFamily: "var(--font-syne)",
-              }}
-            >
-              El mapa en tiempo real del{" "}
-              <span className="gradient-text">
-                consumo masivo argentino
-              </span>
-            </h1>
-            <p
-              className="fade-up"
-              style={{
-                color: "rgba(255,255,255,0.65)",
-                fontSize: "1.15rem",
-                lineHeight: 1.7,
-                maxWidth: 580,
-                marginBottom: "2.5rem",
-                transitionDelay: "150ms",
-              }}
-            >
-              Nadie sabe qué se vende, a cuánto y dónde en los 200.000+ puntos de venta del canal tradicional. Nosotros sí vamos a saberlo.
-            </p>
-            <div className="fade-up flex flex-wrap gap-4" style={{ transitionDelay: "300ms" }}>
-              <a href="#contacto" className="btn-primary pulse">
-                Quiero acceso anticipado
-                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
-              <a href="#solucion" className="btn-outline">
-                Cómo funciona
-              </a>
-            </div>
+        <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 2 }}>
+          {/* Badge */}
+          <div className="blur-in" style={{ marginBottom: "1.5rem" }}>
+            <span className="badge">
+              <span className="glow-dot" />
+              Pre-lanzamiento · Argentina 2026
+            </span>
           </div>
+
+          {/* Headline */}
+          <h1
+            className="blur-in"
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontSize: "clamp(2.8rem, 6vw, 5rem)",
+              fontWeight: 800,
+              lineHeight: 1.06,
+              letterSpacing: "-0.03em",
+              color: "var(--slate-900)",
+              marginBottom: "1.25rem",
+              transitionDelay: "80ms",
+            }}
+          >
+            Inteligencia de mercado
+            <br />
+            para <CycleText />
+          </h1>
+
+          <p
+            className="blur-in"
+            style={{
+              fontSize: "clamp(1rem, 2vw, 1.2rem)",
+              color: "var(--text-muted)",
+              lineHeight: 1.7,
+              maxWidth: 580,
+              margin: "0 auto 2.5rem",
+              transitionDelay: "160ms",
+            }}
+          >
+            El primer sistema que mapea en tiempo real el canal tradicional argentino.
+            Fotos verificadas, datos reales, decisiones concretas.
+          </p>
+
+          {/* CTAs */}
+          <div className="blur-in" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", transitionDelay: "240ms" }}>
+            <a href="#contacto" className="btn btn-primary" style={{ fontSize: "1rem", padding: "13px 28px" }}>
+              Quiero acceso anticipado
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="#solucion" className="btn btn-secondary" style={{ fontSize: "1rem", padding: "13px 28px" }}>
+              Ver cómo funciona
+            </a>
+          </div>
+
+          {/* Social proof */}
+          <p className="blur-in" style={{ marginTop: "2rem", fontSize: "0.8rem", color: "var(--slate-400)", transitionDelay: "320ms" }}>
+            Ya operando en 16 ciudades de Entre Ríos · 133 puntos de venta relevados
+          </p>
         </div>
       </section>
 
       {/* Stats bar */}
-      <section style={{ padding: "4rem 1.5rem", background: "#fff" }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            {stats.map((s, i) => (
-              <div key={i} className="fade-up" style={{ transitionDelay: `${i * 150}ms` }}>
-                <div
-                  style={{
-                    fontSize: "clamp(2.2rem, 5vw, 3.5rem)",
-                    fontWeight: 900,
-                    color: "#111",
-                    lineHeight: 1,
-                    fontFamily: "var(--font-syne)",
-                  }}
-                >
+      <section style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--bg-subtle)", padding: "2.5rem 1.5rem" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem", textAlign: "center" }}>
+          {stats.map((s, i) => (
+            <div key={i} className="blur-in" style={{ transitionDelay: `${i * 100}ms` }}>
+              <div className="shimmer" style={{ borderRadius: 8, padding: "0.25rem 0" }}>
+                <div style={{
+                  fontFamily: "var(--font-heading)",
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  fontWeight: 800,
+                  color: "var(--g-700)",
+                  lineHeight: 1,
+                }}>
                   {s.num}
                 </div>
-                <p style={{ color: "#6b7280", fontSize: "0.95rem", marginTop: 6, fontWeight: 500 }}>
-                  {s.label}
-                </p>
               </div>
-            ))}
-          </div>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.88rem", marginTop: 8, lineHeight: 1.4 }}>{s.label}</p>
+            </div>
+          ))}
         </div>
       </section>
     </>

@@ -1,45 +1,36 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 
 const metrics = [
   { value: 133, prefix: "", suffix: "", label: "Puntos de venta relevados" },
   { value: 16, prefix: "", suffix: "", label: "Ciudades de Entre Ríos" },
   { value: 500, prefix: "+", suffix: "", label: "Fotos verificadas por IA" },
-  { value: 48, prefix: "", suffix: "hs", label: "Desde el arranque hasta los primeros datos" },
+  { value: 48, prefix: "", suffix: "hs", label: "Hasta los primeros datos" },
 ];
 
 function Counter({ value, prefix = "", suffix = "" }: { value: number; prefix?: string; suffix?: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const started = useRef(false);
-
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const duration = 1500;
-          const start = performance.now();
-          const animate = (now: number) => {
-            const progress = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.round(eased * value));
-            if (progress < 1) requestAnimationFrame(animate);
-          };
-          requestAnimationFrame(animate);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !started.current) {
+        started.current = true;
+        const dur = 1500, t0 = performance.now();
+        const tick = (now: number) => {
+          const p = Math.min((now-t0)/dur, 1);
+          setCount(Math.round((1-Math.pow(1-p,3))*value));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
   }, [value]);
-
   return (
-    <div ref={ref} style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900, color: "var(--green-dark)", lineHeight: 1, fontFamily: "var(--font-syne)" }}>
+    <div ref={ref} style={{ fontFamily:"var(--font-heading)", fontSize:"clamp(2.5rem,5vw,4rem)", fontWeight:800, letterSpacing:"-0.03em", color:"var(--g-700)", lineHeight:1 }}>
       {prefix}{count}{suffix}
     </div>
   );
@@ -47,28 +38,19 @@ function Counter({ value, prefix = "", suffix = "" }: { value: number; prefix?: 
 
 export default function Numeros() {
   return (
-    <section id="numeros" style={{ padding: "6rem 1.5rem" }}>
-      <div className="max-w-6xl mx-auto text-center">
-        <div className="fade-up" style={{ marginBottom: "3.5rem" }}>
-          <div className="pill" style={{ marginBottom: "1rem" }}>Piloto en Entre Ríos</div>
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 4vw, 2.6rem)",
-              fontWeight: 800,
-              color: "var(--green-dark)",
-              lineHeight: 1.15,
-              fontFamily: "var(--font-syne)",
-            }}
-          >
+    <section id="numeros" style={{ padding:"5rem 1.5rem" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto", textAlign:"center" }}>
+        <div className="blur-in" style={{ marginBottom:"3rem" }}>
+          <span className="badge" style={{ marginBottom:"1rem", display:"inline-flex" }}>Piloto · Entre Ríos 2025</span>
+          <h2 style={{ fontFamily:"var(--font-heading)", fontSize:"clamp(1.75rem,3.5vw,2.5rem)", fontWeight:800, letterSpacing:"-0.02em", color:"var(--text)", lineHeight:1.2 }}>
             No es un PowerPoint. Es lo que ya pasó.
           </h2>
         </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {metrics.map((m, i) => (
-            <div key={i} className="fade-up" style={{ transitionDelay: `${i * 150}ms` }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:"2rem" }}>
+          {metrics.map((m,i)=>(
+            <div key={i} className="card blur-in" style={{ padding:"2rem 1.5rem", transitionDelay:`${i*120}ms` }}>
               <Counter value={m.value} prefix={m.prefix} suffix={m.suffix} />
-              <p style={{ color: "#6b7280", fontSize: "0.9rem", marginTop: 8, lineHeight: 1.4 }}>{m.label}</p>
+              <p style={{ color:"var(--text-muted)", fontSize:"0.88rem", marginTop:8, lineHeight:1.4 }}>{m.label}</p>
             </div>
           ))}
         </div>
