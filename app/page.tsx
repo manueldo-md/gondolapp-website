@@ -7,6 +7,7 @@ import AppMovil from "@/components/AppMovil";
 import Gamificacion from "@/components/Gamificacion";
 import Plataforma from "@/components/Plataforma";
 import Numeros from "@/components/Numeros";
+import Informe from "@/components/Informe";
 import Comparativa from "@/components/Comparativa";
 import ComoArranca from "@/components/ComoArranca";
 import FAQ from "@/components/FAQ";
@@ -28,6 +29,7 @@ export default function Home() {
         <Gamificacion />
         <Plataforma />
         <Numeros />
+        <Informe />
         <Comparativa />
         <ComoArranca />
         <FAQ />
