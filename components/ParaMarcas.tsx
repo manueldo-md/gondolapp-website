@@ -8,6 +8,70 @@ const bullets = [
   "Alertas automáticas ante quiebres de stock",
 ];
 
+function MonitorFrame() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      {/* Monitor body */}
+      <div style={{
+        width: "100%",
+        background: "#18181b",
+        borderRadius: 14,
+        padding: "10px 10px 8px",
+        border: "1.5px solid #27272a",
+        boxShadow: "0 28px 72px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.1)",
+      }}>
+        {/* Camera dot */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 7 }}>
+          <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#3f3f46" }} />
+        </div>
+        {/* Screen */}
+        <div style={{ borderRadius: 7, overflow: "hidden" }}>
+          {/* Browser chrome */}
+          <div style={{
+            background: "#f1f5f9",
+            padding: "8px 12px",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            borderBottom: "1px solid #e2e8f0",
+          }}>
+            <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+              {["#ef4444","#f59e0b","#22c55e"].map((c,i) => (
+                <div key={i} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />
+              ))}
+            </div>
+            <div style={{
+              flex: 1,
+              background: "#fff",
+              borderRadius: 5,
+              padding: "3px 10px",
+              fontSize: "0.6rem",
+              color: "#94a3b8",
+              textAlign: "center",
+              border: "1px solid #e2e8f0",
+            }}>
+              app.gondolapp.com/marca/dashboard
+            </div>
+          </div>
+          {/* Screenshot */}
+          <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
+            <Image
+              src="/screenshots/dashboard-marca.jpg"
+              alt="Dashboard de marca — GondolApp"
+              fill
+              style={{ objectFit: "cover", objectPosition: "top left" }}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+        </div>
+      </div>
+      {/* Stand */}
+      <div style={{ width: "7%", height: 24, background: "#27272a" }} />
+      <div style={{ width: "28%", height: 7, background: "#27272a", borderRadius: "0 0 6px 6px" }} />
+    </div>
+  );
+}
+
 export default function ParaMarcas() {
   return (
     <section id="marcas" style={{ padding: "5rem 1.5rem" }}>
@@ -20,7 +84,7 @@ export default function ParaMarcas() {
             Tu presupuesto de trade marketing merece datos reales
           </h2>
           <p className="blur-in" style={{ color: "var(--text-muted)", fontSize: "0.95rem", lineHeight: 1.75, marginBottom: "1.5rem", transitionDelay: "160ms" }}>
-            Millones invertidos en activaciones, promotores y exhibidores — sin saber si tus productos están realmente en la góndola a 300km de Buenos Aires.
+            Millones invertidos en activaciones y exhibidores — sin saber si tus productos están realmente en la góndola a 300km de Buenos Aires.
           </p>
           <div className="blur-in" style={{ transitionDelay: "240ms" }}>
             {bullets.map((b, i) => (
@@ -31,56 +95,13 @@ export default function ParaMarcas() {
           </div>
         </div>
 
-        {/* Real screenshot in browser frame */}
+        {/* Monitor */}
         <div className="blur-in" style={{ transitionDelay: "200ms" }}>
-          <div style={{
-            borderRadius: 16,
-            overflow: "hidden",
-            border: "1px solid var(--border)",
-            boxShadow: "0 24px 64px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06)",
-          }}>
-            {/* Browser chrome */}
-            <div style={{
-              background: "var(--slate-100)",
-              borderBottom: "1px solid var(--border)",
-              padding: "10px 14px",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-            }}>
-              <div style={{ display: "flex", gap: 5, flexShrink: 0 }}>
-                {["#ef4444","#f59e0b","#22c55e"].map((c,i) => (
-                  <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
-                ))}
-              </div>
-              <div style={{
-                flex: 1,
-                background: "#fff",
-                borderRadius: 6,
-                padding: "4px 10px",
-                fontSize: "0.65rem",
-                color: "var(--slate-500)",
-                textAlign: "center",
-                border: "1px solid var(--border)",
-              }}>
-                app.gondolapp.com/dashboard
-              </div>
-            </div>
-            {/* Screenshot */}
-            <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
-              <Image
-                src="/screenshots/dashboard-marca.jpg"
-                alt="Dashboard de marca en GondolApp"
-                fill
-                style={{ objectFit: "cover", objectPosition: "top left" }}
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-          </div>
+          <MonitorFrame />
         </div>
 
       </div>
-      <style>{`@media(max-width:768px){#marcas > div{grid-template-columns:1fr!important}}`}</style>
+      <style>{`@media(max-width:900px){#marcas > div{grid-template-columns:1fr!important}}`}</style>
     </section>
   );
 }

@@ -9,135 +9,132 @@ const bullets = [
 ];
 
 const comercios = [
-  { nombre: "Almacén El Puente",     dir: "Rivadavia 438, Colón",         tipo: "Almacén",   visita: "hace 2 h",    estado: "Validado" },
-  { nombre: "Minimercado La Familia",dir: "Urquiza 91, Concordia",         tipo: "Almacén",   visita: "hace 3 h",    estado: "Validado" },
-  { nombre: "Distribuidora Sanchez", dir: "",                              tipo: "Mayorista",  visita: "hace 1 día",  estado: "Validado" },
-  { nombre: "Kiosco San Martín",     dir: "",                              tipo: "Otro",       visita: "hace 4 h",    estado: "Sin validar" },
-  { nombre: "Super Díaz",            dir: "Belgrano 204, Gualeguaychú",    tipo: "Almacén",    visita: "hace 22 h",   estado: "Validado" },
-  { nombre: "Dietética Natural",     dir: "",                              tipo: "Otro",       visita: "hace 1 día",  estado: "Validado" },
-  { nombre: "Mercado Don Tomás",     dir: "Ibarra 50, Paraná",             tipo: "Otro",       visita: "hace 1 día",  estado: "Validado" },
+  { nombre: "Almacén El Puente",      dir: "Rivadavia 438, Colón",        tipo: "Almacén",  visita: "hace 2 h",   ok: true  },
+  { nombre: "Minimercado La Familia", dir: "Urquiza 91, Concordia",        tipo: "Almacén",  visita: "hace 3 h",   ok: true  },
+  { nombre: "Distribuidora Sanchez",  dir: "",                             tipo: "Mayorista", visita: "hace 1 día", ok: true  },
+  { nombre: "Kiosco San Martín",      dir: "",                             tipo: "Otro",      visita: "hace 4 h",   ok: false },
+  { nombre: "Super Díaz",             dir: "Belgrano 204, Gualeguaychú",   tipo: "Almacén",  visita: "hace 22 h",  ok: true  },
+  { nombre: "Dietética Natural",      dir: "",                             tipo: "Otro",      visita: "hace 1 día", ok: true  },
+  { nombre: "Mercado Don Tomás",      dir: "Ibarra 50, Paraná",            tipo: "Otro",      visita: "hace 1 día", ok: true  },
 ];
 
-const tipoColor: Record<string, string> = {
-  Almacén:  "#dbeafe",
-  Mayorista: "#ede9fe",
-  Otro:      "#f3f4f6",
-};
-const tipoText: Record<string, string> = {
-  Almacén:  "#1d4ed8",
-  Mayorista: "#7c3aed",
-  Otro:      "#374151",
-};
+const tipoBg:   Record<string,string> = { Almacén:"#dbeafe", Mayorista:"#ede9fe", Otro:"#f3f4f6" };
+const tipoText: Record<string,string> = { Almacén:"#1d4ed8", Mayorista:"#7c3aed", Otro:"#374151" };
 
-export default function ParaDistribuidoras() {
+function MonitorFrame() {
   return (
-    <section id="distribuidoras" style={{ padding: "5rem 1.5rem", background: "var(--bg-subtle)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
-
-        {/* Stacked visuals */}
-        <div className="blur-in" style={{ position: "relative" }}>
-
-          {/* Back: main dashboard screenshot */}
-          <div style={{
-            borderRadius: 14,
-            overflow: "hidden",
-            border: "1px solid var(--border)",
-            boxShadow: "0 20px 50px rgba(0,0,0,0.09)",
-          }}>
+    <div style={{ position: "relative" }}>
+      {/* Monitor */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{
+          width: "100%",
+          background: "#18181b",
+          borderRadius: 14,
+          padding: "10px 10px 8px",
+          border: "1.5px solid #27272a",
+          boxShadow: "0 28px 72px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.1)",
+        }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 7 }}>
+            <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#3f3f46" }} />
+          </div>
+          <div style={{ borderRadius: 7, overflow: "hidden" }}>
             <div style={{
-              background: "var(--slate-100)",
-              borderBottom: "1px solid var(--border)",
-              padding: "9px 14px",
+              background: "#f1f5f9",
+              padding: "8px 12px",
               display: "flex",
               alignItems: "center",
               gap: 8,
+              borderBottom: "1px solid #e2e8f0",
             }}>
-              <div style={{ display: "flex", gap: 5 }}>
+              <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
                 {["#ef4444","#f59e0b","#22c55e"].map((c,i) => (
                   <div key={i} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />
                 ))}
               </div>
-              <div style={{ flex: 1, background: "#fff", borderRadius: 5, padding: "3px 10px", fontSize: "0.62rem", color: "var(--slate-400)", textAlign: "center", border: "1px solid var(--border)" }}>
-                app.gondolapp.com/distribuidora
+              <div style={{
+                flex: 1, background: "#fff", borderRadius: 5,
+                padding: "3px 10px", fontSize: "0.6rem",
+                color: "#94a3b8", textAlign: "center",
+                border: "1px solid #e2e8f0",
+              }}>
+                app.gondolapp.com/distribuidora/dashboard
               </div>
             </div>
             <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
               <Image
                 src="/screenshots/dashboard-dist.jpg"
-                alt="Dashboard distribuidora GondolApp"
+                alt="Dashboard distribuidora — GondolApp"
                 fill
                 style={{ objectFit: "cover", objectPosition: "top left" }}
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           </div>
+        </div>
+        <div style={{ width: "7%", height: 24, background: "#27272a" }} />
+        <div style={{ width: "28%", height: 7, background: "#27272a", borderRadius: "0 0 6px 6px" }} />
+      </div>
 
-          {/* Front: comercios CSS mockup — floated bottom-right */}
-          <div style={{
-            position: "absolute",
-            bottom: -36,
-            right: -24,
-            width: "72%",
-            background: "#fff",
-            borderRadius: 12,
-            border: "1px solid var(--border)",
-            boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
-            overflow: "hidden",
+      {/* Floating comercios card */}
+      <div style={{
+        position: "absolute",
+        bottom: -32,
+        right: -20,
+        width: "68%",
+        background: "#fff",
+        borderRadius: 12,
+        border: "1px solid var(--border)",
+        boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
+        overflow: "hidden",
+      }}>
+        <div style={{ padding: "9px 14px", borderBottom: "1px solid var(--border)" }}>
+          <div style={{ fontWeight: 700, fontSize: "0.8rem", color: "var(--text)" }}>Comercios</div>
+          <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", marginTop: 1 }}>13 comercios · 11 validados · 2 sin validar</div>
+        </div>
+        <div style={{ background: "var(--slate-50)", borderBottom: "1px solid var(--border)", display: "grid", gridTemplateColumns: "1fr 70px 82px 76px", padding: "4px 14px" }}>
+          {["COMERCIO","TIPO","ÚLTIMA VISITA","ESTADO"].map(h => (
+            <div key={h} style={{ fontSize: "0.52rem", fontWeight: 700, color: "var(--slate-400)", letterSpacing: "0.04em" }}>{h}</div>
+          ))}
+        </div>
+        {comercios.map((c, i) => (
+          <div key={i} style={{
+            display: "grid", gridTemplateColumns: "1fr 70px 82px 76px",
+            padding: "5px 14px", alignItems: "center",
+            background: i % 2 === 0 ? "#fff" : "var(--slate-50)",
+            borderBottom: i < comercios.length - 1 ? "1px solid var(--slate-100)" : "none",
           }}>
-            {/* Header */}
-            <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--border)" }}>
-              <div style={{ fontWeight: 700, fontSize: "0.82rem", color: "var(--text)" }}>Comercios</div>
-              <div style={{ fontSize: "0.62rem", color: "var(--text-muted)", marginTop: 1 }}>
-                13 comercios · 11 validados · 2 sin validar
-              </div>
+            <div>
+              <div style={{ fontSize: "0.65rem", fontWeight: 600, color: "var(--text)", lineHeight: 1.2 }}>{c.nombre}</div>
+              {c.dir && <div style={{ fontSize: "0.54rem", color: "var(--text-muted)" }}>{c.dir}</div>}
             </div>
-            {/* Table header */}
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 80px 90px 80px",
-              padding: "5px 14px",
-              background: "var(--slate-50)",
-              borderBottom: "1px solid var(--border)",
-            }}>
-              {["COMERCIO","TIPO","ÚLTIMA VISITA","ESTADO"].map(h => (
-                <div key={h} style={{ fontSize: "0.55rem", fontWeight: 700, color: "var(--slate-400)", letterSpacing: "0.04em" }}>{h}</div>
-              ))}
+            <div>
+              <span style={{ fontSize: "0.56rem", fontWeight: 500, background: tipoBg[c.tipo], color: tipoText[c.tipo], padding: "1px 6px", borderRadius: 99 }}>
+                {c.tipo}
+              </span>
             </div>
-            {/* Rows */}
-            {comercios.map((c, i) => (
-              <div key={i} style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 80px 90px 80px",
-                padding: "6px 14px",
-                borderBottom: i < comercios.length - 1 ? "1px solid var(--slate-100)" : "none",
-                alignItems: "center",
-                background: i % 2 === 0 ? "#fff" : "var(--slate-50)",
-              }}>
-                <div>
-                  <div style={{ fontSize: "0.68rem", fontWeight: 600, color: "var(--text)", lineHeight: 1.2 }}>{c.nombre}</div>
-                  {c.dir && <div style={{ fontSize: "0.56rem", color: "var(--text-muted)" }}>{c.dir}</div>}
-                </div>
-                <div>
-                  <span style={{
-                    fontSize: "0.58rem",
-                    fontWeight: 500,
-                    background: tipoColor[c.tipo],
-                    color: tipoText[c.tipo],
-                    padding: "2px 7px",
-                    borderRadius: 99,
-                  }}>{c.tipo}</span>
-                </div>
-                <div style={{ fontSize: "0.6rem", color: "var(--text-muted)" }}>⏱ {c.visita}</div>
-                <div style={{ fontSize: "0.6rem", fontWeight: 600, color: c.estado === "Validado" ? "var(--g-600)" : "#f59e0b" }}>
-                  {c.estado === "Validado" ? "✓ " : "⏳ "}{c.estado}
-                </div>
-              </div>
-            ))}
+            <div style={{ fontSize: "0.58rem", color: "var(--text-muted)" }}>⏱ {c.visita}</div>
+            <div style={{ fontSize: "0.58rem", fontWeight: 600, color: c.ok ? "var(--g-600)" : "#f59e0b" }}>
+              {c.ok ? "✓ Validado" : "⏳ Sin validar"}
+            </div>
           </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function ParaDistribuidoras() {
+  return (
+    <section id="distribuidoras" style={{ padding: "5rem 1.5rem 8rem", background: "var(--bg-subtle)" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+
+        {/* Monitor left */}
+        <div className="blur-in">
+          <MonitorFrame />
         </div>
 
-        {/* Text — right column, extra bottom padding so floating card doesn't overlap */}
-        <div style={{ paddingBottom: "3rem" }}>
+        {/* Text right */}
+        <div>
           <span className="badge blur-in" style={{ marginBottom: "1rem", display: "inline-flex" }}>Para distribuidoras</span>
           <h2 className="section-title blur-in" style={{ marginBottom: "1.5rem", transitionDelay: "80ms" }}>
             La distribuidora que llega con datos gana el contrato
@@ -155,12 +152,7 @@ export default function ParaDistribuidoras() {
         </div>
 
       </div>
-      <style>{`
-        @media(max-width:900px) {
-          #distribuidoras > div { grid-template-columns: 1fr !important; }
-          #distribuidoras > div > div:first-child { margin-bottom: 3.5rem; }
-        }
-      `}</style>
+      <style>{`@media(max-width:900px){#distribuidoras > div{grid-template-columns:1fr!important; padding-bottom:5rem}}`}</style>
     </section>
   );
 }
