@@ -33,56 +33,148 @@ export default function Problema() {
     <section id="problema" style={{ padding: "5rem 1.5rem 4rem", background: "var(--bg)" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
 
-        {/* Big stat */}
-        <div className="blur-in" style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-          <div style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "clamp(5.5rem, 16vw, 12rem)",
-            fontWeight: 900,
-            lineHeight: 0.88,
-            letterSpacing: "-0.04em",
-            background: "linear-gradient(135deg, var(--g-600) 0%, var(--t-400) 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            marginBottom: "0.75rem",
-          }}>
-            200K+
-          </div>
-          <p style={{
-            fontSize: "clamp(0.85rem, 1.8vw, 1rem)",
-            color: "var(--slate-500)",
-            fontWeight: 600,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            marginBottom: "2.25rem",
-          }}>
-            puntos de venta sin datos en Argentina
-          </p>
+        {/* ── Top: Big stat + two side cards ── */}
+        <div className="prob-hero blur-in" style={{ marginBottom: "2.5rem" }}>
 
-          {/* Tagline pill */}
+          {/* LEFT: Giant 200K+ */}
           <div style={{
-            display: "inline-block",
-            padding: "1.25rem 2rem",
-            background: "var(--g-50)",
-            border: "1px solid rgba(22,163,74,0.22)",
-            borderRadius: 18,
-            maxWidth: 680,
+            display: "flex", flexDirection: "column", justifyContent: "center",
+            padding: "2rem 0",
           }}>
-            <p style={{
+            <div style={{
               fontFamily: "var(--font-heading)",
-              fontSize: "clamp(1rem, 2.2vw, 1.4rem)",
-              fontWeight: 700,
-              color: "var(--g-900)",
-              lineHeight: 1.45,
-              margin: 0,
+              fontSize: "clamp(5rem, 13vw, 10.5rem)",
+              fontWeight: 900,
+              lineHeight: 0.88,
+              letterSpacing: "-0.04em",
+              background: "linear-gradient(135deg, var(--g-600) 0%, var(--t-400) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              marginBottom: "1rem",
             }}>
-              $40 de cada $100 del consumo masivo se venden<br />en un mercado que nadie mide
+              200K+
+            </div>
+            <p style={{
+              fontSize: "clamp(0.78rem, 1.5vw, 0.92rem)",
+              color: "var(--slate-500)",
+              fontWeight: 600,
+              letterSpacing: "0.07em",
+              textTransform: "uppercase",
+              lineHeight: 1.5,
+              maxWidth: 260,
+            }}>
+              Puntos de venta<br />sin datos en Argentina
             </p>
+          </div>
+
+          {/* RIGHT: Two stacked stat cards */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+
+            {/* Card 1 — $40 */}
+            <div style={{
+              background: "var(--g-50)",
+              border: "1px solid rgba(22,163,74,0.22)",
+              borderRadius: 18,
+              padding: "1.5rem 1.75rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "1.25rem",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              {/* Decorative bg circle */}
+              <div style={{
+                position: "absolute", right: -24, top: -24,
+                width: 120, height: 120, borderRadius: "50%",
+                background: "rgba(22,163,74,0.08)",
+                pointerEvents: "none",
+              }} />
+              {/* Big $40 */}
+              <div style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "clamp(2.8rem, 5vw, 3.8rem)",
+                fontWeight: 900,
+                lineHeight: 1,
+                letterSpacing: "-0.04em",
+                background: "linear-gradient(135deg, var(--g-700), var(--g-500))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                flexShrink: 0,
+              }}>
+                $40
+              </div>
+              {/* Divider */}
+              <div style={{ width: 1, alignSelf: "stretch", background: "rgba(22,163,74,0.2)", flexShrink: 0 }} />
+              {/* Text */}
+              <div>
+                <p style={{
+                  fontFamily: "var(--font-heading)",
+                  fontSize: "clamp(0.95rem, 1.8vw, 1.15rem)",
+                  fontWeight: 700,
+                  color: "var(--g-900)",
+                  lineHeight: 1.4,
+                  margin: 0,
+                }}>
+                  de cada $100 del consumo masivo se venden en un mercado que nadie mide
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2 — 0 plataformas */}
+            <div style={{
+              background: "linear-gradient(135deg, var(--g-900) 0%, #0a3d20 100%)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              borderRadius: 18,
+              padding: "1.5rem 1.75rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "1.25rem",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              {/* Glow */}
+              <div style={{
+                position: "absolute", right: -20, bottom: -20,
+                width: 100, height: 100, borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }} />
+              {/* Big 0 */}
+              <div style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "clamp(2.8rem, 5vw, 3.8rem)",
+                fontWeight: 900,
+                lineHeight: 1,
+                letterSpacing: "-0.04em",
+                color: "var(--g-400)",
+                flexShrink: 0,
+                textShadow: "0 0 32px rgba(34,197,94,0.4)",
+              }}>
+                0
+              </div>
+              {/* Divider */}
+              <div style={{ width: 1, alignSelf: "stretch", background: "rgba(255,255,255,0.1)", flexShrink: 0 }} />
+              {/* Text */}
+              <div>
+                <p style={{
+                  fontFamily: "var(--font-heading)",
+                  fontSize: "clamp(0.95rem, 1.8vw, 1.15rem)",
+                  fontWeight: 700,
+                  color: "#fff",
+                  lineHeight: 1.4,
+                  margin: 0,
+                }}>
+                  plataformas que mapean hoy el canal tradicional desde el campo
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        {/* 3 Problem cards */}
+        {/* ── Bottom: 3 problem cards ── */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {cards.map((c, i) => (
             <div key={i} className="card blur-in" style={{ padding: "1.75rem", transitionDelay: `${i * 120}ms` }}>
@@ -111,6 +203,21 @@ export default function Problema() {
         </div>
 
       </div>
+
+      <style>{`
+        .prob-hero {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 3rem;
+          align-items: center;
+        }
+        @media (max-width: 760px) {
+          .prob-hero {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

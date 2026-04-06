@@ -1,12 +1,6 @@
 import Image from "next/image";
 import CycleText from "./CycleText";
 
-const stats = [
-  { num: "200K+", label: "Puntos de venta sin datos" },
-  { num: "40%",   label: "Del consumo masivo en canal tradicional" },
-  { num: "0",     label: "Plataformas que lo mapean hoy" },
-];
-
 // Phone-style item
 type ShotItem =
   | { type: "phone";   src: string; alt: string }
@@ -196,27 +190,6 @@ export default function Hero() {
             </div>
 
           </div>
-        </div>
-      </section>
-
-      {/* Stats bar */}
-      <section style={{
-        borderTop: "1px solid var(--border)",
-        borderBottom: "1px solid var(--border)",
-        background: "var(--bg-subtle)",
-        padding: "2.5rem 1.5rem",
-      }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "2rem", textAlign: "center" }}>
-          {stats.map((s, i) => (
-            <div key={i} className="blur-in" style={{ transitionDelay: `${i * 100}ms` }}>
-              <div className="shimmer" style={{ borderRadius: 8, padding: "0.25rem 0" }}>
-                <div style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--g-700)", lineHeight: 1 }}>
-                  {s.num}
-                </div>
-              </div>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.88rem", marginTop: 8, lineHeight: 1.4 }}>{s.label}</p>
-            </div>
-          ))}
         </div>
       </section>
 
