@@ -22,8 +22,8 @@ export default function Home() {
       <main>
         <Hero />
         <Problema />
-        <Solucion />
         <Ecosistema />
+        <Solucion />
         <AppMovil />
         <Gamificacion />
         <Plataforma />
