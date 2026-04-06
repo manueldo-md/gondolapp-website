@@ -14,173 +14,206 @@ const gondolaPhotos = [
   "11","12","13","14","15","16","17","18","19","20","23",
 ].map(n => ({
   src: `/screenshots-reales/${n}${n === "23" ? ".jpeg" : ".jpg"}`,
-  alt: `Relevamiento góndola #${n}`,
+  alt: `Relevamiento #${n}`,
 }));
 
-// Split into two rows for opposite-direction marquees
-const row1 = gondolaPhotos.slice(0, 10);
+const row1 = gondolaPhotos.slice(0, 11);
 const row2 = gondolaPhotos.slice(10);
-
-// ─── Components ──────────────────────────────────────────────────────────
-
-function ReportPage({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div style={{
-      background: "#fff",
-      borderRadius: 10,
-      overflow: "hidden",
-      boxShadow: "0 4px 20px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.06)",
-      border: "1px solid var(--border)",
-      aspectRatio: "210/297", // A4
-      position: "relative",
-      flexShrink: 0,
-      transition: "transform 0.25s ease, box-shadow 0.25s ease",
-    }}
-      className="informe-page"
-    >
-      <Image src={src} alt={alt} fill style={{ objectFit: "cover", objectPosition: "top" }} sizes="300px" />
-    </div>
-  );
-}
-
-function GondolaThumb({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div style={{
-      width: 110,
-      height: 110,
-      borderRadius: 10,
-      overflow: "hidden",
-      flexShrink: 0,
-      position: "relative",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.12)",
-      border: "1px solid rgba(255,255,255,0.08)",
-    }}>
-      <Image src={src} alt={alt} fill style={{ objectFit: "cover" }} sizes="110px" />
-    </div>
-  );
-}
 
 // ─── Section ─────────────────────────────────────────────────────────────
 export default function Informe() {
   return (
     <section id="informe" style={{
-      padding: "5rem 0 6rem",
+      padding: "6rem 0 7rem",
       background: "linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg) 100%)",
       overflow: "hidden",
     }}>
 
       {/* Header */}
-      <div className="blur-in" style={{ textAlign: "center", marginBottom: "3.5rem", padding: "0 1.5rem" }}>
-        <span className="badge" style={{ marginBottom: "1rem", display: "inline-flex" }}>Reporte procesado</span>
-        <h2 className="section-title">
+      <div className="blur-in" style={{ textAlign: "center", marginBottom: "4rem", padding: "0 1.5rem" }}>
+        <span className="badge" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>Reporte procesado</span>
+        <h2 style={{
+          fontFamily: "var(--font-heading)",
+          fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
+          fontWeight: 800,
+          letterSpacing: "-0.03em",
+          color: "var(--text)",
+          lineHeight: 1.1,
+          marginBottom: "1.25rem",
+        }}>
           El primer reporte del canal<br />tradicional con datos reales
         </h2>
-        <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 500, margin: "0.75rem auto 0" }}>
-          Fotos verificadas en campo, procesadas por IA y convertidas en inteligencia de mercado accionable para marcas y distribuidoras.
+        <p style={{
+          color: "var(--text-muted)",
+          fontSize: "clamp(1rem, 1.8vw, 1.2rem)",
+          lineHeight: 1.75,
+          maxWidth: 560,
+          margin: "0 auto",
+        }}>
+          Fotos verificadas en campo, procesadas por IA y convertidas en inteligencia
+          de mercado accionable para marcas y distribuidoras.
         </p>
       </div>
 
-      {/* Main content: report pages left + gondola marquee right */}
-      <div className="informe-layout" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.5rem" }}>
+      {/* Main: report pages + gondola marquee */}
+      <div className="informe-layout">
 
-        {/* LEFT: 4 report pages in 2×2 grid */}
-        <div className="blur-in" style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "1rem",
-          alignContent: "start",
-          transitionDelay: "80ms",
-        }}>
-          {informePages.map((p, i) => (
-            <ReportPage key={i} src={p.src} alt={p.alt} />
-          ))}
-          {/* Bottom caption */}
-          <div style={{ gridColumn: "1 / -1", textAlign: "center", paddingTop: "0.5rem" }}>
-            <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", lineHeight: 1.5 }}>
-              Informe de relevamiento — Entre Ríos 2025<br />
-              <span style={{ color: "var(--g-700)", fontWeight: 600 }}>+500 fotos · 16 ciudades · 133 puntos de venta</span>
-            </p>
+        {/* LEFT: 4 report pages */}
+        <div className="blur-in" style={{ padding: "0 1.5rem 0 max(1.5rem, calc((100vw - 1200px)/2 + 1.5rem))" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "1rem",
+          }}>
+            {informePages.map((p, i) => (
+              <div key={i} className="informe-page" style={{
+                background: "#fff",
+                borderRadius: 12,
+                overflow: "hidden",
+                boxShadow: "0 6px 24px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.06)",
+                border: "1px solid var(--border)",
+                aspectRatio: "210/297",
+                position: "relative",
+              }}>
+                <Image src={p.src} alt={p.alt} fill style={{ objectFit: "cover", objectPosition: "top" }} sizes="280px" />
+              </div>
+            ))}
           </div>
+          <p style={{
+            textAlign: "center",
+            marginTop: "1.25rem",
+            fontSize: "0.85rem",
+            color: "var(--text-muted)",
+            lineHeight: 1.6,
+          }}>
+            Informe de relevamiento · Entre Ríos 2025<br />
+            <strong style={{ color: "var(--g-700)" }}>+500 fotos · 16 ciudades · 133 puntos de venta</strong>
+          </p>
         </div>
 
-        {/* RIGHT: Gondola photo marquees */}
-        <div className="blur-in" style={{ transitionDelay: "160ms", overflow: "hidden", display: "flex", flexDirection: "column", gap: "1rem", justifyContent: "center" }}>
+        {/* RIGHT: gondola marquees */}
+        <div className="blur-in" style={{
+          display: "flex", flexDirection: "column",
+          gap: "1.25rem",
+          transitionDelay: "120ms",
+        }}>
 
-          <div style={{
-            fontSize: "0.7rem", fontWeight: 700, color: "var(--text-muted)",
-            letterSpacing: "0.08em", textTransform: "uppercase",
-            marginBottom: "0.5rem", paddingLeft: "0.5rem",
+          <p style={{
+            fontSize: "0.75rem", fontWeight: 700,
+            color: "var(--slate-400)",
+            letterSpacing: "0.1em", textTransform: "uppercase",
+            marginBottom: "0.25rem",
+            paddingLeft: "1.5rem",
           }}>
             Relevamientos en campo
-          </div>
+          </p>
 
           {/* Row 1 — scrolls left */}
           <div className="marquee-wrap">
-            <div className="marquee-track-left" style={{ gap: 10 }}>
-              {[...row1, ...row1].map((g, i) => <GondolaThumb key={i} src={g.src} alt={g.alt} />)}
+            <div className="marquee-track-left" style={{ gap: 14 }}>
+              {[...row1, ...row1].map((g, i) => (
+                <div key={i} className="gondola-thumb">
+                  <Image src={g.src} alt={g.alt} fill style={{ objectFit: "cover" }} sizes="210px" />
+                  <div className="gondola-overlay" />
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Row 2 — scrolls right */}
           <div className="marquee-wrap">
-            <div className="marquee-track-right" style={{ gap: 10 }}>
-              {[...row2, ...row2].map((g, i) => <GondolaThumb key={i} src={g.src} alt={g.alt} />)}
+            <div className="marquee-track-right" style={{ gap: 14 }}>
+              {[...row2, ...row2].map((g, i) => (
+                <div key={i} className="gondola-thumb">
+                  <Image src={g.src} alt={g.alt} fill style={{ objectFit: "cover" }} sizes="210px" />
+                  <div className="gondola-overlay" />
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Counter badge */}
+          {/* Stat badges */}
           <div style={{
-            display: "flex", alignItems: "center", gap: "1rem",
-            marginTop: "1rem", paddingLeft: "0.5rem", flexWrap: "wrap",
+            display: "flex",
+            gap: "0.75rem",
+            marginTop: "0.75rem",
+            flexWrap: "wrap",
+            paddingLeft: "1.5rem",
           }}>
-            <div style={{
-              background: "var(--g-50)",
-              border: "1px solid rgba(22,163,74,0.2)",
-              borderRadius: 10,
-              padding: "0.75rem 1.25rem",
-            }}>
-              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.4rem", color: "var(--g-700)", lineHeight: 1 }}>+500</div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: 3 }}>fotos en campo</div>
-            </div>
-            <div style={{
-              background: "var(--g-50)",
-              border: "1px solid rgba(22,163,74,0.2)",
-              borderRadius: 10,
-              padding: "0.75rem 1.25rem",
-            }}>
-              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.4rem", color: "var(--g-700)", lineHeight: 1 }}>99,5%</div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: 3 }}>aprobadas por IA</div>
-            </div>
-            <div style={{
-              background: "var(--g-50)",
-              border: "1px solid rgba(22,163,74,0.2)",
-              borderRadius: 10,
-              padding: "0.75rem 1.25rem",
-            }}>
-              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.4rem", color: "var(--g-700)", lineHeight: 1 }}>16</div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: 3 }}>ciudades</div>
-            </div>
+            {[
+              { val: "+500", label: "fotos relevadas" },
+              { val: "99,5%", label: "aprobadas por IA" },
+              { val: "16", label: "ciudades cubiertas" },
+            ].map(({ val, label }) => (
+              <div key={val} style={{
+                background: "var(--g-50)",
+                border: "1px solid rgba(22,163,74,0.2)",
+                borderRadius: 12,
+                padding: "0.85rem 1.25rem",
+                textAlign: "center",
+              }}>
+                <div style={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 800,
+                  fontSize: "1.6rem",
+                  color: "var(--g-700)",
+                  lineHeight: 1,
+                }}>{val}</div>
+                <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: 4 }}>{label}</div>
+              </div>
+            ))}
           </div>
 
         </div>
-
       </div>
 
       <style>{`
         .informe-layout {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 3rem;
+          gap: 0;
           align-items: center;
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+        .informe-page {
+          transition: transform 0.28s ease, box-shadow 0.28s ease;
+          cursor: default;
         }
         .informe-page:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 36px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06) !important;
+          transform: translateY(-6px) scale(1.02);
+          box-shadow: 0 20px 48px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.08) !important;
+        }
+        .gondola-thumb {
+          width: 210px;
+          height: 160px;
+          border-radius: 14px;
+          overflow: hidden;
+          flex-shrink: 0;
+          position: relative;
+          box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+          border: 1.5px solid rgba(255,255,255,0.08);
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .gondola-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            transparent 50%,
+            rgba(5,46,22,0.45) 100%
+          );
+          transition: opacity 0.25s ease;
+        }
+        .marquee-wrap:hover .gondola-thumb {
+          box-shadow: 0 8px 32px rgba(22,163,74,0.25);
         }
         @media (max-width: 860px) {
           .informe-layout {
             grid-template-columns: 1fr !important;
-            gap: 2.5rem !important;
+          }
+          .informe-layout > div:first-child {
+            padding: 0 1.5rem !important;
           }
         }
       `}</style>
