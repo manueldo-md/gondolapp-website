@@ -2,11 +2,10 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Problema from "@/components/Problema";
 import Solucion from "@/components/Solucion";
+import Ecosistema from "@/components/Ecosistema";
 import AppMovil from "@/components/AppMovil";
 import Gamificacion from "@/components/Gamificacion";
-import Ecosistema from "@/components/Ecosistema";
-import ParaMarcas from "@/components/ParaMarcas";
-import ParaDistribuidoras from "@/components/ParaDistribuidoras";
+import Plataforma from "@/components/Plataforma";
 import Numeros from "@/components/Numeros";
 import Comparativa from "@/components/Comparativa";
 import ComoArranca from "@/components/ComoArranca";
@@ -24,11 +23,10 @@ export default function Home() {
         <Hero />
         <Problema />
         <Solucion />
+        <Ecosistema />
         <AppMovil />
         <Gamificacion />
-        <Ecosistema />
-        <ParaMarcas />
-        <ParaDistribuidoras />
+        <Plataforma />
         <Numeros />
         <Comparativa />
         <ComoArranca />

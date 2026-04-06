@@ -1,212 +1,349 @@
-import type { ReactNode } from "react";
+"use client";
 
-const steps = [
-  {
-    num: "01",
-    color: "#f59e0b",
-    title: "ACME crea la campaña",
-    sub: "La marca define zona, SKUs y período desde el panel web. En 5 minutos la campaña está activa.",
-    visual: (
-      <div style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 12, padding: "1rem", fontSize: "0.72rem" }}>
-        <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
-          {["#ef4444","#f59e0b","#22c55e"].map((c,i) => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: c }} />)}
-          <span style={{ color: "var(--slate-400)", fontSize: "0.6rem", marginLeft: 4 }}>panel.gondolapp.com</span>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-          {[["Zona","Paraná, Colón, Gualeguaychú"],["Canal","Autoservicios"],["SKUs","Aceites ACME (3)"],["Período","15–30 Mar"]].map(([k,v]) => (
-            <div key={k} style={{ display: "flex", justifyContent: "space-between", background: "var(--bg-subtle)", padding: "5px 8px", borderRadius: 6 }}>
-              <span style={{ color: "var(--slate-400)" }}>{k}</span>
-              <span style={{ fontWeight: 600, color: "var(--text)" }}>{v}</span>
-            </div>
-          ))}
-          <div style={{ background: "var(--grad-brand)", color: "#fff", borderRadius: 8, padding: "7px", textAlign: "center", fontWeight: 700, marginTop: 2 }}>
-            Lanzar campaña →
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    num: "02",
-    color: "#3b82f6",
-    title: "Vendedores capturan en campo",
-    sub: "En cada visita, el vendedor abre la PWA y saca una foto. 30 segundos. El GPS registra la ubicación exacta.",
-    visual: (
-      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        <div style={{ width: 90, background: "#0f0f0f", borderRadius: 14, border: "2px solid #222", padding: 6, flexShrink: 0 }}>
-          <div style={{ background: "#1a1a1a", borderRadius: 8, overflow: "hidden" }}>
-            <div style={{ height: 60, background: "linear-gradient(180deg,#c8e6c9,#a5d6a7)", position: "relative" }}>
-              <div style={{ position: "absolute", inset: 3, border: "1.5px solid rgba(34,197,94,0.7)", borderRadius: 4 }} />
-              <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 1.5, background: "rgba(34,197,94,0.8)" }} />
-            </div>
-            <div style={{ padding: "5px 6px", background: "#111" }}>
-              <div style={{ fontSize: "0.5rem", color: "#86efac", fontWeight: 700, marginBottom: 2 }}>📍 GPS verificado</div>
-              <div style={{ height: 2.5, background: "#222", borderRadius: 2 }}>
-                <div style={{ width: "65%", height: "100%", background: "linear-gradient(90deg,#22c55e,#2dd4bf)", borderRadius: 2 }} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-          <div style={{ background: "var(--bg-subtle)", border: "1px solid var(--border)", borderRadius: 8, padding: "6px 8px" }}>
-            <div style={{ fontSize: "0.62rem", color: "var(--text-muted)" }}>Misión asignada</div>
-            <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text)" }}>📸 Góndola Aceites</div>
-          </div>
-          <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 8, padding: "6px 8px" }}>
-            <div style={{ fontSize: "0.62rem", color: "#3b82f6", fontWeight: 600 }}>✓ Foto enviada · 14:32</div>
-            <div style={{ fontSize: "0.58rem", color: "#6b7280" }}>Autoservicio Don Juan</div>
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    num: "03",
-    color: "#22c55e",
-    title: "La IA analiza cada imagen",
-    sub: "En segundos: identifica productos, mide presencia en góndola, detecta quiebres y lee precios. Triple validación automática.",
-    visual: (
-      <div style={{ background: "var(--bg-subtle)", border: "1px solid var(--border)", borderRadius: 12, padding: "1rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 8 }}>
-          {[["62%","Share","var(--g-700)"],["$2.890","Precio","var(--text)"],["1","Quiebre","#ef4444"]].map(([v,l,c]) => (
-            <div key={l} style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8, padding: "6px", textAlign: "center" }}>
-              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.1rem", color: c as string }}>{v}</div>
-              <div style={{ fontSize: "0.55rem", color: "var(--text-muted)" }}>{l}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "6px 8px", display: "flex", gap: 6, alignItems: "center" }}>
-          <span style={{ fontSize: "0.85rem" }}>⚠️</span>
-          <div>
-            <div style={{ fontSize: "0.65rem", fontWeight: 700, color: "#ef4444" }}>Quiebre detectado</div>
-            <div style={{ fontSize: "0.58rem", color: "#6b7280" }}>Mezcla 900ml — posición vacía</div>
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    num: "04",
-    color: "#8b5cf6",
-    title: "Alertas automáticas + fixer asignado",
-    sub: "Cada quiebre activa una alerta y despacha un ejecutor independiente. La distribuidora ve todo en tiempo real en su panel.",
-    visual: (
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 10, padding: "0.65rem 0.9rem", display: "flex", gap: 8, alignItems: "center" }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.5s infinite", flexShrink: 0 }} />
-          <div>
-            <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#ef4444" }}>Quiebre · Mezcla 900ml · Paraná</div>
-            <div style={{ fontSize: "0.6rem", color: "#6b7280" }}>Autoservicio Don Juan · hace 2 min</div>
-          </div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <svg width="14" height="18" fill="none" viewBox="0 0 14 18"><path d="M7 2v14M7 16l-3-3M7 16l3-3" stroke="var(--g-600)" strokeWidth="2" strokeLinecap="round"/></svg>
-        </div>
-        <div style={{ background: "#f5f3ff", border: "1px solid #ddd6fe", borderRadius: 10, padding: "0.65rem 0.9rem", display: "flex", gap: 8, alignItems: "center" }}>
-          <span style={{ fontSize: "1rem" }}>🔧</span>
-          <div>
-            <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#7c3aed" }}>Fixer asignado · 2.3 km</div>
-            <div style={{ fontSize: "0.6rem", color: "#6b7280" }}>ETA 45 min · foto antes/después</div>
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    num: "05",
-    color: "#0d9488",
-    title: "Reporte completo de campaña",
-    sub: "ACME recibe el análisis con presencia real, share de góndola, precios verificados y correcciones ejecutadas. Datos que nunca tuvieron.",
-    visual: (
-      <div style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 12, padding: "1rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-          <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "var(--text)" }}>Reporte ACME Aceites</div>
-          <span style={{ background: "var(--g-50)", color: "var(--g-700)", fontSize: "0.58rem", fontWeight: 700, padding: "2px 8px", borderRadius: 99 }}>Completada ✓</span>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 8 }}>
-          {[["89%","Presencia","var(--g-700)"],["58%","Share","var(--t-600)"],["47","Pdv relevados","var(--g-700)"],["6","Quiebres → resueltos","#f59e0b"]].map(([v,l,c]) => (
-            <div key={l} style={{ background: "var(--bg-subtle)", border: "1px solid var(--border)", borderRadius: 8, padding: "7px", textAlign: "center" }}>
-              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.1rem", color: c as string }}>{v}</div>
-              <div style={{ fontSize: "0.55rem", color: "var(--text-muted)", lineHeight: 1.3 }}>{l}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ background: "var(--g-50)", border: "1px solid rgba(22,163,74,0.2)", borderRadius: 8, padding: "6px 8px", fontSize: "0.62rem", color: "var(--g-700)", fontWeight: 600, textAlign: "center" }}>
-          Descargar PDF completo →
-        </div>
-      </div>
-    ),
-  },
+// ─── Data ───────────────────────────────────────────────────────────────
+const brands = [
+  { name: "ACME",      color: "#f59e0b", bg: "#fffbeb" },
+  { name: "Georgalos", color: "#3b82f6", bg: "#eff6ff" },
+  { name: "Biomega",   color: "#8b5cf6", bg: "#f5f3ff" },
+  { name: "TuMarca",   color: "#22c55e", bg: "#f0fdf4" },
 ];
 
-function Connector() {
+const distros = [
+  { name: "Dist. Norte ER",  cities: "Paraná · Diamante",    gondoleros: 6 },
+  { name: "Dist. Litoral",   cities: "Concordia · Colón",    gondoleros: 5 },
+  { name: "Dist. Centro",    cities: "Gualeguaychú · Rosario del Tala", gondoleros: 4 },
+];
+
+const outputs = [
+  { icon: "📊", label: "Presencia real en góndola",   color: "var(--g-700)" },
+  { icon: "⚠️", label: "Alertas de quiebre al instante", color: "#ef4444"  },
+  { icon: "📈", label: "Share of shelf verificado",    color: "var(--t-600)"},
+  { icon: "💰", label: "Precio real en campo",         color: "#f59e0b"    },
+  { icon: "🗺️", label: "Mapa de cobertura live",       color: "#8b5cf6"    },
+];
+
+// ─── Sub-components ──────────────────────────────────────────────────────
+
+function PhoneNode({ delay }: { delay: number }) {
   return (
-    <div style={{ display: "flex", justifyContent: "center", padding: "4px 0", position: "relative" }}>
-      <div style={{ width: 2, height: 40, backgroundImage: "repeating-linear-gradient(to bottom, var(--g-400) 0, var(--g-400) 4px, transparent 4px, transparent 8px)" }} />
+    <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+      {/* Phone frame */}
+      <div style={{
+        width: 26, height: 44,
+        background: "#111",
+        borderRadius: 6,
+        border: "1.5px solid #333",
+        position: "relative",
+        overflow: "hidden",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+      }}>
+        {/* Screen flash */}
+        <div style={{
+          position: "absolute", inset: 2, borderRadius: 4,
+          background: "rgba(34,197,94,0.6)",
+          animation: `phone-flash 3s ${delay}ms ease-in-out infinite`,
+        }} />
+        {/* Home bar */}
+        <div style={{
+          position: "absolute", bottom: 2, left: "50%", transform: "translateX(-50%)",
+          width: 9, height: 1.5, borderRadius: 1, background: "#333",
+        }} />
+      </div>
+      {/* GPS dot */}
+      <div style={{ fontSize: "0.45rem", color: "var(--g-600)", fontWeight: 700 }}>📍</div>
     </div>
   );
 }
 
+function HubCenter() {
+  return (
+    <div style={{
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      padding: "2.5rem 1.5rem",
+      background: "linear-gradient(160deg, var(--g-900) 0%, #0a3d20 60%, #061a0e 100%)",
+      borderRadius: 20,
+      border: "1px solid rgba(255,255,255,0.07)",
+      position: "relative",
+      overflow: "hidden",
+      minHeight: 380,
+    }}>
+      {/* Ambient glow */}
+      <div style={{
+        position: "absolute", top: "50%", left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 280, height: 280,
+        borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(34,197,94,0.18) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+
+      {/* Label top */}
+      <div style={{
+        fontSize: "0.6rem", fontWeight: 700, color: "var(--g-400)",
+        letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "1.5rem",
+      }}>
+        Motor central
+      </div>
+
+      {/* Pulse rings + hub logo */}
+      <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.75rem" }}>
+        {[1, 2, 3].map(r => (
+          <div key={r} style={{
+            position: "absolute",
+            borderRadius: "50%",
+            border: "1.5px solid rgba(34,197,94,0.4)",
+            width: `${56 + r * 36}px`,
+            height: `${56 + r * 36}px`,
+            animation: `pulse-ring 2.4s ${r * 0.55}s ease-out infinite`,
+          }} />
+        ))}
+        {/* Hub circle */}
+        <div style={{
+          width: 72, height: 72, borderRadius: "50%",
+          background: "var(--grad-brand)",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          boxShadow: "0 0 48px rgba(22,163,74,0.5)",
+          zIndex: 1,
+          flexShrink: 0,
+        }}>
+          <svg width="24" height="24" fill="none" stroke="#fff" strokeWidth="2.2" viewBox="0 0 24 24">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Name */}
+      <div style={{
+        fontFamily: "var(--font-heading)",
+        fontWeight: 900,
+        fontSize: "1.5rem",
+        color: "#fff",
+        letterSpacing: "-0.03em",
+        marginBottom: "0.35rem",
+      }}>
+        GondolApp
+      </div>
+      <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.45)", marginBottom: "2rem", textAlign: "center", lineHeight: 1.5 }}>
+        IA · GPS · Validación<br />Gamificación · Reportes
+      </div>
+
+      {/* Processing chips */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center" }}>
+        {["Reconocimiento visual", "Geolocalización", "Triple validación", "Push de alertas"].map(tag => (
+          <span key={tag} style={{
+            fontSize: "0.58rem", fontWeight: 600,
+            background: "rgba(34,197,94,0.15)",
+            color: "var(--g-400)",
+            border: "1px solid rgba(34,197,94,0.25)",
+            padding: "3px 10px", borderRadius: 99,
+          }}>{tag}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Section ─────────────────────────────────────────────────────────────
 export default function Ecosistema() {
   return (
-    <section id="ecosistema" style={{ padding: "6rem 1.5rem", background: "var(--bg)" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+    <section id="ecosistema" style={{ padding: "6rem 1.5rem", background: "var(--bg-subtle)", overflow: "hidden" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
+        {/* Header */}
         <div className="blur-in" style={{ textAlign: "center", marginBottom: "4rem" }}>
+          <span className="badge" style={{ marginBottom: "1rem", display: "inline-flex" }}>El ecosistema</span>
           <h2 className="section-title">
-            De la necesidad de una marca<br />al dato en góndola, en 5 pasos
+            Marcas, distribuidoras y vendedores<br />conectados en tiempo real
           </h2>
-          <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 500, margin: "0.75rem auto 0" }}>
-            <strong style={{ color: "var(--g-700)" }}>ACME</strong> quiere saber cómo están exhibidos sus aceites en los autoservicios de Entre Ríos.
+          <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 520, margin: "0.75rem auto 0" }}>
+            Cada foto que saca un vendedor alimenta la inteligencia de mercado que las marcas nunca tuvieron.
           </p>
         </div>
 
-        {/* Timeline */}
-        <div>
-          {steps.map((step, i) => (
-            <div key={i}>
-              <div className="blur-in" style={{ display: "grid", gridTemplateColumns: "80px 1fr", gap: "1.5rem", alignItems: "start", transitionDelay: `${i * 80}ms` }}>
-                {/* Step number */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 4 }}>
-                  <div style={{
-                    width: 52, height: 52, borderRadius: "50%",
-                    background: step.color + "18",
-                    border: `2px solid ${step.color}`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "0.9rem",
-                    color: step.color,
-                    flexShrink: 0,
-                  }}>
-                    {step.num}
-                  </div>
-                </div>
+        {/* Main diagram: 3 columns */}
+        <div className="eco-grid">
 
-                {/* Content */}
-                <div style={{ paddingBottom: "0.5rem" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", alignItems: "center" }}>
-                    <div>
-                      <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.1rem", color: "var(--text)", marginBottom: "0.5rem", lineHeight: 1.3 }}>
-                        {step.title}
-                      </h3>
-                      <p style={{ color: "var(--text-muted)", fontSize: "0.87rem", lineHeight: 1.7 }}>{step.sub}</p>
-                    </div>
-                    <div>{step.visual}</div>
-                  </div>
+          {/* ── LEFT: Actors ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
+            {/* Marcas */}
+            <div className="blur-in card" style={{ padding: "1.25rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.85rem" }}>
+                <span style={{ fontSize: "1.1rem" }}>🏷️</span>
+                <div>
+                  <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--g-600)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Marcas CPG</div>
+                  <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text)" }}>Crean campañas</div>
                 </div>
               </div>
-
-              {/* Connector (not after last) */}
-              {i < steps.length - 1 && <Connector />}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {brands.map(b => (
+                  <span key={b.name} style={{
+                    fontSize: "0.68rem", fontWeight: 700,
+                    background: b.bg, color: b.color,
+                    border: `1px solid ${b.color}30`,
+                    padding: "3px 10px", borderRadius: 99,
+                  }}>{b.name}</span>
+                ))}
+              </div>
             </div>
-          ))}
+
+            {/* Distribuidoras */}
+            <div className="blur-in card" style={{ padding: "1.25rem", transitionDelay: "80ms" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.85rem" }}>
+                <span style={{ fontSize: "1.1rem" }}>🏭</span>
+                <div>
+                  <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--g-600)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Distribuidoras</div>
+                  <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text)" }}>Coordinan la red</div>
+                </div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {distros.map((d, i) => (
+                  <div key={i} style={{
+                    background: "var(--bg-subtle)", borderRadius: 8,
+                    padding: "7px 10px",
+                    border: "1px solid var(--border)",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                  }}>
+                    <div>
+                      <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--text)" }}>{d.name}</div>
+                      <div style={{ fontSize: "0.58rem", color: "var(--text-muted)" }}>{d.cities}</div>
+                    </div>
+                    <div style={{
+                      fontSize: "0.6rem", fontWeight: 700, color: "var(--g-700)",
+                      background: "var(--g-50)", border: "1px solid rgba(22,163,74,0.2)",
+                      padding: "2px 8px", borderRadius: 99,
+                    }}>
+                      {d.gondoleros} gondoleros
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Gondoleros */}
+            <div className="blur-in card" style={{ padding: "1.25rem", transitionDelay: "160ms" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.85rem" }}>
+                <span style={{ fontSize: "1.1rem" }}>📱</span>
+                <div>
+                  <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--g-600)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Gondoleros</div>
+                  <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text)" }}>Capturan en campo</div>
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: "0.75rem", flexWrap: "wrap" }}>
+                {[0, 600, 1200, 1800, 2400].map((delay, i) => (
+                  <PhoneNode key={i} delay={delay} />
+                ))}
+                <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", lineHeight: 1.4, paddingBottom: 4 }}>
+                  30 seg<br />por foto<br />+ GPS
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ── CENTER: Flow connector left ── */}
+          <div className="eco-connector">
+            <div style={{ flex: 1, height: 2, background: "linear-gradient(to right, rgba(22,163,74,0.1), rgba(22,163,74,0.5))", position: "relative", alignSelf: "center" }}>
+              {[0, 800, 1600].map((d, i) => (
+                <div key={i} style={{
+                  position: "absolute", top: "50%", transform: "translateY(-50%)",
+                  width: 7, height: 7, borderRadius: "50%",
+                  background: "var(--g-500)", boxShadow: "0 0 8px var(--g-400)",
+                  animation: `flow-dot-h 2.4s ${d}ms linear infinite`,
+                }} />
+              ))}
+            </div>
+          </div>
+
+          {/* ── CENTER: Hub ── */}
+          <div className="blur-in" style={{ transitionDelay: "100ms" }}>
+            <HubCenter />
+          </div>
+
+          {/* ── CENTER: Flow connector right ── */}
+          <div className="eco-connector">
+            <div style={{ flex: 1, height: 2, background: "linear-gradient(to right, rgba(22,163,74,0.5), rgba(13,148,136,0.3))", position: "relative", alignSelf: "center" }}>
+              {[200, 1000, 1800].map((d, i) => (
+                <div key={i} style={{
+                  position: "absolute", top: "50%", transform: "translateY(-50%)",
+                  width: 7, height: 7, borderRadius: "50%",
+                  background: "var(--t-400)", boxShadow: "0 0 8px rgba(45,212,191,0.6)",
+                  animation: `flow-dot-h 2.4s ${d}ms linear infinite`,
+                }} />
+              ))}
+            </div>
+          </div>
+
+          {/* ── RIGHT: Intelligence ── */}
+          <div className="blur-in" style={{ transitionDelay: "200ms" }}>
+            <div className="card" style={{ padding: "1.5rem", height: "100%" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "1.25rem" }}>
+                <span style={{ fontSize: "1.1rem" }}>🧠</span>
+                <div>
+                  <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--t-600)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Inteligencia</div>
+                  <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text)" }}>Decisiones concretas</div>
+                </div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {outputs.map((o, i) => (
+                  <div key={i} style={{
+                    display: "flex", alignItems: "center", gap: 10,
+                    background: "var(--bg-subtle)",
+                    borderRadius: 10, padding: "10px 12px",
+                    border: "1px solid var(--border)",
+                  }}>
+                    <span style={{ fontSize: "1.1rem", flexShrink: 0 }}>{o.icon}</span>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: o.color, lineHeight: 1.3 }}>{o.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{
+                marginTop: "1rem", padding: "10px 12px",
+                background: "var(--g-50)", borderRadius: 10,
+                border: "1px solid rgba(22,163,74,0.2)",
+                textAlign: "center",
+              }}>
+                <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.1rem", color: "var(--g-700)" }}>Tiempo real</div>
+                <div style={{ fontSize: "0.62rem", color: "var(--text-muted)", marginTop: 2 }}>desde que se sube la foto</div>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        {/* Bottom note */}
+        <p className="blur-in" style={{ textAlign: "center", marginTop: "2.5rem", fontSize: "0.82rem", color: "var(--slate-400)", transitionDelay: "300ms" }}>
+          Cada foto valida → entra al dataset → retroalimenta las marcas y distribuidoras · Ciclo continuo
+        </p>
 
       </div>
 
       <style>{`
-        @media (max-width: 700px) {
-          #ecosistema .blur-in > div > div {
+        .eco-grid {
+          display: grid;
+          grid-template-columns: 1fr 48px 1.4fr 48px 1fr;
+          gap: 0;
+          align-items: center;
+        }
+        .eco-connector {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          padding: 0 4px;
+        }
+        @keyframes flow-dot-h {
+          0%   { left: -4px;              opacity: 0; }
+          15%  { opacity: 1; }
+          85%  { opacity: 1; }
+          100% { left: calc(100% + 4px);  opacity: 0; }
+        }
+        @media (max-width: 960px) {
+          .eco-grid {
             grid-template-columns: 1fr !important;
+          }
+          .eco-connector {
+            display: none !important;
           }
         }
       `}</style>

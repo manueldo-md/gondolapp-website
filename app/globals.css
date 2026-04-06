@@ -268,6 +268,50 @@ body.animations-ready .blur-in.visible {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── HERO SCREENSHOT COLUMNS ── */
+@keyframes hero-col-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+@keyframes hero-col-down {
+  0%   { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
+}
+.hero-col-up   { animation: hero-col-up   24s linear infinite; display: flex; flex-direction: column; }
+.hero-col-down { animation: hero-col-down 32s linear infinite; display: flex; flex-direction: column; }
+.hero-shots-mask {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%);
+  overflow: hidden;
+}
+
+/* ── ECOSYSTEM ANIMATIONS ── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes flow-dot {
+  0%   { top: -4px;   opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { top: calc(100% + 4px); opacity: 0; }
+}
+@keyframes flow-dot-h {
+  0%   { left: -4px;              opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { left: calc(100% + 4px);  opacity: 0; }
+}
+@keyframes phone-flash {
+  0%, 100% { opacity: 0; }
+  15%       { opacity: 0.65; }
+  30%       { opacity: 0; }
+}
+@keyframes gondola-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
 /* ── MARQUEE ── */
 @keyframes marquee-left {
   0%   { transform: translateX(0); }
