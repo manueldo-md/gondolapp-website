@@ -142,7 +142,7 @@ export default function Hero() {
                 marginBottom: "1.25rem",
                 transitionDelay: "80ms",
               }}>
-                Inteligencia de mercado<br />para <CycleText />
+                Inteligencia de<br />mercado para<br /><CycleText />
               </h1>
 
               <p className="blur-in" style={{

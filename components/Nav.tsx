@@ -4,10 +4,9 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const links = [
-  { label: "El Problema", href: "#problema" },
+  { label: "La necesidad", href: "#problema" },
+  { label: "Ecosistema", href: "#ecosistema" },
   { label: "Cómo funciona", href: "#solucion" },
-  { label: "Para marcas", href: "#marcas" },
-  { label: "Diferencial", href: "#comparativa" },
 ];
 
 export default function Nav() {
@@ -35,7 +34,7 @@ export default function Nav() {
           </a>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8" style={{ marginRight: "auto", marginLeft: "2rem" }}>
             {links.map((l) => (
               <a key={l.href} href={l.href} style={{
                 color: "var(--slate-600, #475569)",

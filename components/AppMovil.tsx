@@ -121,13 +121,12 @@ export default function AppMovil() {
         {[
           ["PWA",      "Sin App Store, un link"],
           ["30 seg",   "Para subir una foto"],
-          ["150–500",  "Puntos por foto aprobada"],
-          ["100%",     "Tasa de aprobación"],
-          ["3",        "Canjes disponibles"],
+          ["+ Datos",  "Campos personalizados"],
+          ["Validación Foto", "Control de Nitidez y Orientación"],
         ].map(([val, label]) => (
           <div key={val} style={{ textAlign: "center" }}>
-            <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.4rem", color: "var(--g-400)", lineHeight: 1 }}>{val}</div>
-            <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.35)", marginTop: 5 }}>{label}</div>
+            <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "clamp(2rem, 4vw, 3rem)", color: "var(--g-400)", lineHeight: 1 }}>{val}</div>
+            <div style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.45)", marginTop: 8 }}>{label}</div>
           </div>
         ))}
       </div>

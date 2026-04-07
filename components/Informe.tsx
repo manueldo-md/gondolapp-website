@@ -235,10 +235,7 @@ export default function Informe() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.5rem" }}>
 
         {/* ── Header ── */}
-        <div className="blur-in" style={{ textAlign: "center", marginBottom: "4.5rem" }}>
-          <span className="badge" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>
-            Reporte procesado
-          </span>
+        <div className="blur-in" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <h2 style={{
             fontFamily: "var(--font-heading)",
             fontSize: "clamp(2.4rem, 5vw, 4rem)",
@@ -252,10 +249,43 @@ export default function Informe() {
           </p>
         </div>
 
-        {/* ── Main: 2×2 floating pages + stats ── */}
+        {/* ── Gondola photo mosaic ── */}
+        <div className="blur-in" style={{ marginBottom: "5rem" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateRows: "160px 160px 160px",
+            gap: 7,
+            overflow: "hidden",
+            marginLeft: "-1.5rem",
+            marginRight: "-1.5rem",
+            width: "calc(100% + 3rem)",
+          }}>
+            {gondolaPhotos.map((src, i) => {
+              const spans: Record<number, React.CSSProperties> = {
+                0: { gridColumn: "1 / 3", gridRow: "1 / 2" },
+                1: { gridColumn: "3 / 4", gridRow: "1 / 2" },
+                2: { gridColumn: "4 / 5", gridRow: "1 / 3" },
+                3: { gridColumn: "1 / 2", gridRow: "2 / 3" },
+                4: { gridColumn: "2 / 4", gridRow: "2 / 3" },
+                5: { gridColumn: "1 / 2", gridRow: "3 / 4" },
+                6: { gridColumn: "2 / 3", gridRow: "3 / 4" },
+                7: { gridColumn: "3 / 5", gridRow: "3 / 4" },
+              };
+              if (i > 7) return null;
+              return (
+                <div key={i} className="mosaic-photo" style={{ position: "relative", overflow: "hidden", ...spans[i] }}>
+                  <Image src={src} alt={`Góndola ${i + 1}`} fill style={{ objectFit: "cover" }} sizes="(max-width: 960px) 50vw, 300px" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Report pages + stats ── */}
         <div className="informe-main blur-in" style={{ transitionDelay: "80ms" }}>
 
-          {/* LEFT: 2×2 grid, each page floats independently */}
+          {/* LEFT: 2×2 grid */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
             {pages.map((p, i) => (
               <div key={i} style={{
@@ -307,40 +337,6 @@ export default function Informe() {
               ))}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ── Gondola photo mosaic ── */}
-      <div style={{ marginTop: "5rem", maxWidth: 1200, margin: "5rem auto 0", padding: "0 1.5rem" }}>
-        <p style={{ textAlign: "center", fontSize: "0.7rem", fontWeight: 700, color: "var(--slate-400)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "2rem" }}>
-          Fotos tomadas en campo · Entre Ríos 2025
-        </p>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gridTemplateRows: "160px 160px 160px",
-          gap: 3,
-          borderRadius: 12,
-          overflow: "hidden",
-        }}>
-          {gondolaPhotos.map((src, i) => {
-            const spans: Record<number, React.CSSProperties> = {
-              0: { gridColumn: "1 / 3", gridRow: "1 / 2" },
-              1: { gridColumn: "3 / 4", gridRow: "1 / 2" },
-              2: { gridColumn: "4 / 5", gridRow: "1 / 3" },
-              3: { gridColumn: "1 / 2", gridRow: "2 / 3" },
-              4: { gridColumn: "2 / 4", gridRow: "2 / 3" },
-              5: { gridColumn: "1 / 2", gridRow: "3 / 4" },
-              6: { gridColumn: "2 / 3", gridRow: "3 / 4" },
-              7: { gridColumn: "3 / 5", gridRow: "3 / 4" },
-            };
-            if (i > 7) return null;
-            return (
-              <div key={i} className="mosaic-photo" style={{ position: "relative", overflow: "hidden", ...spans[i] }}>
-                <Image src={src} alt={`Góndola ${i + 1}`} fill style={{ objectFit: "cover" }} sizes="(max-width: 960px) 50vw, 300px" />
-              </div>
-            );
-          })}
         </div>
       </div>
 
