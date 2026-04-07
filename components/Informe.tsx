@@ -1,381 +1,324 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState, useCallback } from "react";
 
-// ─── Report pages ─────────────────────────────────────────────────────────
-const informePages = [
-  { src: "/screenshots-informe/Informe1.jpg", alt: "Portada del reporte",   label: "Portada",      desc: "Identidad del relevamiento y datos de campaña" },
-  { src: "/screenshots-informe/informe2.jpg", alt: "Análisis de góndola",   label: "Análisis",     desc: "Presencia, share of shelf y precios verificados" },
-  { src: "/screenshots-informe/informe3.jpg", alt: "Métricas de cobertura", label: "Cobertura",    desc: "Puntos de venta por ciudad y zona" },
-  { src: "/screenshots-informe/informe4.jpg", alt: "Conclusiones",          label: "Conclusiones", desc: "Oportunidades detectadas y acciones recomendadas" },
+// ─── Data ─────────────────────────────────────────────────────────────────
+const reportPages = [
+  "/screenshots-informe/Informe1.jpg",
+  "/screenshots-informe/informe2.jpg",
+  "/screenshots-informe/informe3.jpg",
+  "/screenshots-informe/informe4.jpg",
 ];
 
-// ─── Bubble definitions ───────────────────────────────────────────────────
-// left/top = initial CSS position (% of section)
-// layer: back (z=1) | front (z=10)
-// speed: parallax px per viewport unit (positive = moves up as you scroll down)
-const BUBBLES = [
-  { src: "002.jpg", size: 128, left: "2%",  top: "12%", layer: "back",  speed: 28, delay: 500  },
-  { src: "004.jpg", size: 142, left: "81%", top: "6%",  layer: "back",  speed: 22, delay: 300  },
-  { src: "006.jpg", size: 132, left: "52%", top: "78%", layer: "back",  speed: 32, delay: 1200 },
-  { src: "008.jpg", size: 162, left: "-2%", top: "58%", layer: "back",  speed: 18, delay: 1600 },
-  { src: "010.jpg", size: 112, left: "64%", top: "74%", layer: "back",  speed: 26, delay: 800  },
-  { src: "001.jpg", size: 172, left: "-3%", top: "24%", layer: "front", speed: 68, delay: 0    },
-  { src: "003.jpg", size: 148, left: "74%", top: "14%", layer: "front", speed: 62, delay: 1100 },
-  { src: "005.jpg", size: 106, left: "24%", top: "76%", layer: "front", speed: 52, delay: 700  },
-  { src: "007.jpg", size: 96,  left: "88%", top: "62%", layer: "front", speed: 58, delay: 900  },
-  { src: "009.jpg", size: 122, left: "38%", top: "-4%", layer: "front", speed: 48, delay: 400  },
-] as const;
+const gondolaPhotos = [
+  "001","002","003","004","005","006","007","008","009","010",
+].map(n => `/screenshots-reales/${n}.jpg`);
 
-// ─── Section ─────────────────────────────────────────────────────────────
+const stats = [
+  { val: "+500", label: "Fotos verificadas en campo" },
+  { val: "133",  label: "Puntos de venta relevados" },
+  { val: "< 48 hs", label: "Del campo al reporte final" },
+];
+
+const insights = [
+  "Presencia real de cada SKU en góndola, no estimada",
+  "Precios reales capturados in-situ en 16 ciudades",
+  "Quiebres detectados y clasificados automáticamente por IA",
+];
+
+// ─── Section ──────────────────────────────────────────────────────────────
 export default function Informe() {
-  const sectionRef  = useRef<HTMLElement>(null);
-  const bubbleEls   = useRef<(HTMLDivElement | null)[]>([]);
-
-  // Per-bubble mutable state (no re-renders needed for perf)
-  const bState = useRef(BUBBLES.map(() => ({
-    dragX: 0, dragY: 0,
-    startMouseX: 0, startMouseY: 0,
-    startDragX: 0, startDragY: 0,
-    isDragging: false,
-    hasMoved: false,
-  })));
-  const parallaxY = useRef(BUBBLES.map(() => 0));
-  const activeIdx  = useRef<number | null>(null);
-
-  // Lightbox
-  const [lightbox, setLightbox] = useState<string | null>(null);
-
-  // ── Combined transform helper ──
-  const applyTransform = useCallback((i: number) => {
-    const el = bubbleEls.current[i];
-    if (!el) return;
-    const { dragX, dragY } = bState.current[i];
-    const py = parallaxY.current[i];
-    el.style.transform = `translateX(${dragX}px) translateY(${py + dragY}px)`;
-  }, []);
-
-  // ── Scroll parallax ──
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const onScroll = () => {
-      const rect  = section.getBoundingClientRect();
-      const ratio = (window.innerHeight / 2 - (rect.top + rect.height / 2)) / window.innerHeight;
-      BUBBLES.forEach((b, i) => {
-        parallaxY.current[i] = ratio * b.speed;
-        if (!bState.current[i].isDragging) applyTransform(i);
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [applyTransform]);
-
-  // ── Global mouse events (move + up) ──
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      const i = activeIdx.current;
-      if (i === null) return;
-      const s = bState.current[i];
-      const dx = e.clientX - s.startMouseX;
-      const dy = e.clientY - s.startMouseY;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) s.hasMoved = true;
-      s.dragX = s.startDragX + dx;
-      s.dragY = s.startDragY + dy;
-      applyTransform(i);
-    };
-    const onUp = () => {
-      const i = activeIdx.current;
-      if (i === null) return;
-      const s = bState.current[i];
-      if (!s.hasMoved) setLightbox(BUBBLES[i].src);   // click = open lightbox
-      s.isDragging = false;
-      activeIdx.current = null;
-      document.body.style.cursor = "";
-      // Reset z-index on the outer parallax wrapper
-      const el = bubbleEls.current[i];
-      if (el) el.style.zIndex = "";
-    };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
-    };
-  }, [applyTransform]);
-
-  // ── Per-bubble mousedown ──
-  const onMouseDown = useCallback((i: number) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    const s = bState.current[i];
-    s.isDragging = true;
-    s.hasMoved   = false;
-    s.startMouseX = e.clientX;
-    s.startMouseY = e.clientY;
-    s.startDragX  = s.dragX;
-    s.startDragY  = s.dragY;
-    activeIdx.current = i;
-    document.body.style.cursor = "grabbing";
-    // Bring grabbed bubble to front temporarily
-    const el = bubbleEls.current[i];
-    if (el) el.style.zIndex = "20";
-  }, []);
-
-  // ─── Render ───────────────────────────────────────────────────────────
-  const renderBubble = (idx: number) => {
-    const b = BUBBLES[idx];
-    return (
-      <div
-        key={idx}
-        ref={el => { bubbleEls.current[idx] = el; }}
-        onMouseDown={onMouseDown(idx)}
-        style={{
-          position: "absolute",
-          left: b.left,
-          top: b.top,
-          width: b.size,
-          height: b.size,
-          zIndex: b.layer === "back" ? 1 : 10,
-          willChange: "transform",
-          cursor: "grab",
-          userSelect: "none",
-          WebkitUserSelect: "none",
-        }}
-      >
-        {/* Inner div: float oscillation (independent of parallax + drag) */}
-        <div style={{
-          width: "100%", height: "100%",
-          borderRadius: "50%",
-          overflow: "hidden",
-          animation: `gondola-float ${5 + (idx % 3) * 0.8}s ${b.delay}ms ease-in-out infinite`,
-          boxShadow: "0 12px 40px rgba(0,0,0,0.35), 0 0 0 2.5px rgba(255,255,255,0.1)",
-          position: "relative",
-          transition: "box-shadow 0.2s ease",
-        }}
-          className="bubble-inner"
-        >
-          <Image
-            src={`/screenshots-reales/${b.src}`}
-            alt="Relevamiento en campo"
-            fill
-            style={{ objectFit: "cover", pointerEvents: "none" }}
-            sizes="180px"
-            draggable={false}
-          />
-          {/* Gloss */}
-          <div style={{
-            position: "absolute", inset: 0, borderRadius: "50%",
-            background: "radial-gradient(circle at 35% 28%, rgba(255,255,255,0.2) 0%, transparent 55%)",
-            pointerEvents: "none",
-          }} />
-          {/* Click hint ring (fades out) */}
-          <div className="bubble-hint" />
-        </div>
-      </div>
-    );
-  };
-
-  const backIdxs  = BUBBLES.map((b, i) => ({ b, i })).filter(x => x.b.layer === "back").map(x => x.i);
-  const frontIdxs = BUBBLES.map((b, i) => ({ b, i })).filter(x => x.b.layer === "front").map(x => x.i);
-
   return (
-    <>
-      {/* ── Lightbox ── */}
-      {lightbox && (
-        <div
-          onClick={() => setLightbox(null)}
-          style={{
-            position: "fixed", inset: 0,
-            background: "rgba(0,0,0,0.88)",
-            zIndex: 99999,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "zoom-out",
-            backdropFilter: "blur(6px)",
-            animation: "fadeIn 0.2s ease",
-          }}
-        >
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{
-              position: "relative",
-              maxWidth: "min(90vw, 900px)",
-              maxHeight: "90vh",
-              borderRadius: 18,
-              overflow: "hidden",
-              boxShadow: "0 40px 100px rgba(0,0,0,0.6)",
-              animation: "scaleIn 0.25s cubic-bezier(0.34,1.56,0.64,1)",
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`/screenshots-reales/${lightbox}`}
-              alt="Relevamiento en campo"
-              style={{ display: "block", maxWidth: "90vw", maxHeight: "90vh", objectFit: "contain" }}
-            />
-          </div>
-          {/* Close hint */}
-          <div style={{
-            position: "absolute", top: 24, right: 28,
-            color: "rgba(255,255,255,0.55)", fontSize: "0.8rem", fontWeight: 600,
-            letterSpacing: "0.06em",
+    <section id="informe" style={{
+      background: "linear-gradient(170deg, var(--g-900) 0%, #030f07 100%)",
+      overflow: "hidden",
+      padding: "7rem 0 0",
+    }}>
+      {/* SVG duotone filter definition */}
+      <svg width="0" height="0" style={{ position: "absolute" }}>
+        <defs>
+          <filter id="duotone-green">
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer>
+              <feFuncR type="table" tableValues="0.02 0.10" />
+              <feFuncG type="table" tableValues="0.12 0.72" />
+              <feFuncB type="table" tableValues="0.06 0.22" />
+            </feComponentTransfer>
+          </filter>
+        </defs>
+      </svg>
+
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.5rem" }}>
+
+        {/* ── Header ── */}
+        <div className="blur-in" style={{ textAlign: "center", marginBottom: "5rem" }}>
+          <span className="badge" style={{
+            marginBottom: "1.25rem", display: "inline-flex",
+            background: "rgba(34,197,94,0.12)",
+            border: "1px solid rgba(34,197,94,0.3)",
+            color: "var(--g-400)",
           }}>
-            ESC / click para cerrar
-          </div>
+            Reporte procesado
+          </span>
+          <h2 style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "clamp(2.4rem, 5vw, 4rem)",
+            fontWeight: 800, letterSpacing: "-0.03em",
+            color: "#fff", lineHeight: 1.08,
+            marginBottom: "1.25rem",
+          }}>
+            El primer reporte del canal<br />tradicional con datos reales
+          </h2>
+          <p style={{
+            color: "rgba(255,255,255,0.45)",
+            fontSize: "clamp(1rem, 1.8vw, 1.15rem)",
+            lineHeight: 1.75, maxWidth: 520, margin: "0 auto",
+          }}>
+            Fotos verificadas en campo, procesadas por IA y convertidas
+            en inteligencia de mercado accionable.
+          </p>
         </div>
-      )}
 
-      <section
-        ref={sectionRef}
-        id="informe"
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          padding: "6rem 0 5rem",
-          background: "var(--bg-subtle)",
-        }}
-      >
-        {/* ── BACK bubbles (z=1) ── */}
-        {backIdxs.map(renderBubble)}
+        {/* ── Main 2-col: stack + stats ── */}
+        <div className="informe-main blur-in" style={{ transitionDelay: "80ms" }}>
 
-        {/* ── CONTENT (z=5) ── */}
-        <div style={{ position: "relative", zIndex: 5 }}>
-
-          {/* Header */}
-          <div className="blur-in" style={{ textAlign: "center", marginBottom: "3.5rem", padding: "0 1.5rem" }}>
-            <span className="badge" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>Reporte procesado</span>
-            <h2 style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
-              fontWeight: 800, letterSpacing: "-0.03em",
-              color: "var(--text)", lineHeight: 1.1, marginBottom: "1.25rem",
-            }}>
-              El primer reporte del canal<br />tradicional con datos reales
-            </h2>
+          {/* LEFT: Report stack */}
+          <div className="report-stack-wrap">
+            <div className="report-stack">
+              {reportPages.map((src, i) => (
+                <div key={i} className={`report-card report-card-${i}`}>
+                  {/* Duotone via SVG filter on the image wrapper */}
+                  <div style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "210/297",
+                    filter: "url(#duotone-green)",
+                    borderRadius: 10,
+                    overflow: "hidden",
+                  }}>
+                    <Image
+                      src={src}
+                      alt={`Reporte página ${i + 1}`}
+                      fill
+                      style={{ objectFit: "cover", objectPosition: "top" }}
+                      sizes="320px"
+                    />
+                  </div>
+                  {/* Page label */}
+                  <div style={{
+                    position: "absolute", bottom: 14, left: 14,
+                    background: "rgba(0,0,0,0.6)",
+                    backdropFilter: "blur(6px)",
+                    color: "rgba(255,255,255,0.7)",
+                    fontSize: "0.6rem", fontWeight: 700,
+                    letterSpacing: "0.08em", textTransform: "uppercase",
+                    padding: "4px 10px", borderRadius: 99,
+                  }}>
+                    0{i + 1}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Hover hint */}
             <p style={{
-              color: "var(--text-muted)",
-              fontSize: "clamp(1rem, 1.8vw, 1.2rem)",
-              lineHeight: 1.75, maxWidth: 560, margin: "0 auto",
+              textAlign: "center",
+              marginTop: "2rem",
+              fontSize: "0.72rem",
+              color: "rgba(255,255,255,0.25)",
+              letterSpacing: "0.06em",
             }}>
-              Fotos verificadas en campo, procesadas por IA y convertidas en inteligencia
-              de mercado accionable para marcas y distribuidoras.
+              Pasá el mouse para ver las páginas
             </p>
           </div>
 
-          {/* Achievement pills */}
-          <div className="blur-in" style={{
-            display: "flex", gap: "0.75rem", maxWidth: 1000,
-            margin: "0 auto 2.5rem", padding: "0 1.5rem",
-            flexWrap: "wrap", justifyContent: "center", transitionDelay: "80ms",
-          }}>
-            {["+500 fotos verificadas", "16 ciudades cubiertas", "133 PDV relevados", "99,5% aprobación IA"].map(t => (
-              <span key={t} style={{
-                fontSize: "0.75rem", fontWeight: 700, color: "var(--g-700)",
-                background: "rgba(255,255,255,0.85)", backdropFilter: "blur(8px)",
-                border: "1px solid rgba(22,163,74,0.25)",
-                padding: "6px 16px", borderRadius: 99,
-                display: "flex", alignItems: "center", gap: 6,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-              }}>
-                <span style={{ color: "var(--g-500)", fontSize: "0.8rem" }}>✓</span> {t}
-              </span>
-            ))}
-          </div>
+          {/* RIGHT: Stats + insights */}
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "2.5rem" }}>
 
-          {/* 4 report pages — grayscale */}
-          <div className="blur-in" style={{
-            display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "1.5rem", maxWidth: 1100,
-            margin: "0 auto", padding: "0 1.5rem", transitionDelay: "160ms",
-          }}>
-            {informePages.map((p, i) => (
-              <div key={i} className="informe-card">
-                <div style={{
-                  background: "#fff", borderRadius: 14, overflow: "hidden",
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06)",
-                  border: "1px solid rgba(0,0,0,0.06)",
-                  aspectRatio: "210/297", position: "relative",
+            {/* Big stats */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+              {stats.map((s, i) => (
+                <div key={i} style={{
+                  display: "flex", alignItems: "center", gap: "1.25rem",
+                  padding: "1.25rem 1.5rem",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: 14,
+                  backdropFilter: "blur(8px)",
                 }}>
-                  <Image
-                    src={p.src} alt={p.alt} fill
-                    style={{ objectFit: "cover", objectPosition: "top", filter: "grayscale(100%) contrast(1.08) brightness(1.03)" }}
-                    sizes="280px"
-                  />
                   <div style={{
-                    position: "absolute", top: 10, right: 10,
-                    background: "rgba(0,0,0,0.55)", color: "#fff",
-                    fontSize: "0.58rem", fontWeight: 800,
-                    padding: "3px 9px", borderRadius: 99,
-                    backdropFilter: "blur(4px)", letterSpacing: "0.06em",
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+                    fontWeight: 900,
+                    letterSpacing: "-0.03em",
+                    color: "var(--g-400)",
+                    lineHeight: 1,
+                    flexShrink: 0,
+                    minWidth: 90,
                   }}>
-                    {String(i + 1).padStart(2, "0")}
+                    {s.val}
+                  </div>
+                  <div style={{
+                    width: 1, height: 36,
+                    background: "rgba(34,197,94,0.25)",
+                    flexShrink: 0,
+                  }} />
+                  <div style={{
+                    fontSize: "0.95rem",
+                    color: "rgba(255,255,255,0.6)",
+                    fontWeight: 500,
+                    lineHeight: 1.4,
+                  }}>
+                    {s.label}
                   </div>
                 </div>
-                <div style={{ padding: "0.85rem 0.25rem 0" }}>
-                  <p style={{ fontWeight: 700, fontSize: "0.82rem", color: "var(--text)", marginBottom: "0.25rem" }}>{p.label}</p>
-                  <p style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.5 }}>{p.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Bottom stat strip */}
-          <div className="blur-in" style={{
-            display: "flex", justifyContent: "center", gap: "3rem",
-            margin: "3.5rem auto 0", padding: "2.5rem 1.5rem 0",
-            borderTop: "1px solid var(--border)", maxWidth: 900,
-            flexWrap: "wrap", transitionDelay: "240ms",
-          }}>
-            {[
-              { val: "30 seg", label: "por foto en campo" },
-              { val: "IA",     label: "triple validación automática" },
-              { val: "< 48 hs", label: "del campo al reporte final" },
-            ].map(({ val, label }) => (
-              <div key={val} style={{ textAlign: "center" }}>
-                <div style={{
-                  fontFamily: "var(--font-heading)", fontWeight: 800,
-                  fontSize: "1.7rem", color: "var(--g-700)",
-                  lineHeight: 1, letterSpacing: "-0.02em",
-                }}>{val}</div>
-                <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: 5 }}>{label}</div>
+            {/* Insights */}
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "1.75rem" }}>
+              <p style={{
+                fontSize: "0.7rem", fontWeight: 700,
+                color: "var(--g-500)",
+                letterSpacing: "0.1em", textTransform: "uppercase",
+                marginBottom: "1rem",
+              }}>
+                Qué incluye el reporte
+              </p>
+              {insights.map((t, i) => (
+                <div key={i} style={{
+                  display: "flex", gap: "0.75rem", alignItems: "flex-start",
+                  marginBottom: "0.85rem",
+                }}>
+                  <div style={{
+                    width: 20, height: 20, borderRadius: "50%",
+                    background: "rgba(34,197,94,0.15)",
+                    border: "1px solid rgba(34,197,94,0.3)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0, marginTop: 1,
+                  }}>
+                    <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+                      <path d="M1.5 4.5l2 2 4-4" stroke="var(--g-400)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6 }}>
+                    {t}
+                  </span>
+                </div>
+              ))}
+
+              <a href="#contacto" className="btn btn-primary" style={{ marginTop: "1.5rem", display: "inline-flex" }}>
+                Solicitar el reporte completo
+                <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* ── Gondola strip ── */}
+      <div style={{ marginTop: "6rem" }}>
+        <p style={{
+          textAlign: "center",
+          fontSize: "0.7rem", fontWeight: 700,
+          color: "rgba(255,255,255,0.2)",
+          letterSpacing: "0.12em", textTransform: "uppercase",
+          marginBottom: "1.5rem",
+        }}>
+          Fotos tomadas en campo · Entre Ríos 2025
+        </p>
+
+        {/* Single marquee row — large rectangles */}
+        <div className="marquee-wrap" style={{
+          maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+        }}>
+          <div className="marquee-track-left" style={{ gap: 14 }}>
+            {[...gondolaPhotos, ...gondolaPhotos].map((src, i) => (
+              <div key={i} style={{
+                width: 260,
+                height: 180,
+                borderRadius: 12,
+                overflow: "hidden",
+                flexShrink: 0,
+                position: "relative",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
+                border: "1px solid rgba(255,255,255,0.05)",
+              }}>
+                <Image
+                  src={src}
+                  alt={`Góndola relevada ${i + 1}`}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="260px"
+                />
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── FRONT bubbles (z=10) ── */}
-        {frontIdxs.map(renderBubble)}
+        {/* Dark bottom padding */}
+        <div style={{ height: "4rem", background: "linear-gradient(to bottom, transparent, #030f07)" }} />
+      </div>
 
-        <style>{`
-          .bubble-inner:hover {
-            box-shadow: 0 16px 52px rgba(0,0,0,0.45), 0 0 0 3px rgba(34,197,94,0.5) !important;
-          }
-          .bubble-hint {
-            position: absolute; inset: 0; border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.0);
-            transition: border-color 0.3s ease;
-            pointer-events: none;
-          }
-          .bubble-inner:hover .bubble-hint {
-            border-color: rgba(255,255,255,0.25);
-          }
-          .informe-card > div:first-child {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-          }
-          .informe-card:hover > div:first-child {
-            transform: translateY(-8px);
-            box-shadow: 0 24px 56px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.08) !important;
-          }
-          @keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
-          @keyframes scaleIn { from { transform: scale(0.88); opacity: 0 } to { transform: scale(1); opacity: 1 } }
-          @media (max-width: 860px) {
-            #informe [style*="repeat(4"] { grid-template-columns: repeat(2,1fr) !important; }
-          }
-          @media (max-width: 500px) {
-            #informe [style*="repeat(4"] { grid-template-columns: 1fr !important; }
-          }
-        `}</style>
-      </section>
-    </>
+      <style>{`
+        /* ── Report stack ── */
+        .report-stack-wrap {
+          position: relative;
+        }
+        .report-stack {
+          position: relative;
+          width: 300px;
+          height: 440px;
+          margin: 0 auto;
+        }
+        .report-card {
+          position: absolute;
+          inset: 0;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4);
+          transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 0.4s ease;
+          cursor: default;
+        }
+        /* Stacked resting state */
+        .report-card-0 { transform: rotate(-3.5deg) translateY(6px);  z-index: 4; }
+        .report-card-1 { transform: rotate(-1.2deg) translateY(2px);  z-index: 3; }
+        .report-card-2 { transform: rotate( 1.4deg) translateY(-2px); z-index: 2; }
+        .report-card-3 { transform: rotate( 3.8deg) translateY(-6px); z-index: 1; }
+
+        /* Fan-out on hover */
+        .report-stack:hover .report-card-0 {
+          transform: rotate(-14deg) translate(-110px, 18px);
+          box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+        }
+        .report-stack:hover .report-card-1 {
+          transform: rotate(-5deg) translate(-36px, -8px);
+          box-shadow: 0 32px 80px rgba(0,0,0,0.65);
+        }
+        .report-stack:hover .report-card-2 {
+          transform: rotate( 4deg) translate( 36px, -8px);
+          box-shadow: 0 32px 80px rgba(0,0,0,0.65);
+        }
+        .report-stack:hover .report-card-3 {
+          transform: rotate(13deg) translate(110px, 18px);
+          box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+        }
+
+        /* ── Layout ── */
+        .informe-main {
+          display: grid;
+          grid-template-columns: 380px 1fr;
+          gap: 5rem;
+          align-items: center;
+          padding-bottom: 1rem;
+        }
+        @media (max-width: 900px) {
+          .informe-main { grid-template-columns: 1fr !important; gap: 3rem !important; }
+          .report-stack  { width: 240px !important; height: 352px !important; }
+        }
+      `}</style>
+    </section>
   );
 }
