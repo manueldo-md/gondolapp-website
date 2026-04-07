@@ -331,6 +331,15 @@ body.animations-ready .blur-in.visible {
 .marquee-wrap:hover .marquee-track-left,
 .marquee-wrap:hover .marquee-track-right { animation-play-state: paused; }
 
+/* ── MOSAIC PHOTOS ── */
+.mosaic-photo {
+  filter: grayscale(100%);
+  transition: filter 0.4s ease;
+}
+.mosaic-photo:hover {
+  filter: grayscale(0);
+}
+
 /* ── FAQ ── */
 .faq-answer {
   max-height: 0;

@@ -289,7 +289,7 @@ export default function Informe() {
 
             <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1.5rem" }}>
               <p style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--g-600)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "1rem" }}>
-                Qué incluye el reporte
+                Métricas reales
               </p>
               {[
                 "Presencia real de cada SKU en góndola, no estimada",
@@ -305,59 +305,61 @@ export default function Informe() {
                   <span style={{ fontSize: "0.88rem", color: "var(--text)", lineHeight: 1.6 }}>{t}</span>
                 </div>
               ))}
-              <a href="#contacto" className="btn btn-primary" style={{ marginTop: "1.25rem", display: "inline-flex" }}>
-                Solicitar reporte completo
-                <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Gondola bubbles strip ── */}
-      <div style={{ marginTop: "5rem" }}>
+      {/* ── Gondola photo mosaic ── */}
+      <div style={{ marginTop: "5rem", maxWidth: 1200, margin: "5rem auto 0", padding: "0 1.5rem" }}>
         <p style={{ textAlign: "center", fontSize: "0.7rem", fontWeight: 700, color: "var(--slate-400)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "2rem" }}>
           Fotos tomadas en campo · Entre Ríos 2025
         </p>
-        <div className="marquee-wrap">
-          <div className="marquee-track-left" style={{ gap: 20, alignItems: "center" }}>
-            {[...gondolaPhotos, ...gondolaPhotos].map((src, i) => (
-              <div key={i} style={{
-                width: 148, height: 148, borderRadius: "50%",
-                overflow: "hidden", flexShrink: 0, position: "relative",
-                boxShadow: "0 6px 24px rgba(0,0,0,0.1), 0 0 0 3px rgba(22,163,74,0.15)",
-                animation: `bubble-sway ${4 + (i % 3)}s ${(i * 400) % 3000}ms ease-in-out infinite`,
-              }}>
-                <Image src={src} alt={`Góndola ${i + 1}`} fill style={{ objectFit: "cover" }} sizes="148px" />
-                <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 35% 28%, rgba(255,255,255,0.2) 0%, transparent 55%)", pointerEvents: "none" }} />
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateRows: "160px 160px 160px",
+          gap: 3,
+          borderRadius: 12,
+          overflow: "hidden",
+        }}>
+          {gondolaPhotos.map((src, i) => {
+            const spans: Record<number, React.CSSProperties> = {
+              0: { gridColumn: "1 / 3", gridRow: "1 / 2" },
+              1: { gridColumn: "3 / 4", gridRow: "1 / 2" },
+              2: { gridColumn: "4 / 5", gridRow: "1 / 3" },
+              3: { gridColumn: "1 / 2", gridRow: "2 / 3" },
+              4: { gridColumn: "2 / 4", gridRow: "2 / 3" },
+              5: { gridColumn: "1 / 2", gridRow: "3 / 4" },
+              6: { gridColumn: "2 / 3", gridRow: "3 / 4" },
+              7: { gridColumn: "3 / 5", gridRow: "3 / 4" },
+            };
+            if (i > 7) return null;
+            return (
+              <div key={i} className="mosaic-photo" style={{ position: "relative", overflow: "hidden", ...spans[i] }}>
+                <Image src={src} alt={`Góndola ${i + 1}`} fill style={{ objectFit: "cover" }} sizes="(max-width: 960px) 50vw, 300px" />
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
 
       <style>{`
         @keyframes page-float-0 {
-          0%,100% { transform: translateY(0px)   rotate(-1.5deg); }
-          50%      { transform: translateY(-14px) rotate(-1.5deg); }
+          0%,100% { transform: translateY(0px); }
+          50%      { transform: translateY(-10px); }
         }
         @keyframes page-float-1 {
-          0%,100% { transform: translateY(0px)   rotate(1.2deg); }
-          50%      { transform: translateY(-18px) rotate(1.2deg); }
+          0%,100% { transform: translateY(0px); }
+          50%      { transform: translateY(-14px); }
         }
         @keyframes page-float-2 {
-          0%,100% { transform: translateY(0px)   rotate(1.8deg); }
-          50%      { transform: translateY(-12px) rotate(1.8deg); }
+          0%,100% { transform: translateY(0px); }
+          50%      { transform: translateY(-8px); }
         }
         @keyframes page-float-3 {
-          0%,100% { transform: translateY(0px)   rotate(-1deg); }
-          50%      { transform: translateY(-16px) rotate(-1deg); }
-        }
-        @keyframes bubble-sway {
-          0%,100% { transform: translateY(0px);  }
-          50%      { transform: translateY(-10px); }
+          0%,100% { transform: translateY(0px); }
+          50%      { transform: translateY(-12px); }
         }
         .informe-main {
           display: grid;
