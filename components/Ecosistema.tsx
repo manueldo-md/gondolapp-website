@@ -247,39 +247,6 @@ export default function Ecosistema() {
               </div>
             </div>
 
-            {/* Repositores / Fixers */}
-            <div className="blur-in card" style={{ padding: "1.25rem", transitionDelay: "240ms", borderTop: "2px solid #f59e0b22", background: "linear-gradient(135deg, #fffbeb08 0%, var(--bg) 100%)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.85rem" }}>
-                <span style={{ fontSize: "1.1rem" }}>🔧</span>
-                <div>
-                  <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#d97706", letterSpacing: "0.1em", textTransform: "uppercase" }}>Repositores · Fixers</div>
-                  <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text)" }}>Ejecutan en punto de venta</div>
-                </div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: "0.85rem" }}>
-                {fixerTasks.map((t, i) => (
-                  <div key={i} style={{
-                    display: "flex", alignItems: "center", gap: 8,
-                    background: "var(--bg-subtle)", borderRadius: 8,
-                    padding: "6px 10px", border: "1px solid var(--border)",
-                  }}>
-                    <span style={{ fontSize: "0.9rem", flexShrink: 0 }}>{t.icon}</span>
-                    <span style={{ fontSize: "0.7rem", fontWeight: 600, color: t.color }}>{t.label}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{
-                background: "#fffbeb", borderRadius: 8, padding: "6px 10px",
-                border: "1px solid #f59e0b33",
-                display: "flex", alignItems: "center", gap: 6,
-              }}>
-                <span style={{ fontSize: "0.75rem" }}>💰</span>
-                <span style={{ fontSize: "0.62rem", color: "#92400e", fontWeight: 600 }}>
-                  Pago por misión validada · Contratistas independientes
-                </span>
-              </div>
-            </div>
-
           </div>
 
           {/* ── CENTER: Flow connector left ── */}
@@ -352,6 +319,71 @@ export default function Ecosistema() {
 
         </div>
 
+        {/* ── Vertical connector → Fixers ── */}
+        <div style={{ display: "flex", justifyContent: "center", height: 48, position: "relative" }}>
+          <div style={{
+            width: 2, height: "100%",
+            background: "linear-gradient(to bottom, rgba(22,163,74,0.5), rgba(245,158,11,0.45))",
+            position: "relative",
+          }}>
+            {[0, 700, 1400].map((d, i) => (
+              <div key={i} style={{
+                position: "absolute", left: "50%", transform: "translateX(-50%)",
+                width: 7, height: 7, borderRadius: "50%",
+                background: "var(--g-500)", boxShadow: "0 0 8px var(--g-400)",
+                animation: `flow-dot-v 2.1s ${d}ms linear infinite`,
+              }} />
+            ))}
+          </div>
+        </div>
+
+        {/* ── Fixers: horizontal card ── */}
+        <div className="blur-in card fixer-row" style={{ transitionDelay: "280ms" }}>
+
+          {/* Header */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+            <span style={{ fontSize: "1.5rem" }}>🔧</span>
+            <div>
+              <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#d97706", letterSpacing: "0.1em", textTransform: "uppercase" }}>Repositores · Fixers</div>
+              <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text)", whiteSpace: "nowrap" }}>Brazo ejecutor en góndola</div>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="fixer-divider" />
+
+          {/* Tasks */}
+          <div style={{ display: "flex", gap: 8, flex: 1, flexWrap: "wrap" }}>
+            {fixerTasks.map((t, i) => (
+              <div key={i} style={{
+                display: "flex", alignItems: "center", gap: 8,
+                background: "var(--bg-subtle)", borderRadius: 8,
+                padding: "8px 14px", border: "1px solid var(--border)",
+                flex: "1 1 auto",
+              }}>
+                <span style={{ fontSize: "1rem", flexShrink: 0 }}>{t.icon}</span>
+                <span style={{ fontSize: "0.75rem", fontWeight: 600, color: t.color, whiteSpace: "nowrap" }}>{t.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div className="fixer-divider" />
+
+          {/* Payment badge */}
+          <div style={{
+            flexShrink: 0, textAlign: "center",
+            background: "#fffbeb", borderRadius: 10, padding: "10px 18px",
+            border: "1px solid #f59e0b33",
+          }}>
+            <div style={{ fontSize: "1.2rem", marginBottom: 3 }}>💰</div>
+            <div style={{ fontSize: "0.65rem", fontWeight: 700, color: "#92400e", lineHeight: 1.5 }}>
+              Por misión<br />validada
+            </div>
+          </div>
+
+        </div>
+
         {/* Bottom note */}
         <p className="blur-in" style={{ textAlign: "center", marginTop: "2.5rem", fontSize: "0.82rem", color: "var(--slate-400)", transitionDelay: "300ms" }}>
           Foto validada → inteligencia en tiempo real → alerta al Fixer → corrección en góndola → nuevo dato · Ciclo continuo
@@ -378,12 +410,40 @@ export default function Ecosistema() {
           85%  { opacity: 1; }
           100% { left: calc(100% + 4px);  opacity: 0; }
         }
+        @keyframes flow-dot-v {
+          0%   { top: -4px;               opacity: 0; }
+          15%  { opacity: 1; }
+          85%  { opacity: 1; }
+          100% { top: calc(100% + 4px);   opacity: 0; }
+        }
+        .fixer-row {
+          padding: 1.25rem 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          border-top: 2px solid #f59e0b22;
+        }
+        .fixer-divider {
+          width: 1px;
+          align-self: stretch;
+          background: var(--border);
+          flex-shrink: 0;
+        }
         @media (max-width: 960px) {
           .eco-grid {
             grid-template-columns: 1fr !important;
           }
           .eco-connector {
             display: none !important;
+          }
+          .fixer-row {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .fixer-divider {
+            width: 100%;
+            height: 1px;
+            align-self: auto;
           }
         }
       `}</style>
