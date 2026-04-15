@@ -14,6 +14,13 @@ const distros = [
   { name: "Dist. Centro",    cities: "Gualeguaychú · Rosario del Tala", gondoleros: 4 },
 ];
 
+const fixerTasks = [
+  { icon: "🛒", label: "Acomodo de góndola",         color: "#f59e0b" },
+  { icon: "⚠️", label: "Alerta de falta de stock",   color: "#ef4444" },
+  { icon: "📐", label: "Medición trade marketing",    color: "#8b5cf6" },
+  { icon: "🪟",  label: "Frenteo y exhibición",        color: "#3b82f6" },
+];
+
 const outputs = [
   { icon: "📊", label: "Presencia real en góndola",   color: "var(--g-700)" },
   { icon: "⚠️", label: "Alertas de quiebre al instante", color: "#ef4444"  },
@@ -154,10 +161,10 @@ export default function Ecosistema() {
         <div className="blur-in" style={{ textAlign: "center", marginBottom: "4rem" }}>
           <span className="badge" style={{ marginBottom: "1rem", display: "inline-flex" }}>El ecosistema</span>
           <h2 className="section-title">
-            Marcas, distribuidoras y vendedores<br />conectados en tiempo real
+            Marcas, distribuidoras, vendedores<br />y repositores — un solo sistema
           </h2>
-          <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 520, margin: "0.75rem auto 0" }}>
-            Cada foto que saca un vendedor alimenta la inteligencia de mercado que las marcas nunca tuvieron.
+          <p style={{ color: "var(--text-muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 560, margin: "0.75rem auto 0" }}>
+            Cada foto que saca un vendedor alimenta la inteligencia que activa a los Fixers — el brazo ejecutor que acomoda, frentea y valida en el punto de venta.
           </p>
         </div>
 
@@ -240,6 +247,39 @@ export default function Ecosistema() {
               </div>
             </div>
 
+            {/* Repositores / Fixers */}
+            <div className="blur-in card" style={{ padding: "1.25rem", transitionDelay: "240ms", borderTop: "2px solid #f59e0b22", background: "linear-gradient(135deg, #fffbeb08 0%, var(--bg) 100%)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.85rem" }}>
+                <span style={{ fontSize: "1.1rem" }}>🔧</span>
+                <div>
+                  <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#d97706", letterSpacing: "0.1em", textTransform: "uppercase" }}>Repositores · Fixers</div>
+                  <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text)" }}>Ejecutan en punto de venta</div>
+                </div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: "0.85rem" }}>
+                {fixerTasks.map((t, i) => (
+                  <div key={i} style={{
+                    display: "flex", alignItems: "center", gap: 8,
+                    background: "var(--bg-subtle)", borderRadius: 8,
+                    padding: "6px 10px", border: "1px solid var(--border)",
+                  }}>
+                    <span style={{ fontSize: "0.9rem", flexShrink: 0 }}>{t.icon}</span>
+                    <span style={{ fontSize: "0.7rem", fontWeight: 600, color: t.color }}>{t.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{
+                background: "#fffbeb", borderRadius: 8, padding: "6px 10px",
+                border: "1px solid #f59e0b33",
+                display: "flex", alignItems: "center", gap: 6,
+              }}>
+                <span style={{ fontSize: "0.75rem" }}>💰</span>
+                <span style={{ fontSize: "0.62rem", color: "#92400e", fontWeight: 600 }}>
+                  Pago por misión validada · Contratistas independientes
+                </span>
+              </div>
+            </div>
+
           </div>
 
           {/* ── CENTER: Flow connector left ── */}
@@ -314,7 +354,7 @@ export default function Ecosistema() {
 
         {/* Bottom note */}
         <p className="blur-in" style={{ textAlign: "center", marginTop: "2.5rem", fontSize: "0.82rem", color: "var(--slate-400)", transitionDelay: "300ms" }}>
-          Cada foto valida → entra al dataset → retroalimenta las marcas y distribuidoras · Ciclo continuo
+          Foto validada → inteligencia en tiempo real → alerta al Fixer → corrección en góndola → nuevo dato · Ciclo continuo
         </p>
 
       </div>
