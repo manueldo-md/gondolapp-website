@@ -52,8 +52,8 @@ export default function Nav() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <a href="#contacto" className="btn btn-secondary" style={{ padding: "9px 20px", fontSize: "0.875rem" }}>
-              Ver demo
+            <a href="https://gondolapp-delta.vercel.app/" className="btn btn-secondary" style={{ padding: "9px 20px", fontSize: "0.875rem" }} target="_blank" rel="noopener noreferrer">
+              Login
             </a>
             <a href="#contacto" className="btn btn-primary" style={{ padding: "9px 20px", fontSize: "0.875rem" }}>
               Acceso anticipado
