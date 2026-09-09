@@ -17,7 +17,14 @@ nvm install 24
 nvm use 24
 ```
 
-El archivo `.nvmrc` en la raíz fija la versión; basta con correr `nvm use` dentro del repo.
+La versión de Node queda fijada en **dos lugares con roles distintos**:
+
+| Archivo | Ámbito | Efecto |
+|---|---|---|
+| `.nvmrc` | Entorno local | `nvm use` selecciona automáticamente Node 24 en tu máquina |
+| `engines.node` en `package.json` | Build en Vercel | Vercel lee este campo y usa Node 24 al compilar en la nube |
+
+Ambos tienen que decir `24` — si difieren, el build de Vercel puede usar una versión distinta a la local.
 
 ### Herramientas necesarias
 
