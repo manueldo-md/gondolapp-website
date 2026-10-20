@@ -1,7 +1,7 @@
 import Hero from "@/components/home/Hero";
 import QueHace from "@/components/home/QueHace";
 import ComoFunciona from "@/components/home/ComoFunciona";
-import EcosistemaPendiente from "@/components/home/EcosistemaPendiente";
+import Ecosistema from "@/components/home/Ecosistema";
 import TiempoReal from "@/components/home/TiempoReal";
 import AppCampo from "@/components/home/AppCampo";
 import Armador from "@/components/home/Armador";
@@ -17,7 +17,7 @@ export default function Home() {
       <Hero />
       <QueHace />
       <ComoFunciona />
-      <EcosistemaPendiente />
+      <Ecosistema />
       <TiempoReal />
       <AppCampo />
       <Armador />
