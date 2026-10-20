@@ -9,6 +9,12 @@ export const metadata: Metadata = {
   title: "Gondolapp para vendedores y fixers — Sumá premios en tu recorrido",
   description:
     "Una app que se instala desde un link. Foto, dos o tres respuestas y 100 puntos por misión aprobada. Para vendedores de distribuidoras y fixers de reposición.",
+  openGraph: {
+    title: "Gondolapp para vendedores y fixers — Sumá premios en tu recorrido",
+    description: "Una app que se instala desde un link. Foto, dos o tres respuestas y 100 puntos por misión aprobada. Para vendedores de distribuidoras y fixers de reposición.",
+    url: "https://gondolapp.com/red",
+    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
+  },
 };
 
 const FRICCION = [

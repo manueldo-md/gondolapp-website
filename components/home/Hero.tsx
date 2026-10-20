@@ -82,7 +82,7 @@ export default function Hero() {
                 width={s.asset.w}
                 height={s.asset.h}
                 priority={i === 0}
-                sizes="(max-width: 900px) 92vw, 70vw"
+                sizes={s.sizes}
                 style={{
                   position: "absolute",
                   left: s.l,

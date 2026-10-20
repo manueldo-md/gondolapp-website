@@ -1,38 +1,58 @@
 import type { Metadata } from "next";
-import { Manrope, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
 import Reveal from "@/components/site/Reveal";
 import "./globals.css";
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+/* Fuentes auto-hospedadas en vez de next/font/google.
+   Dos motivos: el build no corre en Windows ARM64 cuando Next intenta
+   bajarlas de Google (bug de http2), y servidas desde el mismo dominio
+   evitan una conexion extra al cargar. Son las mismas dos familias que
+   pide el brief, en su version variable: 55 KB las dos juntas. */
+
+const manrope = localFont({
+  src: "./fonts/manrope-var-latin.woff2",
+  weight: "400 800",
+  style: "normal",
   variable: "--font-sans",
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const mono = localFont({
+  src: "./fonts/jetbrains-mono-var-latin.woff2",
+  weight: "400 500",
+  style: "normal",
   variable: "--font-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gondolapp.com"),
-  title: "Gondolapp — Tu góndola habla, ¡escuchala!",
+  title: {
+    default: "Gondolapp — Tu góndola habla, ¡escuchala!",
+    template: "%s",
+  },
   description:
-    "La plataforma que convierte el recorrido diario de los vendedores en datos de góndola en tiempo real. Para marcas, distribuidoras y repositoras.",
+    "La plataforma para ejecutar y medir campañas en el canal tradicional. Tu equipo, tus distribuidoras o tu repositora relevan desde el celular; vos lo ves todo en vivo.",
+  applicationName: "Gondolapp",
   openGraph: {
     type: "website",
     locale: "es_AR",
     siteName: "Gondolapp",
+    url: "https://gondolapp.com",
     title: "Gondolapp — Tu góndola habla, ¡escuchala!",
     description:
       "Datos de góndola en tiempo real, desde el recorrido que tu fuerza de venta ya hace.",
-    images: ["/gondolapp-assets/brand/icon-512.png"],
+    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gondolapp — Tu góndola habla, ¡escuchala!",
+    description:
+      "Datos de góndola en tiempo real, desde el recorrido que tu fuerza de venta ya hace.",
+    images: ["/gondolapp-assets/brand/og.jpg"],
   },
 };
 

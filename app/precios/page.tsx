@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   title: "Precios de Gondolapp — Pagás por lo que se releva",
   description:
     "Sin abono mensual ni licencias por usuario. Cargás saldo y pagás por campaña o por comercio relevado. La primera campaña de cada marca y repositora es gratis.",
+  openGraph: {
+    title: "Precios de Gondolapp — Pagás por lo que se releva",
+    description: "Sin abono mensual ni licencias por usuario. Cargás saldo y pagás por campaña o por comercio relevado. La primera campaña de cada marca y repositora es gratis.",
+    url: "https://gondolapp.com/precios",
+    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
+  },
 };
 
 const CIFRAS = [

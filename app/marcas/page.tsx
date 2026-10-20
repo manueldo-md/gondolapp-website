@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   title: "Gondolapp para marcas — Qué pasa con tu marca en cada góndola",
   description:
     "Presencia, quiebres, frentes, precio y exhibición verificados con foto y GPS. Campañas con tu equipo, tus distribuidoras o tu repositora, en un solo panel.",
+  openGraph: {
+    title: "Gondolapp para marcas — Qué pasa con tu marca en cada góndola",
+    description: "Presencia, quiebres, frentes, precio y exhibición verificados con foto y GPS. Campañas con tu equipo, tus distribuidoras o tu repositora, en un solo panel.",
+    url: "https://gondolapp.com/marcas",
+    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
+  },
 };
 
 const EJECUTA = [

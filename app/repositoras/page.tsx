@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   title: "Gondolapp para repositoras — Vendé reposición con datos",
   description:
     "Cada visita de tus fixers queda con foto, GPS y medición, y tu cliente ve en tiempo real cómo evoluciona su góndola. Antes y ahora, visita tras visita.",
+  openGraph: {
+    title: "Gondolapp para repositoras — Vendé reposición con datos",
+    description: "Cada visita de tus fixers queda con foto, GPS y medición, y tu cliente ve en tiempo real cómo evoluciona su góndola. Antes y ahora, visita tras visita.",
+    url: "https://gondolapp.com/repositoras",
+    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
+  },
 };
 
 const CAMBIO = [

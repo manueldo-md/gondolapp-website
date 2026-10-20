@@ -233,19 +233,28 @@ a:hover { color: var(--primary); }
 @keyframes rv  { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 @keyframes rvs { from { opacity: 0; transform: translateY(30px) scale(.975); } to { opacity: 1; transform: none; } }
 
-/* Sólo se esconde cuando JS está activo (la clase la pone un script inline
-   antes del primer pintado), así sin JS todo se ve.
-   El :not(.in) hace que la regla deje de aplicar al revelar, en vez de
-   pelear por especificidad con la regla que muestra. */
-.js-reveal :is(section > .wrap > *, section > .hs, footer > .wrap > *):not(.in) {
+/* Sólo se esconde cuando JS está activo (la clase viene en el HTML del
+   servidor), así sin JS todo se ve. El :not(.in) hace que la regla deje
+   de aplicar al revelar, en vez de pelear por especificidad.
+
+   El PRIMER bloque de cada página queda afuera a propósito: si se
+   escondiera, el título del hero no se vería hasta que React hidrate y
+   el LCP se dispara (medido: 3,4 s contra 1,8 s). Igual no se pierde
+   nada visualmente, porque un bloque que ya está en pantalla al cargar
+   tampoco se anima. */
+.js-reveal main > section:not(:first-of-type) > .wrap > *:not(.in),
+.js-reveal main > section:not(:first-of-type) > .hs:not(.in),
+.js-reveal footer > .wrap > *:not(.in) {
   opacity: 0;
 }
-.js-reveal :is(section > .wrap > *, section > .hs, footer > .wrap > *).in {
+.js-reveal main > section:not(:first-of-type) > .wrap > *.in,
+.js-reveal main > section:not(:first-of-type) > .hs.in,
+.js-reveal footer > .wrap > *.in {
   animation: rv .8s cubic-bezier(.2, .7, .2, 1) both;
 }
 
-.js-reveal :is(.shot, section img[alt]):not(.in) { opacity: 0; }
-.js-reveal :is(.shot, section img[alt]).in {
+.js-reveal main > section:not(:first-of-type) :is(.shot, img[alt]):not(.in) { opacity: 0; }
+.js-reveal main > section:not(:first-of-type) :is(.shot, img[alt]).in {
   animation: rvs .9s cubic-bezier(.2, .7, .2, 1) both;
 }
 

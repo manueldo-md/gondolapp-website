@@ -30,7 +30,7 @@ export default function ComoFunciona() {
   };
 
   return (
-    <section id="ciclo" style={{ padding: "96px 0", background: "var(--tint-blue)" }}>
+    <section id="ciclo" style={{ padding: "96px 0 200px", background: "var(--tint-blue)" }}>
       <div className="wrap">
         <div style={{ display: "flex", flexWrap: "wrap", gap: "24px 48px", alignItems: "flex-end", justifyContent: "space-between" }}>
           <div>
@@ -87,7 +87,7 @@ export default function ComoFunciona() {
         </div>
 
         {/* Tarjeta del paso */}
-        <div style={{ marginTop: 16, background: "#FFFFFF", borderRadius: 28, display: "flex", flexWrap: "wrap", overflow: "hidden", boxShadow: "0 40px 80px -60px rgba(15,26,20,.35)" }}>
+        <div style={{ marginTop: 16, background: "#FFFFFF", borderRadius: 28, display: "flex", flexWrap: "wrap", boxShadow: "0 40px 80px -60px rgba(15,26,20,.35)" }}>
           <div style={{ flex: "1 1 340px", minWidth: 0, padding: "clamp(28px, 4vw, 52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: 12, color: AC }}>PASO {s.n} / 05</div>
             <h3 style={{ margin: "12px 0 0", fontWeight: 800, fontSize: "clamp(28px, 3vw, 42px)", lineHeight: 1.02, letterSpacing: "-0.04em" }}>{s.title}</h3>
@@ -102,7 +102,7 @@ export default function ComoFunciona() {
             </ul>
           </div>
 
-          <div key={step} style={{ flex: "1.4 1 520px", minWidth: 0, minHeight: 520, position: "relative", background: "linear-gradient(180deg, #F7F8FA, #EEF0F5)", overflow: "hidden", animation: "gin .45s ease" }}>
+          <div key={step} style={{ flex: "1.4 1 520px", minWidth: 0, minHeight: 520, position: "relative", background: "linear-gradient(180deg, #F7F8FA, #EEF0F5)", borderRadius: "0 28px 28px 0", animation: "gin .45s ease" }}>
             <Escenario paso={step} />
           </div>
         </div>
@@ -119,7 +119,7 @@ function Escenario({ paso }: { paso: number }) {
         <Image
           src={IMG.builder.src} alt="Creación de campaña con bloques de preguntas"
           width={IMG.builder.w} height={IMG.builder.h} sizes="(max-width: 900px) 92vw, 45vw"
-          style={{ position: "absolute", left: "8%", top: 40, width: "92%", height: "auto", borderRadius: "18px 0 0 0", boxShadow: SOMBRA, background: "var(--shot-bg)" }}
+          style={{ position: "absolute", left: "22%", top: 36, width: "56%", height: "auto", borderRadius: 18, boxShadow: SOMBRA, background: "var(--shot-bg)" }}
         />
         <div style={{ position: "absolute", left: 24, bottom: 24, background: "var(--ink)", color: "#FFFFFF", borderRadius: 14, padding: "12px 16px", fontSize: 13, fontWeight: 700, display: "flex", alignItems: "center", gap: 10, boxShadow: "0 20px 40px -20px rgba(15,26,20,.6)" }}>
           <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: "50%", background: "#8B7CF6" }} />
@@ -144,9 +144,9 @@ function Escenario({ paso }: { paso: number }) {
     return (
       <>
         <Image src={IMG.aprob.src} alt="Fotos por aprobar en el panel" width={IMG.aprob.w} height={IMG.aprob.h} sizes="(max-width: 900px) 76vw, 40vw"
-          style={{ position: "absolute", left: "30%", top: 40, width: "76%", height: "auto", borderRadius: "18px 0 0 18px", boxShadow: SOMBRA, background: "var(--shot-bg)" }} />
+          style={{ position: "absolute", left: "28%", top: 40, width: "80%", height: "auto", borderRadius: 18, boxShadow: SOMBRA, background: "var(--shot-bg)" }} />
         <Image src={IMG.aUbic.src} alt="Validación de ubicación: estás en el lugar" width={IMG.aUbic.w} height={IMG.aUbic.h} sizes="26vw"
-          style={{ position: "absolute", left: "6%", top: 90, width: "26%", height: "auto", borderRadius: 20, boxShadow: SOMBRA, background: "var(--shot-bg)", zIndex: 2 }} />
+          style={{ position: "absolute", left: "2%", top: 90, width: "35%", height: "auto", borderRadius: 20, boxShadow: SOMBRA, background: "var(--shot-bg)", zIndex: 3 }} />
       </>
     );
   }

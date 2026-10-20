@@ -1,17 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import EcosistemaDesktop from "./EcosistemaDesktop";
-import EcosistemaMobile from "./EcosistemaMobile";
+import dynamic from "next/dynamic";
 
 /* Debajo de 768px la simulación de fuerzas no se renderiza: va la cadena
    de valor (brief §6.3). La decisión es en JS y no por CSS, para que en
-   celular los 47 nodos y el bucle de animación no existan siquiera. */
+   celular los 47 nodos y el bucle de animación no existan siquiera.
+
+   Las dos versiones se cargan bajo demanda: entre el componente de
+   escritorio y los datos de los 47 nodos son unos 30 KB que no hacen
+   falta hasta que el visitante baja hasta acá. */
+
+const EcosistemaDesktop = dynamic(() => import("./EcosistemaDesktop"), { ssr: false });
+const EcosistemaMobile = dynamic(() => import("./EcosistemaMobile"), { ssr: false });
 
 const CORTE = "(min-width: 768px)";
 
 export default function Ecosistema() {
   const [esDesktop, setEsDesktop] = useState<boolean | null>(null);
+  const [cerca, setCerca] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia(CORTE);
@@ -20,6 +27,25 @@ export default function Ecosistema() {
     mq.addEventListener("change", aplicar);
     return () => mq.removeEventListener("change", aplicar);
   }, []);
+
+  /* Recién se pide el código cuando la sección está por entrar en pantalla. */
+  useEffect(() => {
+    const el = document.getElementById("ecosistema");
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setCerca(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const listo = esDesktop !== null && cerca;
 
   return (
     <section id="ecosistema" style={{ padding: "112px 0" }}>
@@ -38,9 +64,9 @@ export default function Ecosistema() {
           </p>
         </div>
 
-        {esDesktop === null ? (
-          /* Reserva el espacio hasta saber el ancho, para que no salte el layout */
-          <div aria-hidden="true" style={{ width: "100%", aspectRatio: "1300/1000", marginTop: 40 }} />
+        {!listo ? (
+          /* Reserva el espacio mientras llega, para que no salte el layout */
+          <div aria-hidden="true" style={{ width: "100%", aspectRatio: esDesktop === false ? "350/430" : "1300/1000", marginTop: 40 }} />
         ) : esDesktop ? (
           <EcosistemaDesktop />
         ) : (

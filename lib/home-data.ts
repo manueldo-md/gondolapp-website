@@ -8,9 +8,9 @@ import { IMG, type Asset } from "./assets";
 /* Posiciones del collage (SLOTS en la maqueta): principal, secundaria
    abajo a la derecha, teléfono abajo a la izquierda. */
 export const SLOTS = [
-  { l: "7%", t: "0%", w: "70%", z: 1, r: 18 },
-  { l: "58%", t: "36%", w: "40%", z: 3, r: 16 },
-  { l: "0%", t: "27%", w: "17%", z: 4, r: 22 },
+  { l: "7%", t: "0%", w: "70%", z: 1, r: 18 , sizes: "(max-width: 900px) 66vw, 50vw" },
+  { l: "58%", t: "36%", w: "40%", z: 3, r: 16 , sizes: "(max-width: 900px) 38vw, 29vw" },
+  { l: "0%", t: "27%", w: "17%", z: 4, r: 22 , sizes: "(max-width: 900px) 16vw, 12vw" },
 ] as const;
 
 /* De las 4 capturas de cada vista, la maqueta muestra estas tres. */

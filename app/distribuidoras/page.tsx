@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   title: "Gondolapp para distribuidoras — Tu fuerza de venta en vivo",
   description:
     "Un panel de todos tus vendedores, sin costo. Ejecutás las campañas de tus marcas con tu propia gente y convertís tu recorrido diario en argumento para sumar representaciones.",
+  openGraph: {
+    title: "Gondolapp para distribuidoras — Tu fuerza de venta en vivo",
+    description: "Un panel de todos tus vendedores, sin costo. Ejecutás las campañas de tus marcas con tu propia gente y convertís tu recorrido diario en argumento para sumar representaciones.",
+    url: "https://gondolapp.com/distribuidoras",
+    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
+  },
 };
 
 const PORQUE = [
