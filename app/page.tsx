@@ -1,43 +1,30 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import Problema from "@/components/Problema";
-import Solucion from "@/components/Solucion";
-import Ecosistema from "@/components/Ecosistema";
-import AppMovil from "@/components/AppMovil";
-import Gamificacion from "@/components/Gamificacion";
-import Plataforma from "@/components/Plataforma";
-import Numeros from "@/components/Numeros";
-import Informe from "@/components/Informe";
-import Comparativa from "@/components/Comparativa";
-import ComoArranca from "@/components/ComoArranca";
-import FAQ from "@/components/FAQ";
-import Contacto from "@/components/Contacto";
-import Footer from "@/components/Footer";
-import FloatingCTA from "@/components/FloatingCTA";
-import ScrollAnimations from "@/components/ScrollAnimations";
+import Hero from "@/components/home/Hero";
+import QueHace from "@/components/home/QueHace";
+import ComoFunciona from "@/components/home/ComoFunciona";
+import Ecosistema from "@/components/home/Ecosistema";
+import TiempoReal from "@/components/home/TiempoReal";
+import AppCampo from "@/components/home/AppCampo";
+import Armador from "@/components/home/Armador";
+import Soluciones from "@/components/home/Soluciones";
+import PreciosTeaser from "@/components/home/PreciosTeaser";
+import Preguntas from "@/components/home/Preguntas";
+import Demo from "@/components/home/Demo";
 
 export default function Home() {
   return (
     <>
-      <Nav />
-      <main>
-        <Hero />
-        <Problema />
-        <Ecosistema />
-        <Solucion />
-        <AppMovil />
-        <Gamificacion />
-        <Plataforma />
-        <Numeros />
-        <Informe />
-        <Comparativa />
-        <ComoArranca />
-        <FAQ />
-        <Contacto />
-      </main>
-      <Footer />
-      <FloatingCTA />
-      <ScrollAnimations />
+      <span id="top" />
+      <Hero />
+      <QueHace />
+      <ComoFunciona />
+      <Ecosistema />
+      <TiempoReal />
+      <AppCampo />
+      <Armador />
+      <Soluciones />
+      <PreciosTeaser />
+      <Preguntas />
+      <Demo />
     </>
   );
 }
