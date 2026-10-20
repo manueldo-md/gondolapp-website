@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
-import Header from "@/components/site/Header";
-import Footer from "@/components/site/Footer";
-import Reveal from "@/components/site/Reveal";
 import "./globals.css";
 
 /* Fuentes auto-hospedadas en vez de next/font/google.
@@ -73,12 +70,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
-        <div className="site-root">
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </div>
-        <Reveal />
+        <div className="site-root">{children}</div>
         <Analytics />
       </body>
     </html>
