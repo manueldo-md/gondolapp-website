@@ -5,10 +5,11 @@ import Image from "next/image";
 import Halo from "@/components/site/Halo";
 import { IMG, type Asset } from "@/lib/assets";
 
-/* Hero de /red: toggle Vendedores / Fixers con 4 teléfonos.
-   En Fixers hay tres pantallas que no existen en el pack: la maqueta las
-   deja como recuadro con el título, y acá se mantiene igual (brief §10:
-   las capturas que no están en el pack no existen, no se inventan). */
+/* Hero de /red: toggle Vendedores / Fixers.
+   Vendedores muestra sus 4 pantallas. Fixers, por ahora, solo la que
+   existe en el pack: tres de sus capturas todavía no están y un recuadro
+   vacío con el título se lee peor que no mostrar nada. Cuando lleguen,
+   se reponen las otras tres y vuelve a quedar la tira de cuatro. */
 
 type Tel = { t: string; img?: Asset; mt: string };
 
@@ -31,10 +32,7 @@ const HERO: { t: string; h: string; p: string; cta: string; phones: Tel[] }[] = 
     p: "Distribuidoras y repositoras publican campañas abiertas. Te postulás, te aprueban, vas al comercio, acomodás y probás el trabajo con foto antes y después.",
     cta: "Quiero sumarme como fixer",
     phones: [
-      { t: "Ofertas en mi zona", mt: "48px" },
-      { t: "Postulación enviada", mt: "0" },
-      { t: "Misión: antes y después", mt: "72px" },
-      { t: "Mi perfil", img: IMG.gPerf, mt: "24px" },
+      { t: "Mi perfil", img: IMG.gPerf, mt: "0" },
     ],
   },
 ];
@@ -71,7 +69,7 @@ export default function RedHero() {
           <a href="#sumarme" className="btn btn-dark">{h.cta}</a>
         </div>
 
-        <div key={tab} className="red-tira" style={{ animation: "gin 0.45s ease" }}>
+        <div key={tab} className={`red-tira${h.phones.length === 1 ? " red-tira-uno" : ""}`} style={{ animation: "gin 0.45s ease" }}>
           {h.phones.map((p) => (
             <div key={p.t} className="red-tel" style={{ marginTop: p.mt }}>
               {p.img ? (
@@ -105,6 +103,8 @@ export default function RedHero() {
           max-width: 1100px;
         }
         .red-tel { flex: 1 1 0; min-width: 0; max-width: 260px; }
+        /* Con una sola pantalla, un poco mas grande: si no queda perdida */
+        .red-tira-uno .red-tel { max-width: 300px; }
         @media (max-width: 900px) {
           .red-tira {
             overflow-x: auto;

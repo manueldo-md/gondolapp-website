@@ -111,7 +111,7 @@ export default function Demo() {
                 </svg>
               </div>
               <div style={{ fontWeight: 800, fontSize: 26, letterSpacing: "-0.03em", marginTop: 18 }}>
-                ¡Listo! Te escribimos en menos de 24 h hábiles.
+                ¡Listo! Te escribimos en los próximos 2 días hábiles.
               </div>
               <p style={{ margin: "10px 0 0", fontSize: 15, lineHeight: 1.6, color: "var(--on-dark)" }}>
                 Te mandamos un mail de confirmación. Si no lo ves, revisá el correo no deseado.

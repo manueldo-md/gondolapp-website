@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { permitido, ipDe } from "@/lib/rate-limit";
+import { mailAlLead, mailInterno } from "@/lib/emails";
 
 /* Formulario de demo (brief §7).
 
@@ -16,8 +17,6 @@ const PERFILES = [
   "Agencia de trade marketing",
   "Gondolero / relevador",
 ];
-
-const LEGALES = "https://app.gondolapp.com/legales";
 
 /* Validación mínima de email: hay un @ con algo a cada lado y un punto
    en el dominio. No intenta ser exhaustiva; el mail de confirmación es
@@ -83,27 +82,9 @@ export async function POST(request: Request) {
 
   const resend = new Resend(apiKey);
 
-  const interno = [
-    `Nombre:  ${nombre}`,
-    `Email:   ${email}`,
-    `Empresa: ${empresa}`,
-    `Perfil:  ${perfil}`,
-    "",
-    `Consentimiento: aceptado (${LEGALES})`,
-    `IP: ${ip}`,
-    `Fecha: ${new Date().toISOString()}`,
-  ].join("\n");
-
-  const alLead = [
-    `Hola ${nombre},`,
-    "",
-    "Recibimos tu pedido de demo de Gondolapp. Te contactamos en menos de 24 horas hábiles.",
-    "",
-    "Si necesitás algo antes, respondé este mail o escribinos a hola@gondolapp.com.",
-    "",
-    "— Equipo Gondolapp",
-    "gondolapp.com",
-  ].join("\n");
+  const fecha = new Date().toLocaleString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" });
+  const interno = mailInterno({ nombre, email, empresa, perfil, ip, fecha });
+  const alLead = mailAlLead(nombre);
 
   try {
     /* 1) Aviso interno, con replyTo al lead para contestarle directo */
@@ -112,7 +93,8 @@ export async function POST(request: Request) {
       to: para,
       replyTo: email,
       subject: `Demo · ${empresa} (${perfil})`,
-      text: interno,
+      html: interno.html,
+      text: interno.text,
     });
 
     if (aviso.error) {
@@ -129,7 +111,8 @@ export async function POST(request: Request) {
       from: desde,
       to: email,
       subject: "Recibimos tu pedido de demo",
-      text: alLead,
+      html: alLead.html,
+      text: alLead.text,
     });
 
     if (confirmacion.error) {
