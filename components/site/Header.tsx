@@ -148,6 +148,11 @@ export default function Header() {
         <nav className="nav" aria-label="Principal" style={{ display: "flex", alignItems: "center", gap: "0 2px" }}>
           <a href={anchor("#top")}>Inicio</a>
 
+          {/* El dropdown sólo vive en la home. En las páginas internas
+              "Plataforma" es un link simple a /#quehace. */}
+          {!isHome ? (
+            <Link href="/#quehace">Plataforma</Link>
+          ) : (
           <div style={{ position: "relative" }} onMouseEnter={openPlat} onMouseLeave={closePlat}>
             <button
               type="button"
@@ -202,6 +207,7 @@ export default function Header() {
               </div>
             )}
           </div>
+          )}
 
           <a href={anchor("#actores")}>Soluciones</a>
           <a href={anchor("#faq")}>Preguntas</a>
