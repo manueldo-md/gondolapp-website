@@ -56,11 +56,8 @@ export default function Header() {
     };
   }, []);
 
-  /* Cerrar el menú y el dropdown al cambiar de página */
-  useEffect(() => {
-    setMenu(false);
-    setPlat(false);
-  }, [pathname]);
+  /* El menú y el dropdown se cierran en el onClick de cada link,
+     así no hace falta un efecto que reaccione al cambio de ruta. */
 
   /* Escape cierra lo que esté abierto */
   useEffect(() => {
@@ -296,15 +293,15 @@ export default function Header() {
       {/* ── Barra móvil ── */}
       <div
         className="wrap hdr-mobile"
-        style={{ display: "none", alignItems: "center", justifyContent: "space-between", minHeight: 60 }}
+        style={{ display: "none", alignItems: "center", justifyContent: "space-between", minHeight: 72 }}
       >
         <Link href="/" aria-label="Gondolapp, inicio" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
           <Image
             src="/gondolapp-assets/brand/logo-fondo-claro.png"
             alt="Gondolapp"
-            width={107}
-            height={28}
-            style={{ height: 28, width: "auto", display: "block" }}
+            width={130}
+            height={34}
+            style={{ height: 34, width: "auto", display: "block" }}
           />
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
