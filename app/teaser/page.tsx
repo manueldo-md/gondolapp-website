@@ -1,23 +1,25 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { IMG } from "@/lib/assets";
-import FormularioDemo from "@/components/FormularioDemo";
+import FormularioTeaser from "@/components/FormularioTeaser";
 
 /* Página teaser. La sirve el middleware en todas las rutas mientras
-   TEASER_MODE esté en true. */
+   TEASER_MODE esté en true.
+
+   Deliberadamente mínima: marca, una línea y el campo de email. Nada que
+   cuente qué hace el producto —eso vive en el sitio real. */
 
 const LEGALES = "https://app.gondolapp.com/legales";
 
 export const metadata: Metadata = {
   title: "Gondolapp — Muy pronto",
-  description:
-    "Inteligencia de góndola para el canal tradicional argentino. Dejanos tus datos y te avisamos cuando abramos.",
+  description: "Muy pronto. Dejanos tu email y te avisamos cuando salga.",
   /* Mientras el sitio está tapado, que los buscadores no lo indexen:
      si no, terminan guardando el teaser en lugar de las páginas reales. */
   robots: { index: false, follow: false },
   openGraph: {
     title: "Gondolapp — Muy pronto",
-    description: "Inteligencia de góndola para el canal tradicional argentino.",
+    description: "Dejanos tu email y te avisamos cuando salga.",
     url: "https://gondolapp.com",
     images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
   },
@@ -75,54 +77,23 @@ export default function Teaser() {
           style={{ height: 39, width: "auto", display: "block", alignSelf: "flex-start" }}
         />
 
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "48px 64px",
-            alignItems: "center",
-            marginTop: 56,
-          }}
-        >
-          <div style={{ flex: "1 1 440px", minWidth: 0 }}>
-            <div className="kick" style={{ color: "var(--mint)" }}>
-              Pre-lanzamiento · Argentina
-            </div>
-
-            <h1
-              className="h1"
-              style={{ margin: "20px 0 0", fontSize: "clamp(40px, 5.6vw, 76px)" }}
-            >
-              Tu góndola habla,
-              <br />
-              <span style={{ color: "var(--mint)" }}>¡escuchala!</span>
-            </h1>
-
-            <p
-              className="lead"
-              style={{ margin: "24px 0 0", maxWidth: 540, color: "var(--on-dark)" }}
-            >
-              Estamos terminando de preparar el lanzamiento. Gondolapp convierte el recorrido que tu
-              fuerza de venta ya hace en datos de góndola en tiempo real: presencia, quiebres,
-              precio y exhibición, con foto y GPS de respaldo.
-            </p>
-
-            <p
-              style={{
-                margin: "20px 0 0",
-                maxWidth: 540,
-                fontSize: 16,
-                lineHeight: 1.65,
-                color: "var(--on-dark)",
-                fontWeight: 600,
-              }}
-            >
-              Dejanos tus datos y te avisamos apenas abramos.
-            </p>
+        <div style={{ marginTop: 64, maxWidth: 720 }}>
+          <div className="kick" style={{ color: "var(--mint)" }}>
+            Pre-lanzamiento · Argentina
           </div>
 
-          <div style={{ flex: "1 1 380px", minWidth: 0 }}>
-            <FormularioDemo textoBoton="Quiero que me avisen" idPrefijo="t" />
+          <h1 className="h1" style={{ margin: "20px 0 0", fontSize: "clamp(40px, 5.6vw, 76px)" }}>
+            Tu góndola habla,
+            <br />
+            <span style={{ color: "var(--mint)" }}>¡escuchala!</span>
+          </h1>
+
+          <p className="lead" style={{ margin: "24px 0 0", maxWidth: 460, color: "var(--on-dark)" }}>
+            Estamos por salir.
+          </p>
+
+          <div style={{ marginTop: 36 }}>
+            <FormularioTeaser />
           </div>
         </div>
       </div>

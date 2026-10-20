@@ -183,3 +183,43 @@ function escapar(s: string) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
+
+/* ── Aviso interno del teaser: alguien dejó su mail ── */
+
+export function mailTeaser(d: { email: string; ip: string; fecha: string }) {
+  const html = envoltorio(
+    `<tr><td style="padding:36px 32px 8px;">
+<p style="margin:0 0 6px;font-family:${FUENTE};font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:${TEXTO_2};font-weight:700;">
+Teaser
+</p>
+<h1 style="margin:0 0 20px;font-family:${FUENTE};font-size:26px;line-height:1.25;letter-spacing:-0.5px;color:${INK};font-weight:800;">
+Nuevo interesado
+</h1>
+
+<p style="margin:0 0 24px;font-family:${FUENTE};font-size:20px;line-height:1.4;color:${INK};font-weight:700;">
+<a href="mailto:${escapar(d.email)}" style="color:${INK};">${escapar(d.email)}</a>
+</p>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background:#F2F6F2;border-radius:12px;margin:0 0 24px;">
+<tr><td style="padding:14px 18px;">
+<p style="margin:0;font-family:${FUENTE};font-size:12px;line-height:1.6;color:${TEXTO_2};">
+Dejó su mail en la página teaser &bull; ${escapar(d.fecha)} &bull; IP ${escapar(d.ip)}<br>
+Respondiendo este mail le escribís directo.
+</p>
+</td></tr>
+</table>
+</td></tr>`,
+    d.email
+  );
+
+  const text = [
+    "Nuevo interesado desde el teaser.",
+    "",
+    `Email: ${d.email}`,
+    `Fecha: ${d.fecha}`,
+    `IP: ${d.ip}`,
+  ].join("\n");
+
+  return { html, text };
+}
