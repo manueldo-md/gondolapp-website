@@ -129,7 +129,7 @@ export default function Teaser() {
         </div>
       </main>
 
-      <footer className="tsr-footer">© 2026 Gondolapp · Hecho en Entre Ríos, Argentina</footer>
+      <footer className="tsr-footer">© 2026 Gondolapp</footer>
 
       <style>{`
         /* 100dvh y no 100vh: en el celular la barra del navegador hace que
