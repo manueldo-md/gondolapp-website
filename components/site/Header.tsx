@@ -181,12 +181,10 @@ export default function Header() {
         <nav className="nav" aria-label="Principal" style={{ display: "flex", alignItems: "center", gap: "0 2px" }}>
           <a href={anchor("#top")}>Inicio</a>
 
-          {/* El panel sólo vive en la home: es un índice de sus secciones.
-              En las páginas internas "Nuestra solución" es un link simple. */}
-          {!isHome ? (
-            <Link href="/#quehace">Nuestra solución</Link>
-          ) : (
-            <div ref={platRef} style={{ position: "relative" }} onMouseEnter={openPlat} onMouseLeave={closePlat}>
+          {/* El panel va en todas las páginas. Es un índice de las
+              secciones de la home, así que desde una página interna las
+              anclas vuelven a la home (lo resuelve anchor()). */}
+          <div ref={platRef} style={{ position: "relative" }} onMouseEnter={openPlat} onMouseLeave={closePlat}>
               <button
                 type="button"
                 /* Sólo abre: si cerrara, con mouse el hover lo abriría y el
@@ -278,8 +276,7 @@ export default function Header() {
                   </div>
                 </div>
               )}
-            </div>
-          )}
+          </div>
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
