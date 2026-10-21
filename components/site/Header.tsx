@@ -7,8 +7,9 @@ import { usePathname } from "next/navigation";
 
 const APP_URL = "https://app.gondolapp.com";
 
-/* Alta de cuenta en la plataforma (botón "Empezá gratis"). */
-const REGISTRO_URL = "https://app.gondolapp.com/registro";
+/* "Empezá gratis" va a la misma plataforma que Login: el botón de
+   registro está ahí dentro. */
+const REGISTRO_URL = APP_URL;
 
 const ACTORES = [
   { label: "Marcas", href: "/marcas" },
