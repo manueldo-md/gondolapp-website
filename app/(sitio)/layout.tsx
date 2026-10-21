@@ -1,6 +1,7 @@
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
 import Reveal from "@/components/site/Reveal";
+import Ancla from "@/components/site/Ancla";
 
 /* Marco del sitio: header, pie y las apariciones al scrollear.
    La página teaser vive fuera de este grupo, así que no los hereda.
@@ -16,6 +17,7 @@ export default function LayoutSitio({
       <main>{children}</main>
       <Footer />
       <Reveal />
+      <Ancla />
     </>
   );
 }

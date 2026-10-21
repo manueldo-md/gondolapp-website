@@ -59,8 +59,16 @@ export default function RootLayout({
   return (
     /* js-reveal va en el HTML del servidor (no por script) para que el
        cliente hidrate exactamente lo mismo. El <noscript> revierte el
-       ocultamiento si el visitante no tiene JS. */
-    <html lang="es" className={`${manrope.variable} ${mono.variable} js-reveal`}>
+       ocultamiento si el visitante no tiene JS.
+
+       data-scroll-behavior: le avisa a Next que el html tiene scroll
+       suave, para que lo desactive mientras cambia de página y el salto
+       al ancla caiga donde tiene que caer. */
+    <html
+      lang="es"
+      data-scroll-behavior="smooth"
+      className={`${manrope.variable} ${mono.variable} js-reveal`}
+    >
       <head>
         <noscript>
           <style>{`
