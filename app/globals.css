@@ -278,3 +278,10 @@ a:hover { color: var(--primary); }
   .wrap { padding: 0 20px; }
   .bleed, .bleedL { width: 100%; margin-left: 0; }
 }
+
+/* Aparicion escalonada del teaser: cada elemento sube y se funde.
+   El bloque de prefers-reduced-motion de mas arriba la desactiva. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
