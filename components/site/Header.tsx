@@ -7,17 +7,38 @@ import { usePathname } from "next/navigation";
 
 const APP_URL = "https://app.gondolapp.com";
 
+/* Alta de cuenta en la plataforma (botón "Empezá gratis"). */
+const REGISTRO_URL = "https://app.gondolapp.com/registro";
+
 const ACTORES = [
   { label: "Marcas", href: "/marcas" },
   { label: "Distribuidoras", href: "/distribuidoras" },
   { label: "Repositoras", href: "/repositoras" },
 ];
 
-const PLATAFORMA = [
-  { label: "Qué es", desc: "Qué hace y cómo funciona", hash: "#quehace" },
-  { label: "El ecosistema", desc: "Actores y relaciones, en vivo", hash: "#ecosistema" },
-  { label: "Tiempo real", desc: "Resultados, mapa y reportes", hash: "#resultados" },
+/* Las siete secciones de la home, con el título de cada una como
+   descripción. El orden es el de la página. */
+const SOLUCION = [
+  { label: "Qué hace", desc: "Lanzás. Relevan. Decidís.", hash: "#quehace" },
+  { label: "Cómo funciona", desc: "De la campaña al dato que decide, en cinco pasos.", hash: "#ciclo" },
+  { label: "El ecosistema", desc: "El ecosistema que construye valor.", hash: "#ecosistema" },
+  { label: "Tiempo real", desc: "Lo que sale del ecosistema: datos que podés usar hoy.", hash: "#resultados" },
+  { label: "La app de campo", desc: "Se instala desde un link. Una misión tarda 30 segundos.", hash: "#app" },
+  { label: "Probalo", desc: "Elegí qué medir y mirá cómo lo ve quien sale a la calle.", hash: "#armador" },
+  { label: "Soluciones", desc: "Una plataforma. Todos los que mueven la góndola.", hash: "#actores" },
 ];
+
+/* Flecha del botón "Empezá gratis" */
+function Flecha() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h13" />
+      <path d="M12 5l7 7-7 7" />
+    </svg>
+  );
+}
+
+const GRADIENTE_CTA = "linear-gradient(92deg, #5B4BD6, #7C6CF0)";
 
 export default function Header() {
   const pathname = usePathname();
@@ -28,6 +49,7 @@ export default function Header() {
   const [plat, setPlat] = useState(false);
   const [menu, setMenu] = useState(false);
   const closeTimer = useRef<number | null>(null);
+  const platRef = useRef<HTMLDivElement | null>(null);
 
   /* Anclas: en la home son locales, en el resto vuelven a la home. */
   const anchor = (hash: string) => (isHome ? hash : `/${hash}`);
@@ -56,7 +78,7 @@ export default function Header() {
     };
   }, []);
 
-  /* El menú y el dropdown se cierran en el onClick de cada link,
+  /* El menú y el panel se cierran en el onClick de cada link,
      así no hace falta un efecto que reaccione al cambio de ruta. */
 
   /* Escape cierra lo que esté abierto */
@@ -70,6 +92,16 @@ export default function Header() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  /* En pantalla táctil no hay "salir con el mouse": tocar fuera cierra. */
+  useEffect(() => {
+    if (!plat) return;
+    const fuera = (e: PointerEvent) => {
+      if (!platRef.current?.contains(e.target as Node)) setPlat(false);
+    };
+    document.addEventListener("pointerdown", fuera);
+    return () => document.removeEventListener("pointerdown", fuera);
+  }, [plat]);
 
   const openPlat = () => {
     if (closeTimer.current) {
@@ -148,72 +180,108 @@ export default function Header() {
         <nav className="nav" aria-label="Principal" style={{ display: "flex", alignItems: "center", gap: "0 2px" }}>
           <a href={anchor("#top")}>Inicio</a>
 
-          {/* El dropdown sólo vive en la home. En las páginas internas
-              "Plataforma" es un link simple a /#quehace. */}
+          {/* El panel sólo vive en la home: es un índice de sus secciones.
+              En las páginas internas "Nuestra solución" es un link simple. */}
           {!isHome ? (
-            <Link href="/#quehace">Plataforma</Link>
+            <Link href="/#quehace">Nuestra solución</Link>
           ) : (
-          <div style={{ position: "relative" }} onMouseEnter={openPlat} onMouseLeave={closePlat}>
-            <button
-              type="button"
-              onClick={() => setPlat((v) => !v)}
-              aria-expanded={plat}
-              style={{
-                cursor: "pointer",
-                background: plat ? "var(--tint-green)" : "transparent",
-                border: 0,
-                borderRadius: 10,
-                padding: "10px 12px",
-                fontFamily: "inherit",
-                fontSize: 14,
-                fontWeight: 600,
-                color: "var(--text-3)",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              Plataforma
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </button>
+            <div ref={platRef} style={{ position: "relative" }} onMouseEnter={openPlat} onMouseLeave={closePlat}>
+              <button
+                type="button"
+                /* Sólo abre: si cerrara, con mouse el hover lo abriría y el
+                   clic siguiente lo cerraría de inmediato. */
+                onClick={openPlat}
+                onFocus={openPlat}
+                aria-expanded={plat}
+                style={{
+                  cursor: "pointer",
+                  background: plat ? "var(--tint-green)" : "transparent",
+                  border: 0,
+                  borderRadius: 10,
+                  padding: "10px 12px",
+                  fontFamily: "inherit",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "var(--text-3)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                Nuestra solución
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
 
-            {plat && (
-              <div style={{ position: "absolute", left: 0, top: "100%", paddingTop: 8, animation: "gin .18s ease" }}>
-                <div
-                  style={{
-                    background: "#FFFFFF",
-                    borderRadius: 16,
-                    boxShadow: "0 30px 60px -30px rgba(15,26,20,.4), 0 0 0 1px var(--line)",
-                    padding: 8,
-                    minWidth: 240,
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  {PLATAFORMA.map((it) => (
-                    <a
-                      key={it.hash}
-                      href={anchor(it.hash)}
-                      onClick={() => setPlat(false)}
-                      style={{ display: "flex", flexDirection: "column", gap: 2, padding: "10px 12px", textDecoration: "none", borderRadius: 10 }}
+              {plat && (
+                <div style={{ position: "absolute", left: 0, top: "100%", paddingTop: 8, animation: "gin .18s ease" }}>
+                  <div
+                    style={{
+                      background: "#FFFFFF",
+                      borderRadius: 20,
+                      border: "1px solid #E3E8E3",
+                      boxShadow: "0 30px 60px -30px rgba(15,26,20,.4)",
+                      padding: 10,
+                      width: 640,
+                      /* En pantallas angostas el panel no se sale de la ventana */
+                      maxWidth: "calc(100vw - 48px)",
+                    }}
+                  >
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+                      {SOLUCION.map((it) => (
+                        <a
+                          key={it.hash}
+                          href={anchor(it.hash)}
+                          onClick={() => setPlat(false)}
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 3,
+                            padding: "10px 12px",
+                            textDecoration: "none",
+                            borderRadius: 12,
+                          }}
+                        >
+                          <span style={{ fontSize: 15, fontWeight: 800 }}>{it.label}</span>
+                          <span style={{ fontSize: 12.5, fontWeight: 500, color: "#4E5D53", lineHeight: 1.35 }}>
+                            {it.desc}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 16,
+                        flexWrap: "wrap",
+                        marginTop: 10,
+                        borderTop: "1px solid #EEF1EE",
+                        padding: "12px 12px 4px",
+                      }}
                     >
-                      <span style={{ fontSize: 14, fontWeight: 600 }}>{it.label}</span>
-                      <span style={{ fontSize: 12, fontWeight: 500, color: "var(--text-2)" }}>{it.desc}</span>
-                    </a>
-                  ))}
+                      <span style={{ fontSize: 13, color: "#4E5D53" }}>
+                        ¿Querés verlo con tu categoría y tu zona?
+                      </span>
+                      <a
+                        href={anchor("#demo")}
+                        onClick={() => setPlat(false)}
+                        style={{ fontSize: 13, fontWeight: 800, color: "#5B4BD6", textDecoration: "none", whiteSpace: "nowrap" }}
+                      >
+                        Solicitar una demo →
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
           )}
-
-          <a href={anchor("#actores")}>Soluciones</a>
-          <a href={anchor("#faq")}>Preguntas</a>
         </nav>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
           <div
             style={{
               display: "flex",
@@ -269,9 +337,32 @@ export default function Header() {
           </div>
 
           <a
+            href={REGISTRO_URL}
+            style={{
+              marginLeft: 10,
+              background: GRADIENTE_CTA,
+              color: "#FFFFFF",
+              textDecoration: "none",
+              padding: "0 16px",
+              minHeight: 38,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 7,
+              fontSize: 13,
+              fontWeight: 800,
+              borderRadius: 10,
+              boxShadow: "0 8px 20px -10px rgba(91,75,214,.7)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Empezá gratis
+            <Flecha />
+          </a>
+
+          <a
             href={APP_URL}
             style={{
-              marginLeft: 14,
+              marginLeft: 10,
               color: "var(--ink)",
               textDecoration: "none",
               padding: "0 14px",
@@ -367,33 +458,28 @@ export default function Header() {
             </a>
 
             <div style={{ padding: "12px 4px 6px", fontSize: 12, color: "var(--text-2)", fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase" }}>
-              Plataforma
+              Nuestra solución
             </div>
-            {PLATAFORMA.map((it, i) => (
+            {SOLUCION.map((it, i) => (
               <a
                 key={it.hash}
                 href={anchor(it.hash)}
                 onClick={() => setMenu(false)}
                 style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
                   textDecoration: "none",
                   padding: "9px 4px 9px 14px",
-                  fontSize: 16,
-                  fontWeight: 600,
-                  ...(i === PLATAFORMA.length - 1
+                  ...(i === SOLUCION.length - 1
                     ? { borderBottom: "1px solid var(--chip)", marginBottom: 4 }
                     : null),
                 }}
               >
-                {it.label}
+                <span style={{ fontSize: 16, fontWeight: 700 }}>{it.label}</span>
+                <span style={{ fontSize: 12, fontWeight: 500, color: "#4E5D53", lineHeight: 1.35 }}>{it.desc}</span>
               </a>
             ))}
-
-            <a href={anchor("#actores")} onClick={() => setMenu(false)} style={{ textDecoration: "none", padding: "12px 4px", fontSize: 17, fontWeight: 700, borderBottom: "1px solid var(--chip)" }}>
-              Soluciones
-            </a>
-            <a href={anchor("#faq")} onClick={() => setMenu(false)} style={{ textDecoration: "none", padding: "12px 4px", fontSize: 17, fontWeight: 700 }}>
-              Preguntas
-            </a>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 14, background: "var(--chip)", borderRadius: 16, padding: 8 }}>
               {ACTORES.map((a) => (
@@ -415,7 +501,22 @@ export default function Header() {
               </Link>
             </div>
 
-            <a href={anchor("#demo")} onClick={() => setMenu(false)} className="btn btn-dark" style={{ marginTop: 12 }}>
+            <a
+              href={REGISTRO_URL}
+              onClick={() => setMenu(false)}
+              className="btn"
+              style={{
+                marginTop: 12,
+                background: GRADIENTE_CTA,
+                color: "#FFFFFF",
+                boxShadow: "0 8px 20px -10px rgba(91,75,214,.7)",
+              }}
+            >
+              Empezá gratis
+              <Flecha />
+            </a>
+
+            <a href={anchor("#demo")} onClick={() => setMenu(false)} className="btn btn-ghost" style={{ marginTop: 8 }}>
               Solicitar una demo
             </a>
           </div>
