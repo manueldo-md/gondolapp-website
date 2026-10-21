@@ -16,14 +16,12 @@ import { NextResponse, type NextRequest } from "next/server";
 const COOKIE = "gp_preview";
 const TREINTA_DIAS = 60 * 60 * 24 * 30;
 
-/* Ruta temporal para diagnosticar por qué no entra la llave.
-   No devuelve el secreto: sólo si existe, cuánto mide y si coincide.
-   Se saca apenas esté resuelto. */
-const DIAG = "/_diag-teaser";
-
-/* El valor puede llegar maltratado por la URL: en una query "+" significa
-   espacio, y puede venir percent-encoded. Se prueban todas las lecturas
-   razonables antes de rechazar la llave. */
+/* El secreto viaja por la URL, asi que no puede tener cualquier cosa:
+   "%" arranca una secuencia de codificacion y se come los caracteres que
+   siguen, "&" corta el parametro y lo que va despues de "#" ni sale del
+   navegador. Conviene que sea solo letras y numeros.
+   Igual se prueban todas las lecturas razonables del valor antes de
+   rechazarlo, porque en una query "+" tambien significa espacio. */
 function lecturasDeLaLlave(req: NextRequest): string[] {
   const crudo = req.nextUrl.search.match(/[?&]preview=([^&]*)/)?.[1] ?? "";
   let decodificado = "";
@@ -43,24 +41,6 @@ export function middleware(req: NextRequest) {
 
   const llaves = lecturasDeLaLlave(req);
   const coincide = !!secreto && llaves.some((l) => l === secreto);
-
-  /* ── Diagnóstico temporal ── */
-  if (url.pathname === DIAG) {
-    return NextResponse.json(
-      {
-        teaserModeCrudo: process.env.TEASER_MODE ?? null,
-        teaserActivo,
-        secretoDefinido: !!secreto,
-        secretoLargo: secreto?.length ?? 0,
-        llavesLeidas: llaves.length,
-        llavesLargo: llaves.map((l) => l.length),
-        coincide,
-        cookiePresente: !!req.cookies.get(COOKIE),
-        cookieCoincide: !!secreto && req.cookies.get(COOKIE)?.value === secreto,
-      },
-      { headers: { "Cache-Control": "no-store" } }
-    );
-  }
 
   /* Teaser apagado: nadie debería quedarse en /teaser */
   if (!teaserActivo) {
