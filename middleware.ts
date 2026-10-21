@@ -10,17 +10,57 @@ import { NextResponse, type NextRequest } from "next/server";
    ?preview=<PREVIEW_SECRET>. Eso deja una cookie y a partir de ahí se
    navega normal, sin arrastrar el parámetro.
 
-   Con TEASER_MODE en cualquier otro valor (o sin definir), el sitio se
-   comporta como siempre: apagar el teaser es cambiar una variable en
-   Vercel, sin tocar código. */
+   Ojo: en el middleware estas variables se incrustan al construir, no se
+   leen en vivo. Si se cambian en Vercel hay que volver a desplegar. */
 
 const COOKIE = "gp_preview";
 const TREINTA_DIAS = 60 * 60 * 24 * 30;
 
+/* Ruta temporal para diagnosticar por qué no entra la llave.
+   No devuelve el secreto: sólo si existe, cuánto mide y si coincide.
+   Se saca apenas esté resuelto. */
+const DIAG = "/_diag-teaser";
+
+/* El valor puede llegar maltratado por la URL: en una query "+" significa
+   espacio, y puede venir percent-encoded. Se prueban todas las lecturas
+   razonables antes de rechazar la llave. */
+function lecturasDeLaLlave(req: NextRequest): string[] {
+  const crudo = req.nextUrl.search.match(/[?&]preview=([^&]*)/)?.[1] ?? "";
+  let decodificado = "";
+  try {
+    decodificado = decodeURIComponent(crudo);
+  } catch {
+    decodificado = "";
+  }
+  const lecturas = [req.nextUrl.searchParams.get("preview") ?? "", crudo, decodificado];
+  return [...new Set(lecturas.map((v) => v.trim()).filter(Boolean))];
+}
+
 export function middleware(req: NextRequest) {
-  const teaserActivo = process.env.TEASER_MODE === "true";
-  const secreto = process.env.PREVIEW_SECRET;
+  const teaserActivo = process.env.TEASER_MODE?.trim() === "true";
+  const secreto = process.env.PREVIEW_SECRET?.trim();
   const url = req.nextUrl;
+
+  const llaves = lecturasDeLaLlave(req);
+  const coincide = !!secreto && llaves.some((l) => l === secreto);
+
+  /* ── Diagnóstico temporal ── */
+  if (url.pathname === DIAG) {
+    return NextResponse.json(
+      {
+        teaserModeCrudo: process.env.TEASER_MODE ?? null,
+        teaserActivo,
+        secretoDefinido: !!secreto,
+        secretoLargo: secreto?.length ?? 0,
+        llavesLeidas: llaves.length,
+        llavesLargo: llaves.map((l) => l.length),
+        coincide,
+        cookiePresente: !!req.cookies.get(COOKIE),
+        cookieCoincide: !!secreto && req.cookies.get(COOKIE)?.value === secreto,
+      },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  }
 
   /* Teaser apagado: nadie debería quedarse en /teaser */
   if (!teaserActivo) {
@@ -32,30 +72,39 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  /* La llave llega por la URL: se guarda en una cookie y se limpia el
-     parámetro, para que no quede dando vueltas en el historial ni se
-     comparta sin querer al copiar un link. */
-  const llave = url.searchParams.get("preview");
-  if (secreto && llave) {
-    if (llave === secreto) {
-      const limpia = url.clone();
-      limpia.searchParams.delete("preview");
-      const res = NextResponse.redirect(limpia);
-      res.cookies.set(COOKIE, secreto, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax",
-        path: "/",
-        maxAge: TREINTA_DIAS,
-      });
-      return res;
-    }
-    /* Llave equivocada: se sigue de largo y termina viendo el teaser */
+  /* Sin secreto nadie puede entrar nunca. Queda avisado en los registros
+     de Vercel, para no quedarse mirando una página que no cede. */
+  if (!secreto) {
+    console.warn(
+      "TEASER_MODE está activo pero PREVIEW_SECRET llegó vacía al middleware. " +
+        "Hay que volver a desplegar después de cargarla en Vercel."
+    );
   }
 
-  /* Ya tiene la llave guardada: pasa al sitio completo */
+  /* La llave llega por la URL: se guarda en una cookie y se limpia el
+     parámetro, para que no quede en el historial ni se comparta sin
+     querer al copiar un link. */
+  if (coincide) {
+    const limpia = url.clone();
+    limpia.searchParams.delete("preview");
+    const res = NextResponse.redirect(limpia);
+    res.cookies.set(COOKIE, secreto!, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: TREINTA_DIAS,
+    });
+    return res;
+  }
+
+  /* Ya tiene la llave guardada: pasa al sitio completo.
+     Se marca privada para que el borde no cachee una respuesta del sitio
+     completo y se la sirva después a un visitante sin llave. */
   if (secreto && req.cookies.get(COOKIE)?.value === secreto) {
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.set("Cache-Control", "private, no-store, max-age=0");
+    return res;
   }
 
   /* Todos los demás ven el teaser, sin cambiar la URL de la barra */
