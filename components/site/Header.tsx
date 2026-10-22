@@ -23,11 +23,22 @@ const SOLUCION = [
   { label: "Qué hace", desc: "Lanzás. Relevan. Decidís.", hash: "#quehace" },
   { label: "Cómo funciona", desc: "De la campaña al dato que decide, en cinco pasos.", hash: "#ciclo" },
   { label: "El ecosistema", desc: "El ecosistema que construye valor.", hash: "#ecosistema" },
+  { label: "Privacidad", desc: "Tus datos tienen paredes. De hierro.", hash: "#muros", escudo: true },
   { label: "Tiempo real", desc: "Lo que sale del ecosistema: datos que podés usar hoy.", hash: "#resultados" },
   { label: "La app de campo", desc: "Se instala desde un link. Una misión tarda 30 segundos.", hash: "#app" },
   { label: "Probalo", desc: "Elegí qué medir y mirá cómo lo ve quien sale a la calle.", hash: "#armador" },
   { label: "Soluciones", desc: "Una plataforma. Todos los que mueven la góndola.", hash: "#actores" },
 ];
+
+/* Escudo verde que precede a "Privacidad" en el panel */
+function EscudoVerde() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1F9D5A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
 
 /* Flecha del botón "Empezá gratis" */
 function Flecha() {
@@ -242,7 +253,10 @@ export default function Header() {
                             borderRadius: 12,
                           }}
                         >
-                          <span style={{ fontSize: 15, fontWeight: 800 }}>{it.label}</span>
+                          <span style={{ fontSize: 15, fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 6 }}>
+                            {it.escudo && <EscudoVerde />}
+                            {it.label}
+                          </span>
                           <span style={{ fontSize: 12.5, fontWeight: 500, color: "#4E5D53", lineHeight: 1.35 }}>
                             {it.desc}
                           </span>
@@ -474,7 +488,10 @@ export default function Header() {
                     : null),
                 }}
               >
-                <span style={{ fontSize: 16, fontWeight: 700 }}>{it.label}</span>
+                <span style={{ fontSize: 16, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 6 }}>
+                  {it.escudo && <EscudoVerde />}
+                  {it.label}
+                </span>
                 <span style={{ fontSize: 12, fontWeight: 500, color: "#4E5D53", lineHeight: 1.35 }}>{it.desc}</span>
               </a>
             ))}

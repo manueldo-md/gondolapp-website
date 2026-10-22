@@ -382,8 +382,9 @@ export default function EcosistemaDesktop() {
               style={{
                 position: "absolute", left: 0, top: -3, width: 8, height: 8, borderRadius: "50%",
                 background: ECO.colors[ECO.nodes.find((n) => n.id === (e[2] === "out" ? e[1] : e[0]))!.kind],
-                animation: `gtravel ${3 + ((i * 7) % 5)}s linear infinite`,
-                animationDelay: `-${(i * 13) % 7}s`,
+                /* El retardo va dentro del atajo: si se pone aparte,
+                   React avisa que mezclar los dos puede pisar estilos. */
+                animation: `gtravel ${3 + ((i * 7) % 5)}s linear -${(i * 13) % 7}s infinite`,
               }}
             />
           </div>
