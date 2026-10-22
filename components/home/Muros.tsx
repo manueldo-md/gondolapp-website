@@ -167,8 +167,11 @@ function Carril({ color, ...pos }: { color: string } & React.CSSProperties) {
   );
 }
 
-/* Un dato viajando. Si pasa, llega con ✓; si no, choca y rebota con ✕. */
-function Dato({ c, fuente = 10 }: { c: Chip; fuente?: number }) {
+/* Un dato viajando. Si pasa, llega con ✓; si no, choca y rebota con ✕.
+   En el celular van las variantes "M", que comprimen el viaje en el
+   primer 40% del ciclo para que no se amontonen. */
+function Dato({ c, fuente = 10, movil }: { c: Chip; fuente?: number; movil?: boolean }) {
+  const m = movil ? "M" : "";
   return (
     <div
       className={c.pasa ? "w-pasa" : "w-choca"}
@@ -184,7 +187,7 @@ function Dato({ c, fuente = 10 }: { c: Chip; fuente?: number }) {
           left: c.x0,
           top: c.y0,
           transform: "translate(-50%, -50%)",
-          animation: `${c.pasa ? "wFlow" : "wHit"} ${c.dur} linear ${c.delay} infinite both`,
+          animation: `${c.pasa ? "wFlow" : "wHit"}${m} ${c.dur} linear ${c.delay} infinite both`,
           pointerEvents: "none",
           zIndex: 3,
         } as React.CSSProperties
@@ -229,7 +232,7 @@ function Dato({ c, fuente = 10 }: { c: Chip; fuente?: number }) {
             color: "#FFFFFF",
             background: c.marca.color,
             opacity: 0,
-            animation: `${c.pasa ? "wOk" : "wBangP"} ${c.dur} linear ${c.delay} infinite both`,
+            animation: `${c.pasa ? "wOk" : "wBangP"}${m} ${c.dur} linear ${c.delay} infinite both`,
           }}
         >
           {c.marca.signo}
@@ -244,11 +247,14 @@ function Intento({
   h,
   corto,
   fuente = 10,
+  movil,
 }: {
   h: (typeof CHOQUES)[number];
   corto?: boolean;
   fuente?: number;
+  movil?: boolean;
 }) {
+  const m = movil ? "M" : "";
   return (
     <div
       className="w-choca"
@@ -264,7 +270,7 @@ function Intento({
           left: h.x0,
           top: h.y0,
           transform: "translate(-50%, -50%)",
-          animation: `wHit ${h.dur} ease-in-out ${h.delay} infinite both`,
+          animation: `wHit${m} ${h.dur} ease-in-out ${h.delay} infinite both`,
           pointerEvents: "none",
           zIndex: 4,
         } as React.CSSProperties
@@ -306,7 +312,7 @@ function Intento({
           color: "#FFFFFF",
           background: ROJO,
           opacity: 0,
-          animation: `wBang ${h.dur} linear ${h.delay} infinite both`,
+          animation: `wBang${m} ${h.dur} linear ${h.delay} infinite both`,
         }}
       >
         ✕
@@ -521,21 +527,21 @@ function EscenaAncha({ p, cs }: { p: Permisos; cs: Chip[] }) {
 function chipsApilados(p: Permisos): Chip[] {
   const campo: [string, string, string][] = [
     ["foto", "27%", "0s"],
-    ["ubicación", "73%", "1.6s"],
-    ["respuesta", "27%", "3.2s"],
-    ["precio", "73%", "4.8s"],
+    ["ubicación", "73%", "2.5s"],
+    ["respuesta", "27%", "5s"],
+    ["precio", "73%", "7.5s"],
   ];
   const pasaNorte: [string, boolean, string][] = [
     ["ubicación", p.ubic, "0s"],
-    ["foto", p.fotos, "1.6s"],
-    ["nombre", p.nombre, "3.2s"],
-    ["dirección", p.dir, "4.8s"],
-    ["teléfono", false, "6.4s"],
+    ["foto", p.fotos, "2.4s"],
+    ["nombre", p.nombre, "4.8s"],
+    ["dirección", p.dir, "7.2s"],
+    ["teléfono", false, "9.6s"],
   ];
   const pasaSur: [string, boolean, string][] = [
-    ["ubicación", true, "0.8s"],
-    ["foto", true, "3.4s"],
-    ["dirección", false, "5.6s"],
+    ["ubicación", true, "1.2s"],
+    ["foto", true, "5.2s"],
+    ["dirección", false, "9.2s"],
   ];
 
   const bajar = (
@@ -545,8 +551,8 @@ function chipsApilados(p: Permisos): Chip[] {
   ): Chip[] =>
     filas.map(([label, pasa, delay], i) =>
       pasa
-        ? { id: pre + i, label, color: AMBAR, x0: x, y0: "49%", x1: x, y1: "86%", xb: x, yb: "86%", pasa: true, dur: "8s", delay, marca: { signo: "✓", color: VERDE } }
-        : { id: pre + i, label, color: ROJO, x0: x, y0: "49%", x1: x, y1: "69%", xb: x, yb: "63%", pasa: false, dur: "8s", delay, marca: { signo: "✕", color: ROJO } }
+        ? { id: pre + i, label, color: AMBAR, x0: x, y0: "49%", x1: x, y1: "86%", xb: x, yb: "86%", pasa: true, dur: "12s", delay, marca: { signo: "✓", color: VERDE } }
+        : { id: pre + i, label, color: ROJO, x0: x, y0: "49%", x1: x, y1: "68.5%", xb: x, yb: "66.5%", pasa: false, dur: "12s", delay, marca: { signo: "✕", color: ROJO } }
     );
 
   return [
@@ -561,7 +567,7 @@ function chipsApilados(p: Permisos): Chip[] {
       xb: x,
       yb: "35%",
       pasa: true,
-      dur: "6.6s",
+      dur: "10s",
       delay,
     })),
     ...bajar("mg", "26%", pasaNorte),
@@ -570,8 +576,8 @@ function chipsApilados(p: Permisos): Chip[] {
 }
 
 const CHOQUES_APILADOS = [
-  { id: "mh1", label: "", labelCorto: "Marca B → datos de A ✕", color: VIOLETA, x0: "74%", y0: "92%", x1: "54%", y1: "92%", xb: "64%", yb: "92%", dur: "7s", delay: "0s" },
-  { id: "mh2", label: "", labelCorto: "Dist. Sur → cartera Norte ✕", color: AMBAR, x0: "74%", y0: "41%", x1: "54%", y1: "41%", xb: "64%", yb: "41%", dur: "7s", delay: "3.5s" },
+  { id: "mh1", label: "", labelCorto: "Marca B → datos de A ✕", color: VIOLETA, x0: "74%", y0: "92%", x1: "54%", y1: "92%", xb: "64%", yb: "92%", dur: "12s", delay: "0s" },
+  { id: "mh2", label: "", labelCorto: "Dist. Sur → cartera Norte ✕", color: AMBAR, x0: "74%", y0: "41%", x1: "54%", y1: "41%", xb: "64%", yb: "41%", dur: "12s", delay: "6s" },
 ];
 
 function EscenaApilada({ p, cs }: { p: Permisos; cs: Chip[] }) {
@@ -638,7 +644,7 @@ function EscenaApilada({ p, cs }: { p: Permisos; cs: Chip[] }) {
       ))}
 
       {/* la compuerta, entre las distribuidoras y las marcas */}
-      <div style={{ position: "absolute", left: "1%", top: "53%", width: "98%", height: "13%", borderRadius: 14, border: "1px dashed #B5BEC8", background: "rgba(255,255,255,.6)", padding: "8px 10px", boxSizing: "border-box" }}>
+      <div style={{ position: "absolute", left: "1%", top: "51%", width: "98%", height: "13%", borderRadius: 14, border: "1px dashed #B5BEC8", background: "rgba(255,255,255,.6)", padding: "8px 10px", boxSizing: "border-box" }}>
         <div style={{ textAlign: "center", fontSize: 10, color: "var(--text-2)", fontWeight: 700, marginBottom: 5 }}>
           Dist. Norte decide qué pasa
         </div>
@@ -684,10 +690,10 @@ function EscenaApilada({ p, cs }: { p: Permisos; cs: Chip[] }) {
       <Cerradura left="50%" top="88.5%" />
 
       {cs.map((c) => (
-        <Dato key={c.id} c={c} fuente={9} />
+        <Dato key={c.id} c={c} fuente={9} movil />
       ))}
       {CHOQUES_APILADOS.map((h) => (
-        <Intento key={h.id} h={h} corto fuente={9} />
+        <Intento key={h.id} h={h} corto fuente={9} movil />
       ))}
     </div>
   );

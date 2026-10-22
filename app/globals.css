@@ -338,3 +338,44 @@ a:hover { color: var(--primary); }
   .w-choca { left: var(--xb) !important; top: var(--yb) !important; opacity: 1 !important; }
   .w-marca { opacity: 1 !important; }
 }
+
+/* Las mismas animaciones, comprimidas en el primer 40% del ciclo.
+   En el celular el escenario es cuatro veces más chico y los chips se
+   tapaban entre ellos: así cada uno cruza rápido y deja la pantalla
+   libre el resto del ciclo, y nunca hay más de dos a la vez. */
+@keyframes wFlowM {
+  0%        { left: var(--x0); top: var(--y0); opacity: 0; }
+  3.2%      { opacity: 1; }
+  36.8%     { opacity: 1; }
+  40%, 100% { left: var(--x1); top: var(--y1); opacity: 0; }
+}
+
+@keyframes wHitM {
+  0%        { left: var(--x0); top: var(--y0); opacity: 0; }
+  4%        { opacity: 1; }
+  28.8%     { left: var(--x1); top: var(--y1); opacity: 1; filter: none; }
+  30.4%     { left: var(--x1); top: var(--y1); transform: translate(-50%, -50%) scale(1.25); filter: drop-shadow(0 0 6px #D64F3C); }
+  32.8%     { left: var(--xb); top: var(--yb); transform: translate(-50%, -50%) scale(.9); opacity: 1; }
+  40%, 100% { left: var(--xb); top: var(--yb); opacity: 0; }
+}
+
+@keyframes wOkM {
+  0%, 34.4% { opacity: 0; transform: translateY(-50%) scale(.4); }
+  36%       { opacity: 1; transform: translateY(-50%) scale(1.2); }
+  38.4%     { opacity: 1; transform: translateY(-50%) scale(1); }
+  40%, 100% { opacity: 0; }
+}
+
+@keyframes wBangPM {
+  0%, 28%     { opacity: 0; transform: translateY(-50%) scale(.4); }
+  29.6%       { opacity: 1; transform: translateY(-50%) scale(1.3); }
+  32%         { opacity: 1; transform: translateY(-50%) scale(1); }
+  36.8%, 100% { opacity: 0; }
+}
+
+@keyframes wBangM {
+  0%, 28%     { opacity: 0; transform: translateX(-50%) scale(.4); }
+  29.6%       { opacity: 1; transform: translateX(-50%) scale(1.3); }
+  32%         { opacity: 1; transform: translateX(-50%) scale(1); }
+  36.8%, 100% { opacity: 0; transform: translateX(-50%) scale(1); }
+}
