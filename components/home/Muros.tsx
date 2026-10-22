@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   AMBAR,
   CHOQUES,
@@ -703,22 +703,11 @@ function EscenaApilada({ p, cs }: { p: Permisos; cs: Chip[] }) {
 export default function Muros() {
   const [p, setP] = useState<Permisos>(PERMISOS_INICIALES);
 
-  /* Las dos variantes de celular conviven hasta que elijas una:
-     ?muros=scroll muestra el escenario ancho con scroll lateral.
-     Se cambia con una clase y no con estado para que el HTML del
-     servidor y el del cliente sean idénticos. */
-  const sec = useRef<HTMLElement>(null);
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("muros") === "scroll") {
-      sec.current?.classList.add("muros-v-scroll");
-    }
-  }, []);
-
   const cs = chips(p);
   const apilados = chipsApilados(p);
 
   return (
-    <section ref={sec} id="muros" style={{ padding: "112px 0", background: "var(--tint-blue)", position: "relative", overflow: "hidden" }}>
+    <section id="muros" style={{ padding: "112px 0", background: "var(--tint-blue)", position: "relative", overflow: "hidden" }}>
       <div className="wrap">
         <div style={{ display: "flex", flexWrap: "wrap", gap: "24px 48px", alignItems: "flex-end", justifyContent: "space-between" }}>
           <div style={{ maxWidth: 820 }}>
@@ -734,17 +723,14 @@ export default function Muros() {
           </p>
         </div>
 
-        {/* Ancho: el escenario del tablero. Angosto: la variante elegida. */}
+        {/* El escenario del tablero mide 1300 de ancho: en un celular no
+            entra, así que debajo de 900px va la versión apilada, que
+            cuenta lo mismo de arriba hacia abajo. */}
         <div className="muros-ancho">
           <EscenaAncha p={p} cs={cs} />
         </div>
-        <div className="muros-angosto muros-v-a">
+        <div className="muros-angosto">
           <EscenaApilada p={p} cs={apilados} />
-        </div>
-        <div className="muros-angosto muros-v-b" style={{ overflowX: "auto", marginTop: 32, paddingBottom: 8 }}>
-          <div style={{ width: 1000 }}>
-            <EscenaAncha p={p} cs={cs} />
-          </div>
         </div>
 
         {/* controles */}
@@ -814,9 +800,7 @@ export default function Muros() {
         .muros-angosto { display: none; }
         @media (max-width: 900px) {
           .muros-ancho { display: none; }
-          .muros-v-a { display: block; }
-          .muros-v-scroll .muros-v-a { display: none; }
-          .muros-v-scroll .muros-v-b { display: block; }
+          .muros-angosto { display: block; }
         }
       `}</style>
     </section>
