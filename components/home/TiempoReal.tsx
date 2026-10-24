@@ -4,6 +4,22 @@ import { IMG } from "@/lib/assets";
 
 const SOMBRA = "0 40px 80px -40px rgba(0,0,0,.8)";
 
+/* "Del mapa a la foto": del racimo del mapa a la góndola de ese día */
+const PASOS_MAPA = [
+  {
+    t: "Tocás un racimo",
+    d: "El anillo te dice cuántos comercios tienen tu producto y cuántos no. Por zona, por campaña.",
+  },
+  {
+    t: "Ves los comercios, sin el nombre",
+    d: "PDV-0013, autoservicio, sin presencia. Quién es el comercio lo sabe la distribuidora, no vos. Esa es la privacidad del ecosistema.",
+  },
+  {
+    t: "Abrís la foto",
+    d: "La góndola como estaba ese día, con fecha y GPS validados. Si no hay foto, no hay dato.",
+  },
+];
+
 const TARJETAS = [
   {
     asset: IMG.mRes,
@@ -97,11 +113,112 @@ export default function TiempoReal() {
         ))}
       </div>
 
+      {/* Del mapa a la foto: de un racimo del mapa a la góndola real */}
       <div className="wrap">
+        <div className="rt-mapa">
+          <div style={{ borderRadius: 18, overflow: "hidden", background: "#FFFFFF", boxShadow: SOMBRA, position: "relative" }}>
+            <Image
+              src={IMG.mapaRacimos.src}
+              alt="Mapa de una campaña: racimos por zona y, debajo, los comercios del racimo con su presencia"
+              width={IMG.mapaRacimos.w}
+              height={IMG.mapaRacimos.h}
+              sizes="(max-width: 768px) 92vw, 56vw"
+              style={{ display: "block", width: "100%", height: "auto" }}
+            />
+            {/* Señala el racimo "14".
+                Los porcentajes apuntan al centro del racimo en la imagen
+                (747 × 199 de 1174 × 933) y el translate centra el aro ahí:
+                si se posicionara por la esquina, al cambiar el ancho de
+                pantalla el aro se correría del racimo. */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: "63.6%",
+                top: "21.2%",
+                transform: "translate(-50%, -50%)",
+                width: 46,
+                height: 46,
+                borderRadius: "50%",
+                border: "3px solid var(--mint)",
+                boxShadow: "0 0 0 6px rgba(126,226,168,.25)",
+              }}
+            />
+          </div>
+
+          <div>
+            <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: 11, letterSpacing: ".12em", color: "var(--rt-accent)" }}>
+              DEL MAPA A LA FOTO
+            </div>
+            <h3 style={{ margin: "12px 0 0", fontWeight: 800, fontSize: "clamp(26px, 2.6vw, 36px)", letterSpacing: "-0.04em", lineHeight: 1.05 }}>
+              Cada punto del mapa es una góndola real.
+            </h3>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, marginTop: 26 }}>
+              {PASOS_MAPA.map((p, i) => (
+                <div key={p.t} style={{ display: "flex", gap: 14 }}>
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      flexShrink: 0,
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      background: "#2A2F3D",
+                      color: "var(--rt-accent)",
+                      fontFamily: "var(--font-mono), monospace",
+                      fontSize: 12,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {i + 1}
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: 16 }}>{p.t}</div>
+                    <p style={{ margin: "4px 0 0", fontSize: 14, lineHeight: 1.55, color: "#C7CBD6" }}>{p.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 26, background: "#2A2F3D", borderRadius: 14, padding: 10 }}>
+              <Image
+                src={IMG.antes.src}
+                alt="Foto de la góndola del comercio PDV-0013"
+                width={IMG.antes.w}
+                height={IMG.antes.h}
+                sizes="72px"
+                style={{ flexShrink: 0, width: 72, height: 54, objectFit: "cover", borderRadius: 8 }}
+              />
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#E5E7EB" }}>PDV-0013 · Autoservicio</div>
+                <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: 11, color: "var(--rt-accent)", marginTop: 4 }}>
+                  22 OCT · 11:42 · GPS VALIDADO · SIN PRESENCIA
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <p style={{ margin: "28px 0 0", fontSize: 13, color: "#8B91A3" }}>Cifras y pantallas del entorno de demostración.</p>
       </div>
 
       <style>{`
+        /* Del mapa a la foto: imagen ancha a la izquierda, relato a la
+           derecha. En el celular se apila con la imagen arriba. */
+        .rt-mapa {
+          display: grid;
+          grid-template-columns: minmax(0, 1.45fr) minmax(280px, 1fr);
+          gap: 40px;
+          align-items: center;
+          margin-top: 72px;
+        }
+        @media (max-width: 768px) {
+          .rt-mapa { grid-template-columns: 1fr; gap: 28px; }
+        }
+
         /* En escritorio, grilla dentro del contenedor */
         .rt-tira {
           max-width: 1320px;
