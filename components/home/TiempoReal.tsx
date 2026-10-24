@@ -125,13 +125,18 @@ export default function TiempoReal() {
               sizes="(max-width: 768px) 92vw, 56vw"
               style={{ display: "block", width: "100%", height: "auto" }}
             />
-            {/* Señala el racimo "14" */}
+            {/* Señala el racimo "14".
+                Los porcentajes apuntan al centro del racimo en la imagen
+                (747 × 199 de 1174 × 933) y el translate centra el aro ahí:
+                si se posicionara por la esquina, al cambiar el ancho de
+                pantalla el aro se correría del racimo. */}
             <div
               aria-hidden="true"
               style={{
                 position: "absolute",
-                left: "62%",
-                top: "20%",
+                left: "63.6%",
+                top: "21.2%",
+                transform: "translate(-50%, -50%)",
                 width: 46,
                 height: 46,
                 borderRadius: "50%",
