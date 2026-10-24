@@ -35,6 +35,9 @@ export const IMG = {
   d1: a("panel/datos-presencia-global-ciudades.jpg", 1200, 803),
   d2: a("panel/datos-presencia-tipo-comercio.jpg", 1200, 796),
   d3: a("panel/datos-resultados-campana.jpg", 1200, 1034),
+  /* Mapa con racimos y, debajo, los comercios del racimo.
+     OJO: las medidas son provisorias hasta que llegue el archivo. */
+  mapaRacimos: a("panel/panel-mapa-racimos-pdv.jpg", 1200, 900),
 
   /* App de campo, en orden de flujo */
   gCamp: a("app/01-campanas.jpg", 780, 1509),
