@@ -1,0 +1,48 @@
+// Mapa blob -> archivo. Capturas: se convierten a webp en public/gondolapp-assets/sitio/.
+export const CAPT = {
+  '064a95b71e08f0c47c73fb1a90c6304f': 'marca-03-mapa',
+  '0b0e76b25f4e74e77f6bc209adbab3de': 'marca-01-tablero',
+  '11846f07b9756d7606cc06b21c11aeea': 'campo-08-mi-album',
+  '23ff41435ac0779cd9a5d99d22e1dccd': 'repo-02-fotos-relevadas',
+  '426885ab8a3107e335949077c0e31551': 'mision-04-ubicacion-validada',
+  '5c179764d9bf1e0a90bd907664628419': 'editor-06-que-medir',
+  '7266e100027906ba705dd973988b7466': 'marca-02-resultados-completa',
+  '78b2887f5ce314adf7c84bb7e22980d6': 'marca-02-resultados',
+  '85b9a33f6d31b1ca392499099b0d57e9': 'mision-01-campanas',
+  '86d24c8d6c34f4d10e541762f950e55a': 'mision-02-campana',
+  '8ba713ff43103cde2a34034490239525': 'distri-02-campana-por-aprobar',
+  'a4223f94c675befde883a92782573eea': 'mision-05-pregunta-si-no',
+  'ad0cf52d314e931f11de8ca214f8634d': 'distri-03-red-invitar',
+  'b40cbbd86435bc5cc22c9bd387460bc3': 'mision-11-resumen',
+  'b9cbd8c75c2032bc3140a3a2185c656e': 'mision-10-camara',
+  'c31303a173707b558cbfad98165c0e4f': 'repo-01-inicio',
+  'cc7dc9ea85bd13bee10ed1f806fd6fb8': 'mision-07-pregunta-multiple',
+  'cda01b37446c510758d096a7529df610': 'campo-07-perfil-puntos',
+  'd48c58bab777b20755c277eb7ae89b0e': 'repo-03-invitar-equipo',
+  'db4a7f9fd75447b6514411ccd6d344bc': 'distri-01-en-curso',
+  'db97c4257f6465269032ab2ea9862373': 'mision-03-elegir-comercio',
+  'e0f53008a3b127ea90cb53f86011ad51': 'mision-12-completada',
+  'f3f6cc014f459f07311ff1882e06a295': 'marca-05-campana-activa',
+  'f61a4400cc002a7d1d42ad13e5b43d42': 'mision-08-pregunta-numero',
+  // Simulador: no están en imagenes.md; inferidos por uso (ver indice.md de capturas)
+  '59a1cfa0f02ac8a67b3aa6b511dc4eb2': 'editor-01-como-empezar',
+  '6555f29ee4dc364595adaa785b0dd458': 'editor-02-elegir-idea',
+  'e945eb2c1e9d3f9410adf04bcf45f7f9': 'editor-04-quien-releva',
+  '9e7e964e5d716e808fe04bd9bae5c238': 'editor-05-modalidad',
+  '894e710b9715f48e35b0b474b8cf82c4': 'editor-07-objetivo-y-tope',
+  'bea3e66709ad171de1f416247e1e08ee': 'editor-08-zona',
+  '95f2e211504049b3c924584776ea7bf9': 'editor-09-costo',
+  '1c869c2532aad057d2a8d7d3f450f26c': 'mision-06-pregunta-unica',
+  '27039f1b3a67317d9fc378da78f75c3e': 'mision-09-pregunta-texto',
+  '8eea9eab20ea022a87c32cbcaea1109a': 'mision-13-marca-resultados',
+};
+export const VIEJOS = {
+  '20d2f0ae2173f338bcb46680d5445695': '/gondolapp-assets/brand/logo-fondo-claro.png',
+  '76246bac455a84c7372855aa7b78d396': '/gondolapp-assets/gondola/antes-hace-2-semanas.jpg',
+  '89b5663888b3e363799d77b09c9e0f71': '/gondolapp-assets/gondola/hoy.jpg',
+  'a5364024608e8938c6d0f482e684e2b1': '/gondolapp-assets/panel/panel-mapa-racimos-pdv.jpg',
+  'c20f9555984015edb61bc913a323ba85': '/gondolapp-assets/gondola/miniaturas/g1.jpg',
+  'ec35bf1d81a556a6a89db93db3286ef6': '/gondolapp-assets/panel/informe-html.jpg',
+};
+export const BLOB = { ...VIEJOS };
+for (const [k, v] of Object.entries(CAPT)) BLOB[k] = `/gondolapp-assets/sitio/${v}.webp`;

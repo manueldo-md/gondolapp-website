@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
-import "./globals.css";
+import "./dc.css";
 
 /* Fuentes auto-hospedadas en vez de next/font/google.
    Dos motivos: el build no corre en Windows ARM64 cuando Next intenta
@@ -28,7 +28,7 @@ const mono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://gondolapp.com"),
   title: {
-    default: "Gondolapp — Tu góndola habla, ¡escuchala!",
+    default: "Gondolapp — Ejecución y datos en el canal tradicional",
     template: "%s",
   },
   description:
@@ -57,26 +57,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    /* js-reveal va en el HTML del servidor (no por script) para que el
-       cliente hidrate exactamente lo mismo. El <noscript> revierte el
-       ocultamiento si el visitante no tiene JS.
-
-       data-scroll-behavior: le avisa a Next que el html tiene scroll
+    /* data-scroll-behavior: le avisa a Next que el html tiene scroll
        suave, para que lo desactive mientras cambia de página y el salto
        al ancla caiga donde tiene que caer. */
     <html
       lang="es"
       data-scroll-behavior="smooth"
-      className={`${manrope.variable} ${mono.variable} js-reveal`}
+      className={`${manrope.variable} ${mono.variable}`}
     >
-      <head>
-        <noscript>
-          <style>{`
-            .js-reveal :is(section > .wrap > *, section > .hs, footer > .wrap > *):not(.in),
-            .js-reveal :is(.shot, section img[alt]):not(.in) { opacity: 1 !important; }
-          `}</style>
-        </noscript>
-      </head>
       <body>
         <div className="site-root">{children}</div>
         <Analytics />

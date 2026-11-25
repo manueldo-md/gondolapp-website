@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { IMG } from "@/lib/assets";
 import { ESTANTES, retardos, CICLO } from "@/lib/teaser-gondola";
+/* Los estilos de antes (Tailwind y el sistema del sitio viejo) quedan solo
+   para la teaser: el sitio nuevo usa los del diseño (app/dc.css). */
+import "../globals.css";
 
 /* Página teaser, portada del tablero "Teaser B (oscuro, góndola)".
    La sirve el middleware en todas las rutas mientras TEASER_MODE esté
