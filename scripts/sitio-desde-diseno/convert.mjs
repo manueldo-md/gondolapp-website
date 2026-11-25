@@ -193,6 +193,10 @@ function emit(n, ctx, parentTag) {
     if (k === 'src') { const m = val.match(/^\/_blob\/([0-9a-f]{32})$/); if (m) { if (!BLOB[m[1]]) warn('blob sin mapa ' + m[1]); val = BLOB[m[1]] || val; } }
     out.push(`${name}={${jsValue(val, c2)}}`);
   }
+  // Los documentos legales abren en pestaña nueva (pedido de Manuel, 25/11/2026)
+  if (tag === 'a' && /^https:\/\/app\.gondolapp\.com\/legales/.test(attr(n, 'href') || '')) {
+    out.push('target="_blank"', 'rel="noopener"');
+  }
   if (tag === 'img') {
     const src = attr(n, 'src') || '';
     // Reserva el lugar antes de que cargue, con la proporción real del archivo
