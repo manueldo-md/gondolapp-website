@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
 import PageRepositoras from "@/components/dc/generado/PageRepositoras";
+import { metadatos } from "@/lib/seo";
 
-/* Título y bajada: los del diseño aprobado (docs/sitio/diseno-v1/Repositoras.dc.html). */
-const titulo = "Gondolapp para repositoras";
-const descripcion = "Gondolapp es el soporte de tu servicio: cada visita de tu equipo de calle queda con foto, ubicación y respuestas, y tu cliente la ve en su propio panel.";
-
-export const metadata: Metadata = {
-  title: titulo,
-  description: descripcion,
-  openGraph: {
-    title: titulo,
-    description: descripcion,
-    url: "https://gondolapp.com/repositoras",
-    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
-  },
-};
+/* Título y descripción aprobados por Manuel (25/11/2026); la descripción, sin «ubicación»
+   porque no siempre viaja (foto sin GPS todavía entra, regla M3 de la V1.3)
+   (docs/sitio/diseno-v1/Repositoras.dc.html). */
+export const metadata: Metadata = metadatos(
+  "/repositoras",
+  "Para repositoras y agencias de trade · Gondolapp",
+  "Gondolapp es el soporte de tu servicio: cada visita de tu equipo de calle queda registrada con hora y respuestas, y tu cliente la ve en su propio panel.",
+);
 
 export default function Pagina() {
   return <PageRepositoras />;

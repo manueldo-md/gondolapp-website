@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import "./dc.css";
+import { IMAGEN_OG, JSON_LD, OPEN_GRAPH_BASE, SITIO } from "@/lib/seo";
 
 /* Fuentes auto-hospedadas en vez de next/font/google.
    Dos motivos: el build no corre en Windows ARM64 cuando Next intenta
@@ -25,32 +26,14 @@ const mono = localFont({
   display: "swap",
 });
 
+/* Lo de base para todo el sitio. Cada página pone su título, descripción,
+   canonical y Open Graph con metadatos() de lib/seo.ts. */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gondolapp.com"),
-  title: {
-    default: "Gondolapp — Ejecución y datos en el canal tradicional",
-    template: "%s",
-  },
-  description:
-    "La plataforma para ejecutar y medir campañas en el canal tradicional. Tu equipo, tus distribuidoras o tu repositora relevan desde el celular; vos lo ves todo en vivo.",
+  metadataBase: new URL(SITIO),
+  title: "Gondolapp",
   applicationName: "Gondolapp",
-  openGraph: {
-    type: "website",
-    locale: "es_AR",
-    siteName: "Gondolapp",
-    url: "https://gondolapp.com",
-    title: "Gondolapp — Tu góndola habla, ¡escuchala!",
-    description:
-      "Datos de góndola en tiempo real, desde el recorrido que tu fuerza de venta ya hace.",
-    images: [{ url: "/gondolapp-assets/brand/og.jpg", width: 1200, height: 630, alt: "Gondolapp" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Gondolapp — Tu góndola habla, ¡escuchala!",
-    description:
-      "Datos de góndola en tiempo real, desde el recorrido que tu fuerza de venta ya hace.",
-    images: ["/gondolapp-assets/brand/og.jpg"],
-  },
+  openGraph: OPEN_GRAPH_BASE,
+  twitter: { card: "summary_large_image", images: [IMAGEN_OG.url] },
 };
 
 export default function RootLayout({
@@ -61,11 +44,15 @@ export default function RootLayout({
        suave, para que lo desactive mientras cambia de página y el salto
        al ancla caiga donde tiene que caer. */
     <html
-      lang="es"
+      lang="es-AR"
       data-scroll-behavior="smooth"
       className={`${manrope.variable} ${mono.variable}`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD).replace(/</g, "\\u003c") }}
+        />
         <div className="site-root">{children}</div>
         <Analytics />
       </body>
