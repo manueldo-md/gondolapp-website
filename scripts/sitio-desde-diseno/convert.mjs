@@ -141,7 +141,7 @@ function emitText(t, ctx) {
   return p.map((x) => {
     if (x.expr) return '{' + expr(x.expr, ctx) + '}';
     let lit = x.lit;
-    if (ctx.region === 'body' && ctx.reg && !ctx.reg.done && /Gondolapp(?!®)/.test(lit)) {
+    if (ctx.region === 'body' && ctx.reg && !ctx.reg.done && !ctx.enLink && /Gondolapp(?!®)/.test(lit)) {
       lit = lit.replace(/Gondolapp(?!®)/, 'Gondolapp®'); ctx.reg.done = true; log.push(`® ${ctx.name}: «${lit.trim().slice(0, 90)}»`);
     } else if (/Gondolapp/.test(lit)) log.push(`   ${ctx.name} [${ctx.region}] texto: «${lit.trim().slice(0, 90)}»`);
     return '{' + JSON.stringify(lit) + '}';
@@ -166,13 +166,21 @@ function emit(n, ctx, parentTag) {
     return `{${expr(val, ctx)} ? (<>${kids(n, ctx, parentTag)}</>) : null}`;
   }
   if (tag === 'dc-import') {
-    const name = attr(n, 'name'); ctx.imports.add(name); return `<${name} />`;
+    const name = attr(n, 'name'); ctx.imports.add(name);
+    // el Simulador lleva el ® del Inicio si la página no lo puso antes
+    if (name === 'Simulador' && ctx.reg) {
+      if (ctx.reg.done) warn(ctx.name + ': el ® ya estaba antes del Simulador, y el Simulador también lo lleva');
+      else { ctx.reg.done = true; log.push('® ' + ctx.name + ': lo lleva el Simulador'); }
+    }
+    return `<${name} />`;
   }
   if (ctx.replace && ctx.replace[tag]) { const r = ctx.replace[tag](n, ctx); if (r != null) return r; }
 
   let region = ctx.region;
   if (tag === 'header') region = 'header'; else if (tag === 'footer') region = 'footer';
-  const c2 = region === ctx.region ? ctx : { ...ctx, region };
+  let c2 = region === ctx.region ? ctx : { ...ctx, region };
+  // el ® va en el texto del cuerpo, no en botones ni links
+  if ((tag === 'a' || tag === 'button') && !c2.enLink) c2 = { ...c2, enLink: true };
 
   const out = [];
   for (let [k, val] of n.attrs) {
@@ -187,6 +195,12 @@ function emit(n, ctx, parentTag) {
   }
   if (tag === 'img') {
     const src = attr(n, 'src') || '';
+    // Reserva el lugar antes de que cargue, con la proporción real del archivo
+    // (aspect-ratio «auto w / h»: ya cargada, manda la de la imagen, que es la misma).
+    let srcVal = src; const mb = src.match(/^\/_blob\/([0-9a-f]{32})$/); if (mb && BLOB[mb[1]]) srcVal = BLOB[mb[1]];
+    const ar = '"aspectRatio": proporcion(' + jsValue(srcVal, c2) + ')';
+    const si = out.findIndex((x) => x.startsWith('style='));
+    if (si >= 0) out[si] = out[si].replace('style={{', 'style={{' + ar + ', '); else out.push('style={{' + ar + '}}');
     if (!/20d2f0ae2173f338bcb46680d5445695/.test(src)) out.push('loading="lazy"');
     out.push('decoding="async"');
   }
@@ -265,6 +279,7 @@ function component({ name, jsx, logic, imports, extraImports = '', propsSig = ''
 /* eslint-disable */
 import { Fragment } from "react";
 import { useDC } from "@/lib/dc/runtime";
+import { proporcion } from "@/lib/dc/medidas";
 ${logic ? `import Logic, { DEFAULT_PROPS } from "./${logic}";` : ''}
 ${imp}
 ${extraImports}
@@ -291,6 +306,8 @@ function convertPage({ file, name, scope, absHash = false, replace, kf, logicTra
   const secciones = [];
   const top = find({ children: body }, (n) => n.tag === 'div' && attr(n, 'id') === 'top');
   if (top) top.children = top.children.map((c) => {
+    // lo que se importa entre secciones (el Simulador) se emite en su turno, por el ®
+    if (c.tag === 'dc-import') return { raw: emit(c, ctx, 'div') };
     if (c.tag !== 'section') return c;
     const used = new Set(); const k = secciones.length;
     const sj = emit(c, { ...ctx, used }, 'div');
@@ -314,8 +331,8 @@ function convertPage({ file, name, scope, absHash = false, replace, kf, logicTra
 const KF_MOB = ['gin', 'gpulse2', 'gfill', 'gdash'];
 
 // Simulador (se usa dentro del Inicio, en compu y en celular)
-// sin ®: vive dentro del Inicio, que ya lo lleva antes
-convertPage({ file: 'Simulador', name: 'Simulador', scope: 'dc-sim', noReg: true });
+// Lleva el ® del Inicio: es lo primero del cuerpo que nombra a Gondolapp fuera de un botón o link
+convertPage({ file: 'Simulador', name: 'Simulador', scope: 'dc-sim' });
 
 // Inicio en compu y en celular.
 // El formulario de la compu no tiene estado de «enviado»: se usa el bloque del lienzo Mobile.
@@ -379,6 +396,7 @@ const mob = convertPage({
 /* GENERADO desde docs/sitio/diseno-v1/Mobile.dc.html: el header de celular, para las páginas internas. */
 /* eslint-disable */
 import { Fragment, useState } from "react";
+import { proporcion } from "@/lib/dc/medidas";
 export default function MobileHeader() {
   const [menu, setMenu] = useState(false);
   const v: any = MENU(menu, setMenu);
@@ -392,6 +410,7 @@ function MENU(menu: boolean, setMenu: (b: boolean) => void) {
   fs.writeFileSync(OUT + 'MobileFooter.tsx', `// @ts-nocheck
 /* GENERADO desde docs/sitio/diseno-v1/Mobile.dc.html: el pie de celular, para las páginas internas. */
 /* eslint-disable */
+import { proporcion } from "@/lib/dc/medidas";
 export default function MobileFooter() {
   const v: any = {};
   return (${mk(ftr, 'MobileFooter', false)});
