@@ -131,8 +131,12 @@ function styleObj(s, ctx) {
 const NO_WS = new Set(['svg', 'g', 'defs', 'select', 'table', 'tbody', 'thead', 'tr', 'path', 'circle', 'rect', 'animate', 'animatemotion', 'mpath', 'option']);
 const SVG_TAGS = { animatemotion: 'animateMotion', lineargradient: 'linearGradient', radialgradient: 'radialGradient', clippath: 'clipPath', foreignobject: 'foreignObject' };
 
+// Textos que el diseño deja para completar al publicar (pedido de Manuel, 25/11/2026).
+const COMPLETAR = { '[FECHA DE PUBLICACIÓN]': 'noviembre de 2026' };
+
 function emitText(t, ctx) {
-  const collapsed = t.replace(/\s+/g, ' ');
+  let collapsed = t.replace(/\s+/g, ' ');
+  for (const [k, v] of Object.entries(COMPLETAR)) if (collapsed.includes(k)) { collapsed = collapsed.split(k).join(v); log.push(`completado ${ctx.name}: ${k} → ${v}`); }
   const p = parts(collapsed);
   return p.map((x) => {
     if (x.expr) return '{' + expr(x.expr, ctx) + '}';
@@ -319,27 +323,42 @@ const KF_RE = new RegExp('\\b(' + KF_MOB.join('|') + ')\\b', 'g');
 const mobTree = parse(fs.readFileSync(DIS + 'Mobile.dc.html', 'utf8'));
 const sentNode = find(mobTree, (n) => n.tag === 'sc-if' && /\{\{\s*sent\s*\}\}/.test(attr(n, 'value') || '')).children.find((c) => c.tag);
 for (const b of [sentNode]) { const btn = find(b, (n) => n.tag === 'button'); btn.attrs = btn.attrs.map(([k, v]) => k === 'onClick' ? [k, '{{__otra}}'] : [k, v]); }
+// Formulario de demo: el botón envía a /api/demo y, si la ruta devuelve un error, se
+// muestra en rojo debajo del botón (pedido de Manuel, 25/11); se borra al volver a escribir.
+function formDemo(n, ctx, { gridCol }) {
+  const btn = find(n, (x) => x.tag === 'button');
+  btn.attrs = btn.attrs.filter(([k]) => k !== 'onClick');
+  btn.attrs.push(['onClick', '{{__enviar}}']);
+  n.attrs.push(['onInput', '{{__limpiar}}']);
+  const i = n.children.indexOf(btn);
+  const estilo = gridCol ? '{ ...ESTILO_ERROR, gridColumn: "1 / -1" }' : 'ESTILO_ERROR';
+  n.children.splice(i + 1, 0, { raw: `{__error ? (<p role="alert" style={${estilo}}>{__error}</p>) : null}` });
+  return emit(n, { ...ctx, inForm: true, loop: new Set([...ctx.loop, '__enviar', '__otra', '__limpiar']) }, 'div');
+}
+const DEMO_IMPORT = 'import DemoEnvio, { ESTILO_ERROR } from "@/components/dc/DemoEnvio";';
 convertPage({
   file: 'Main', name: 'HomeDesktop', scope: 'dc-main',
-  extraImports: 'import DemoEnvio from "@/components/dc/DemoEnvio";',
+  extraImports: DEMO_IMPORT,
   replace: {
     form: (n, ctx) => {
       if (ctx.inForm) return null;
-      const btn = find(n, (x) => x.tag === 'button');
-      btn.attrs.push(['onClick', '{{__enviar}}']);
-      const c2 = { ...ctx, inForm: true, loop: new Set([...ctx.loop, '__enviar', '__otra']) };
-      const formJsx = emit(n, c2, 'div');
+      const formJsx = formDemo(n, ctx, { gridCol: true });
+      const c2 = { ...ctx, inForm: true, loop: new Set([...ctx.loop, '__enviar', '__otra', '__limpiar']) };
       const sentJsx = emit(sentNode, { ...c2, kfRename: (s) => s.replace(KF_RE, '$1M') }, 'div');
-      return `<DemoEnvio>{(__enviar, __listo, __otra) => __listo ? (<div style={{ flex: "1 1 400px", minWidth: 0 }}>${sentJsx}</div>) : (${formJsx})}</DemoEnvio>`;
+      return `<DemoEnvio>{(__enviar, __listo, __otra, __error, __limpiar) => __listo ? (<div style={{ flex: "1 1 400px", minWidth: 0 }}>${sentJsx}</div>) : (${formJsx})}</DemoEnvio>`;
     },
   },
 });
+// En el celular el «enviado» lo maneja la lógica del lienzo (sent/send): DemoEnvio la llama al terminar bien.
 const mob = convertPage({
   file: 'Mobile', name: 'HomeMobile', scope: 'dc-mob', kf: KF_MOB,
-  logicTransform: (s) => {
-    const a = 'send: () => this.setState({ sent: true })';
-    if (!s.includes(a)) warn('no encontré send en la lógica Mobile');
-    return 'import { enviarDemo } from "@/lib/dc/demo";\n' + s.replace(a, 'send: (e) => enviarDemo(e, () => this.setState({ sent: true }))');
+  extraImports: DEMO_IMPORT,
+  replace: {
+    form: (n, ctx) => {
+      if (ctx.inForm) return null;
+      const formJsx = formDemo(n, ctx, { gridCol: false });
+      return `<DemoEnvio alListo={${expr('send', ctx)}}>{(__enviar, __listo, __otra, __error, __limpiar) => (${formJsx})}</DemoEnvio>`;
+    },
   },
 });
 

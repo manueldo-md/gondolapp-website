@@ -4,11 +4,14 @@
 
    El formulario del lienzo no tiene nombres de campo, así que se leen por
    id dentro del formulario que se tocó. La ruta valida todo y manda los
-   mails; si algo falla, se avisa con el mensaje de la ruta. */
+   mails; si algo falla, se devuelve el mensaje de la ruta para mostrarlo
+   debajo del botón. */
 
 type Evento = { currentTarget: EventTarget | null; preventDefault?: () => void };
 
-export async function enviarDemo(e: Evento, listo: () => void) {
+const FALLA = "No pudimos enviar la solicitud. Escribinos a hola@gondolapp.com.";
+
+export async function enviarDemo(e: Evento, listo: () => void, error: (mensaje: string) => void) {
   e.preventDefault?.();
   const boton = e.currentTarget as HTMLButtonElement | null;
   const form = boton?.closest("form");
@@ -23,6 +26,7 @@ export async function enviarDemo(e: Evento, listo: () => void) {
     consent: !!campo("f-priv")?.checked,
   };
 
+  error("");
   boton.disabled = true;
   boton.setAttribute("aria-busy", "true");
   try {
@@ -36,9 +40,9 @@ export async function enviarDemo(e: Evento, listo: () => void) {
       return;
     }
     const data = await res.json().catch(() => ({}));
-    window.alert(data.error ?? "No pudimos enviar la solicitud. Escribinos a hola@gondolapp.com.");
+    error(data.error ?? FALLA);
   } catch {
-    window.alert("No pudimos enviar la solicitud. Escribinos a hola@gondolapp.com.");
+    error(FALLA);
   } finally {
     boton.disabled = false;
     boton.removeAttribute("aria-busy");

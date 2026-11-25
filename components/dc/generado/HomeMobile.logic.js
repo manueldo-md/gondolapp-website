@@ -3,7 +3,6 @@
 /* eslint-disable */
 import { DCLogic } from "@/lib/dc/runtime";
 const BLOB = {"b9cbd8c75c2032bc3140a3a2185c656e":"/gondolapp-assets/sitio/mision-10-camara.webp","426885ab8a3107e335949077c0e31551":"/gondolapp-assets/sitio/mision-04-ubicacion-validada.webp","a4223f94c675befde883a92782573eea":"/gondolapp-assets/sitio/mision-05-pregunta-si-no.webp","f61a4400cc002a7d1d42ad13e5b43d42":"/gondolapp-assets/sitio/mision-08-pregunta-numero.webp","cc7dc9ea85bd13bee10ed1f806fd6fb8":"/gondolapp-assets/sitio/mision-07-pregunta-multiple.webp","b40cbbd86435bc5cc22c9bd387460bc3":"/gondolapp-assets/sitio/mision-11-resumen.webp","e0f53008a3b127ea90cb53f86011ad51":"/gondolapp-assets/sitio/mision-12-completada.webp","db97c4257f6465269032ab2ea9862373":"/gondolapp-assets/sitio/mision-03-elegir-comercio.webp","0b0e76b25f4e74e77f6bc209adbab3de":"/gondolapp-assets/sitio/marca-01-tablero.webp","f3f6cc014f459f07311ff1882e06a295":"/gondolapp-assets/sitio/marca-05-campana-activa.webp","78b2887f5ce314adf7c84bb7e22980d6":"/gondolapp-assets/sitio/marca-02-resultados.webp","064a95b71e08f0c47c73fb1a90c6304f":"/gondolapp-assets/sitio/marca-03-mapa.webp","db4a7f9fd75447b6514411ccd6d344bc":"/gondolapp-assets/sitio/distri-01-en-curso.webp","8ba713ff43103cde2a34034490239525":"/gondolapp-assets/sitio/distri-02-campana-por-aprobar.webp","ad0cf52d314e931f11de8ca214f8634d":"/gondolapp-assets/sitio/distri-03-red-invitar.webp","c31303a173707b558cbfad98165c0e4f":"/gondolapp-assets/sitio/repo-01-inicio.webp","23ff41435ac0779cd9a5d99d22e1dccd":"/gondolapp-assets/sitio/repo-02-fotos-relevadas.webp","d48c58bab777b20755c277eb7ae89b0e":"/gondolapp-assets/sitio/repo-03-invitar-equipo.webp","85b9a33f6d31b1ca392499099b0d57e9":"/gondolapp-assets/sitio/mision-01-campanas.webp","86d24c8d6c34f4d10e541762f950e55a":"/gondolapp-assets/sitio/mision-02-campana.webp","11846f07b9756d7606cc06b21c11aeea":"/gondolapp-assets/sitio/campo-08-mi-album.webp","cda01b37446c510758d096a7529df610":"/gondolapp-assets/sitio/campo-07-perfil-puntos.webp"};
-import { enviarDemo } from "@/lib/dc/demo";
 
 const IMG = {
   aCam: "/gondolapp-assets/sitio/mision-10-camara.webp", aUbic: "/gondolapp-assets/sitio/mision-04-ubicacion-validada.webp", aSiNo: "/gondolapp-assets/sitio/mision-05-pregunta-si-no.webp", aNum: "/gondolapp-assets/sitio/mision-08-pregunta-numero.webp", aMulti: "/gondolapp-assets/sitio/mision-07-pregunta-multiple.webp", aConf: "/gondolapp-assets/sitio/mision-11-resumen.webp", aDone: "/gondolapp-assets/sitio/mision-12-completada.webp", aActiv: "/gondolapp-assets/sitio/mision-03-elegir-comercio.webp",
@@ -150,7 +149,7 @@ class Component extends DCLogic {
       roles, role, roleBullets: r.bullets.map((t) => ({ t, c: r.color })), rolePhones: (r.phones || [[r.img, r.alt]]).map((p, i) => ({ src: p[0], alt: p[1], mt: ['28px', '0'][i] || '0' })),
       steps, step, stepBullets: step.bullets.map((t) => ({ t, ac: '#5B4BD6' })),
       faqTabs, faqs,
-      sent: s.sent, sentOff: !s.sent, send: (e) => enviarDemo(e, () => this.setState({ sent: true })), reset: () => this.setState({ sent: false })
+      sent: s.sent, sentOff: !s.sent, send: () => this.setState({ sent: true }), reset: () => this.setState({ sent: false })
     };
   }
 }
