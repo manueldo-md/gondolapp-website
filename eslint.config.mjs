@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generado desde los lienzos de diseño (docs/sitio/diseno-v1): no se edita a mano.
+    "components/dc/generado/**",
   ]),
 ]);
 

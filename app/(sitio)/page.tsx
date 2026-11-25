@@ -1,32 +1,25 @@
-import Hero from "@/components/home/Hero";
-import QueHace from "@/components/home/QueHace";
-import ComoFunciona from "@/components/home/ComoFunciona";
-import Ecosistema from "@/components/home/Ecosistema";
-import Muros from "@/components/home/Muros";
-import TiempoReal from "@/components/home/TiempoReal";
-import AppCampo from "@/components/home/AppCampo";
-import Armador from "@/components/home/Armador";
-import Soluciones from "@/components/home/Soluciones";
-import PreciosTeaser from "@/components/home/PreciosTeaser";
-import Preguntas from "@/components/home/Preguntas";
-import Demo from "@/components/home/Demo";
+import type { Metadata } from "next";
+import HomeDesktop from "@/components/dc/generado/HomeDesktop";
+import HomeMobile from "@/components/dc/generado/HomeMobile";
+import Responsive, { SaltoAlAncla } from "@/components/dc/Responsive";
 
-export default function Home() {
+/* Inicio: Main.dc.html en la compu y Mobile.dc.html en el celular. */
+const titulo = "Gondolapp — Ejecución y datos en el canal tradicional";
+const descripcion =
+  "La plataforma para ejecutar y medir campañas en el canal tradicional. Tu equipo, las distribuidoras con las que trabajás o tu repositora relevan desde el celular; vos lo ves todo en vivo.";
+
+export const metadata: Metadata = {
+  title: titulo,
+  description: descripcion,
+  openGraph: { title: titulo, description: descripcion, url: "https://gondolapp.com" },
+  twitter: { title: titulo, description: descripcion },
+};
+
+export default function Inicio() {
   return (
     <>
-      <span id="top" />
-      <Hero />
-      <QueHace />
-      <ComoFunciona />
-      <Ecosistema />
-      <Muros />
-      <TiempoReal />
-      <AppCampo />
-      <Armador />
-      <Soluciones />
-      <PreciosTeaser />
-      <Preguntas />
-      <Demo />
+      <Responsive desktop={<HomeDesktop />} mobile={<HomeMobile />} />
+      <SaltoAlAncla />
     </>
   );
 }
