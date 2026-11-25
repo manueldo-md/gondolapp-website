@@ -210,8 +210,17 @@ function emit(n, ctx, parentTag) {
   }
   const T = SVG_TAGS[tag] || tag;
   if (VOID.has(tag)) return `<${T} ${out.join(' ')} />`;
-  return `<${T}${out.length ? ' ' + out.join(' ') : ''}>${kids(n, c2, tag)}</${T}>`;
+  const el = `<${T}${out.length ? ' ' + out.join(' ') : ''}>${kids(n, c2, tag)}</${T}>`;
+  // Instagram en el pie, debajo de la bajada de la marca (pedido de Manuel, 25/11/2026)
+  if (tag === 'p' && region === 'footer' && textoDe(n).includes('El mapa del consumo masivo argentino')) {
+    log.push('Instagram en el pie: ' + ctx.name);
+    return el + INSTAGRAM;
+  }
+  return el;
 }
+function textoDe(n) { return n.text != null ? n.text : (n.children || []).map(textoDe).join(''); }
+// Mismo color que los links del pie (currentColor) y trazo como el resto de los íconos del sitio.
+const INSTAGRAM = '<a href="https://www.instagram.com/gondol.app/" target="_blank" rel="noopener" aria-label="Gondolapp en Instagram" style={{ display: "inline-flex", marginTop: "14px", textDecoration: "none" }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><path d="M17.5 6.5h.01"></path></svg></a>';
 function kids(n, ctx, tag) { return n.children.map((c) => emit(c, ctx, tag)).join(''); }
 
 /* ───────── hrefs ───────── */
@@ -430,6 +439,24 @@ for (const [file, slug] of [['Marcas', 'marcas'], ['Distribuidoras', 'distribuid
   };
   convertPage({ file, name: 'Page' + file, scope: 'dc-' + slug, replace,
     extraImports: 'import Responsive from "@/components/dc/Responsive";\nimport MobileHeader from "./MobileHeader";\nimport MobileFooter from "./MobileFooter";' });
+}
+
+// Header y pie de compu sueltos, para la página 404: los del lienzo Red, que no marca
+// ninguna página en el header. Los links a anclas van al Inicio.
+{
+  const tree = parse(fs.readFileSync(DIS + 'Red.dc.html', 'utf8'));
+  const mk = (tag, nm) => emit(find(tree, (n) => n.tag === tag), { name: nm, loop: new Set(), region: 'x', reg: null, imports: new Set(), href: hrefFor(true) }, 'div');
+  for (const [tag, nm] of [['header', 'DesktopHeader'], ['footer', 'DesktopFooter']]) {
+    fs.writeFileSync(OUT + nm + '.tsx', `// @ts-nocheck
+/* GENERADO desde docs/sitio/diseno-v1/Red.dc.html: el ${tag === 'header' ? 'header' : 'pie'} de compu, para la página 404.
+   Va dentro de un contenedor .dc-red, que le da sus estilos. */
+/* eslint-disable */
+import { proporcion } from "@/lib/dc/medidas";
+export default function ${nm}() {
+  return (${mk(tag, nm)});
+}
+`);
+  }
 }
 
 const globalCss = `/* GENERADO por el conversor del sitio a partir de los lienzos de docs/sitio/diseno-v1.
